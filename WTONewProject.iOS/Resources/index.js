@@ -18,6 +18,7 @@ function XHbuttonClick()
 
 function HbuttonClick()
 {
+    alert("调OC方法  顺便传递参数");
     // 调OC方法  顺便传递参数
     window.webkit.messageHandlers.secondClick.postMessage({'goodsId': '1212','name':'你大爷'})
 
@@ -32,5 +33,6 @@ function ZTHbuttonClick()
 
 function pushCode(str,str2){
     alert(str);
+HbuttonClick();
 
 }

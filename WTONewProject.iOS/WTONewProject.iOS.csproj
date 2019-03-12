@@ -176,5 +176,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\index.html" />
     <BundleResource Include="Resources\index.js" />
+    <BundleResource Include="Resources\Trapezoid.png" />
+    <BundleResource Include="Resources\logo.png" />
   </ItemGroup>
 </Project>
