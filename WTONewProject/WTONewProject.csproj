@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
+    <PackageReference Include="Xamarin.Auth" Version="1.6.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\" />
+    <Folder Include="Renderer\" />
+    <Folder Include="Comment\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="View\LoginWithNullPage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Content\index.html" />
+    <None Remove="Content\index1.html" />
+  </ItemGroup>
+</Project>
