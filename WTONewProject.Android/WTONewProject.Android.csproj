@@ -60,9 +60,9 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderer\HybridWebViewRenderer.cs" />
     <Compile Include="Comment\BaseUrl.cs" />
-    <Compile Include="Renderer\JSBridge.cs" />
+    <Compile Include="Renderer\HybridWebViewRenderer.cs" />
+    <Compile Include="Renderer\BorderlessEntryRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -88,6 +88,8 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\Trapezoid.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\logo.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\select.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\nomal.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />

@@ -10,7 +10,7 @@ namespace WTONewProject
 {
     public partial class App : Application
     {
-
+       
         public string AppName = "CloudWTO";
         public App()
         {
@@ -20,6 +20,7 @@ namespace WTONewProject
                 MainPage = new LoginWithNullPage();
             else
                 MainPage = new LoginWithNamePage();
+
         }
 
         protected override void OnStart()
@@ -41,6 +42,7 @@ namespace WTONewProject
         }
 
 
-   
+        public static int ScreenHeight { get; set; }
+        public static int ScreenWidth { get; set; }
     }
 }

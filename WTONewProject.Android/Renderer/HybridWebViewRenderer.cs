@@ -73,4 +73,27 @@ namespace WTONewProject.Droid.Renderer
         }
     }
 
+
+    public class JSBridge : Java.Lang.Object
+    {
+        readonly WeakReference<HybridWebViewRenderer> hybridWebViewRenderer;
+
+        public JSBridge(HybridWebViewRenderer hybridRenderer)
+        {
+            hybridWebViewRenderer = new WeakReference<HybridWebViewRenderer>(hybridRenderer);
+        }
+
+        [JavascriptInterface]
+        [Export("invokeAction")]//有这句话编译不通过
+        public void InvokeAction(object data)
+        {
+            HybridWebViewRenderer hybridRenderer;
+
+            if (hybridWebViewRenderer != null && hybridWebViewRenderer.TryGetTarget(out hybridRenderer))
+            {
+                hybridRenderer.Element.CCallJs(data);
+            }
+        }
+    }
+
 }
