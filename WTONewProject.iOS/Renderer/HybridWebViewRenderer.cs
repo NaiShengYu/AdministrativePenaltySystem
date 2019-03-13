@@ -14,17 +14,20 @@ namespace WTONewProject.iOS.Renderer
 {
     public class HybridWebViewRenderer : ViewRenderer<HyBridWebView, WKWebView>, IWKScriptMessageHandler,IWKNavigationDelegate,IWKUIDelegate
     {
-
-
+        
         WKWebView webView;
         protected override void OnElementChanged(ElementChangedEventArgs<HyBridWebView> e)
         {
+            //给JS方法重命名(多参数需要放在一个字典里面)
+           const string rename1= "function ZTHTestParameteroneAndParametertwo(data){window.webkit.messageHandlers.invokeAction.postMessage(data);}";
             base.OnElementChanged(e);
             if (Control == null)
             {
                var userController = new WKUserContentController();
+                userController.AddUserScript(new WKUserScript(new NSString(rename1), WKUserScriptInjectionTime.AtDocumentEnd, false));
                  userController.AddScriptMessageHandler(this, "filstClick");
                 userController.AddScriptMessageHandler(this, "secondClick");
+                userController.AddScriptMessageHandler(this, "invokeAction");
 
                 var config = new WKWebViewConfiguration { UserContentController = userController };
                 webView = new WKWebView(Frame, config);
@@ -44,13 +47,10 @@ namespace WTONewProject.iOS.Renderer
 
         void Element_PushCode(object sender, EventArgs e)
         {
-
             Console.WriteLine("点击调用了");
             webView.EvaluateJavaScript("pushCode('你好','不好')",HandleWKJavascriptEvaluationResult);
-
-
         }
-
+        //结果
         void HandleWKJavascriptEvaluationResult(NSObject result, NSError error)
         {
 
@@ -61,6 +61,8 @@ namespace WTONewProject.iOS.Renderer
 
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
         {
+
+
             if (message.Name.Equals("filstClick"))
             {
                 Console.WriteLine("第一个按钮");
@@ -78,7 +80,7 @@ namespace WTONewProject.iOS.Renderer
                 Element.clickOne(sender);
             }
 
-            }
+        }
 
 
 

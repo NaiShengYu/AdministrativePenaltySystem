@@ -15,66 +15,62 @@ using WTONewProject.Droid.Renderer;
 using WTONewProject.Renderer;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using WebView = Xamarin.Forms.WebView;
 
 [assembly: ExportRenderer(typeof(HyBridWebView), typeof(HybridWebViewRenderer))]
 namespace WTONewProject.Droid.Renderer
 {
-    public class HybridWebViewRenderer: WebViewRenderer
+    public class HybridWebViewRenderer : ViewRenderer<HyBridWebView, Android.Webkit.WebView>
     {
-        const string JavaScriptFunction = "function invokeCSharpAction(data){jsBridge.invokeAction(data);}";
+        const string JavaScriptFunction = "function ZTHTestParameteroneAndParametertwo(data){jsBridge.invokeAction(data);}";
+        Context _context;
 
-        public HyBridWebView webView;
+        public HybridWebViewRenderer(Context context) : base(context)
+        {
+            _context = context;
+        }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<WebView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<HyBridWebView> e)
         {
             base.OnElementChanged(e);
+
+            if (Control == null)
+            {
+                var webView = new Android.Webkit.WebView(_context);
+                webView.Settings.JavaScriptEnabled = true;
+                webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptFunction}"));
+                SetNativeControl(webView);
+            }
             if (e.OldElement != null)
             {
                 Control.RemoveJavascriptInterface("jsBridge");
+                var hybridWebView = e.OldElement as HyBridWebView;
             }
             if (e.NewElement != null)
             {
-                webView = e.NewElement as HybridWebView;
-
                 Control.AddJavascriptInterface(new JSBridge(this), "jsBridge");
-                InjectJS(JavaScriptFunction);
-            }
-
-            void InjectJS(string script)
-            {
-                if (Control != null)
-                {
-                    Control.LoadUrl(string.Format("javascript: {0}", script));
-                }
-            }
-
-
-
-        }
-
-        public class JSBridge : Java.Lang.Object
-        {
-            readonly WeakReference<HybridWebViewRenderer> hybridWebViewRenderer;
-
-            public JSBridge(HybridWebViewRenderer hybridRenderer)
-            {
-                hybridWebViewRenderer = new WeakReference<HybridWebViewRenderer>(hybridRenderer);
-            }
-
-            [JavascriptInterface]
-            [Export("invokeAction")]
-            public void InvokeAction(string data)
-            {
-                HybridWebViewRenderer hybridRenderer;
-
-                if (hybridWebViewRenderer != null && hybridWebViewRenderer.TryGetTarget(out hybridRenderer))
-                {
-                    hybridRenderer.webView.SendClick(data);
-                }
+                UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
+                Control.LoadUrl(source.Url);
             }
         }
 
-
-
+   
+       
     }
+
+    public class JavascriptWebViewClient : WebViewClient
+    {
+        string _javascript;
+
+        public JavascriptWebViewClient(string javascript)
+        {
+            _javascript = javascript;
+        }
+
+        public override void OnPageFinished(Android.Webkit.WebView view, string url)
+        {
+            base.OnPageFinished(view, url);
+            view.EvaluateJavascript(_javascript,null);
+        }
+    }
+
+}

@@ -26,7 +26,7 @@ function HbuttonClick()
 function ZTHbuttonClick()
 {
     // 调OC方法  顺便传递两个参数，比如，姓名，订单号
-    testobject.ZTHTestParameteroneAndParametertwo("1123425255","ZTH");
+    ZTHTestParameteroneAndParametertwo({'goodsId': '1212','name':'你大爷'});
 }
 
 

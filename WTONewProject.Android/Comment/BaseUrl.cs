@@ -1,5 +1,6 @@
 ﻿using System;
 using WTONewProject.Comment;
+using WTONewProject.Droid.Comment;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(BaseUrl))]
