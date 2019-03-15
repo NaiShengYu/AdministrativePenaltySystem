@@ -15,7 +15,7 @@ namespace WTONewProject.Droid.Renderer
 
         [JavascriptInterface]
         [Export("invokeAction")]
-        public void InvokeAction(object data)
+        public void InvokeAction(Java.Lang.Object data)
         {
             HybridWebViewRenderer hybridRenderer;
 
