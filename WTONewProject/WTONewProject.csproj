@@ -18,6 +18,7 @@
     <Folder Include="View\" />
     <Folder Include="Renderer\" />
     <Folder Include="Comment\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="View\LoginWithNullPage.cs" />

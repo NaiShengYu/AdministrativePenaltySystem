@@ -8,7 +8,7 @@ namespace WTONewProject.Renderer
     public class HyBridWebView:WebView
     {
 
-
+        public string AzuraCookie { get; set; }
         public event EventHandler<EventArgs> pushCode;
 
         public event EventHandler<EventArgs> clickYi;
@@ -21,7 +21,7 @@ namespace WTONewProject.Renderer
 
         public void CCallJs(object sss)
         {
-            pushCode.Invoke(sss,new EventArgs());
+            //pushCode.Invoke(sss,new EventArgs());
 
         }
 

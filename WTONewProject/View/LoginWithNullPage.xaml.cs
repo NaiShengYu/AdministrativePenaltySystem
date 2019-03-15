@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using WTONewProject.Comment;
 using Xamarin.Forms;
 using Newtonsoft.Json;
+using Xamarin.Auth;
+using System.Linq;
 
 namespace WTONewProject.View
 {
@@ -21,10 +23,7 @@ namespace WTONewProject.View
                 centerGrid.WidthRequest = 300;
                 centerGrid.HeightRequest = 298;
                 userFrame.Margin = new Thickness(0, 10, 0, 0);
-
-            }
-
-
+            }          
         }
 
         void SavePassWord_Clicked(object sender, System.EventArgs e)
@@ -37,13 +36,46 @@ namespace WTONewProject.View
         {
 
         }
-        void Login_Clicked(object sender, System.EventArgs e)
+       async void Login_Clicked(object sender, System.EventArgs e)
         {
-
+            if (string.IsNullOrWhiteSpace(account.Text))
+            {
+                await DisplayAlert("提示", "账号不能为空", "确定");
+                return;
+            }
+            if (string.IsNullOrEmpty(password.Text))
+            {
+                await DisplayAlert("提示", "密码不能为空", "确定");
+                return;
+            }
+            deleteData();
+            bool autologin = await (App.Current as App).LoginAsync(account.Text, password.Text);
         }
         void ForgotPassWord_Clicked(object sender, System.EventArgs e)
         {
 
+        }
+
+
+        private void deleteData()
+        {
+            //#if !(DEBUG && __IOS__)
+            //循环删除所存的数据
+            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.AppName);
+            for (int i = 0; i < outs.Count(); i++)
+            {
+                AccountStore.Create().Delete(outs.ElementAt(i), App.AppName);
+            }
+            if (_isSavePassword)
+            {
+                Account count = new Account
+                {
+                    Username = account.Text
+                };
+                count.Properties.Add("pwd", password.Text);
+                AccountStore.Create().Save(count, App.AppName);
+            }
+            //#endif
         }
     }
 }

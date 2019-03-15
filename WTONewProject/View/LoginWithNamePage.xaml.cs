@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WTONewProject.Comment;
+using Xamarin.Auth;
 using Xamarin.Forms;
 
 namespace WTONewProject.View
@@ -8,15 +10,15 @@ namespace WTONewProject.View
     public partial class LoginWithNamePage : ContentPage
     {
 
-        bool _isSavePassword = false;
-
-        public LoginWithNamePage()
+        bool _isSavePassword = true;
+        string _userName = "";
+        string _passWord = "";
+        public LoginWithNamePage(string userName,string passWord)
         {
             InitializeComponent();
-            //var source = new UrlWebViewSource();
-            //var rootPath = DependencyService.Get<IBaseUrl>().Get();
-            //source.Url = System.IO.Path.Combine(rootPath, "index.html");
-            //web.Source = source;
+            _userName = userName;
+            _passWord = passWord;
+            password.Text = passWord;
             if (App.ScreenWidth > 400)
             {
                 TrapezoidImg.WidthRequest = 300;
@@ -25,6 +27,12 @@ namespace WTONewProject.View
                 centerGrid.HeightRequest = 298;
                 userFrame.Margin = new Thickness(0, 10, 0, 0);
             }
+            var tapGestureRecognizer = new TapGestureRecognizer();
+            tapGestureRecognizer.Tapped += (s, e) => {
+                App.Current.MainPage = new LoginWithNullPage();
+            };
+            userImg.GestureRecognizers.Add(tapGestureRecognizer);
+
         }
 
         void Handle_Clicked(object sender, System.EventArgs e)
@@ -53,13 +61,40 @@ namespace WTONewProject.View
         {
 
         }
-        void Login_Clicked(object sender, System.EventArgs e)
+       async void Login_Clicked(object sender, System.EventArgs e)
         {
+            if (string.IsNullOrEmpty(password.Text))
+            {
+                await DisplayAlert("提示", "密码不能为空", "确定");
+                return;
+            }
+            bool autologin = await(App.Current as App).LoginAsync(_userName, password.Text);
 
         }
         void ForgotPassWord_Clicked(object sender, System.EventArgs e)
         {
 
+        }
+
+        private void deleteData()
+        {
+#if !(DEBUG && __IOS__)
+            //循环删除所存的数据
+            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.AppName);
+            for (int i = 0; i < outs.Count(); i++)
+            {
+                AccountStore.Create().Delete(outs.ElementAt(i), App.AppName);
+            }
+            if (_isSavePassword)
+            {
+                Account count = new Account
+                {
+                    Username = _userName
+                };
+                count.Properties.Add("pwd", password.Text);
+                AccountStore.Create().Save(count, App.AppName);
+            }
+#endif
         }
     }
 }

@@ -24,16 +24,16 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,5,0,0">
-                            <local:BorderlessEntry x:Name="account" HasBorder="false" Placeholder="账户" HorizontalTextAlignment="Center" VerticalOptions="Center" Margin="30,0,30,5" HeightRequest="30" FontSize="Micro" />
+                            <local:BorderlessEntry x:Name="account" HasBorder="false" Placeholder="账户" HorizontalTextAlignment="Center" VerticalOptions="Center" Margin="30,0,30,2" HeightRequest="30" FontSize="Micro" />
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="30,20,30,0" HeightRequest="0.5" BackgroundColor="Silver" />
                         </Grid> 
                         <Grid Grid.Row="1" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,5,0,0">
-                            <local:BorderlessEntry x:Name="password" HasBorder="false" Placeholder="请输入你的密码" HorizontalTextAlignment="Center" VerticalOptions="Center" Margin="30,0,30,5" HeightRequest="30" FontSize="Micro" />
+                            <local:BorderlessEntry x:Name="password" IsPassword="true" HasBorder="false" Placeholder="请输入你的密码" HorizontalTextAlignment="Center" VerticalOptions="Center" Margin="30,0,30,2" HeightRequest="30" FontSize="Micro" />
                             <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="30,20,30,0" HeightRequest="0.5" BackgroundColor="Silver" />
                         </Grid>
                         <Grid Grid.Row="2">
-                            <Button x:Name="saveBut" Clicked="SavePassWord_Clicked" Image="nomal" TextColor="#777777" HorizontalOptions="Start" VerticalOptions="Center" Margin="30,0,0,0" Padding="0" BackgroundColor="Transparent" Text="记住密码" Font="11" HeightRequest="40"/>
-                            <Button Clicked="ChangePassWord_Clicked" TextColor="#777777" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,30,0" Padding="0" BackgroundColor="Transparent" Text="重置密码" Font="11" HeightRequest="40"/>
+                            <Button WidthRequest="70" x:Name="saveBut" Clicked="SavePassWord_Clicked" Image="nomal" TextColor="#777777" HorizontalOptions="Start" VerticalOptions="Center" Margin="30,0,0,0" Padding="0" BackgroundColor="Transparent" Text="记住密码" Font="12" HeightRequest="40"/>
+                            <Button Clicked="ChangePassWord_Clicked" TextColor="#777777" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,30,0" Padding="0" BackgroundColor="Transparent" Text="重置密码" Font="12" HeightRequest="40"/>
                         </Grid>
                     </Grid>
                     <Button Clicked="Login_Clicked" Padding="0" BackgroundColor="#4fa4df" Text="登录" TextColor="White" Font="16" HorizontalOptions="Center" VerticalOptions="End" WidthRequest="100" HeightRequest="35" CornerRadius="17"
