@@ -21,13 +21,11 @@
 	<key>MinimumOSVersion</key>
 	<string>8.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>WTONewProject</string>
+	<string>EHSOON</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.azura.amp.WTONewProject</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
-	<key>CFBundleName</key>
-	<string>WTONewProject</string>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>XSLaunchImageAssets</key>
@@ -53,5 +51,7 @@
 	<string>为了可以上传播放您的工作录像，请允许使用媒体库</string>
 	<key>NSContactsUsageDescription</key>
 	<string>为了快速的联系您的好友，请允许使用联系人</string>
+	<key>CFBundleName</key>
+	<string>EHSOON</string>
 </dict>
 </plist>
