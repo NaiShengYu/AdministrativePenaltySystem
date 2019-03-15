@@ -20,8 +20,18 @@
          colorControlHighlight and colorSwitchThumbNormal. -->
         <item name="windowActionModeOverlay">true</item>
         <item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
+        <item name="android:buttonStyle">@style/noPaddingButtonStyle</item>
     </style>
     <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">#FF4081</item>
     </style>
+
+  <style name="noPaddingButtonStyle" parent="android:Widget.Material.Button">
+    <item name="android:paddingLeft">0dp</item>
+    <item name="android:paddingRight">0dp</item>
+    <item name="android:paddingTop">0dp</item>
+    <item name="android:paddingBottom">0dp</item>
+    <item name="android:colorPressedHighlight">@android:color/transparent</item>
+    <item name="android:colorFocusedHighlight">@android:color/transparent</item>
+  </style>
 </resources>

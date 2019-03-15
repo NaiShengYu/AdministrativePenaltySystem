@@ -52,7 +52,7 @@ namespace WTONewProject.Droid.Renderer
                 Control.AddJavascriptInterface(new JSBridge(this), "jsBridge");
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
                 if(!string.IsNullOrWhiteSpace(Element.AzuraCookie))
-                    synCookies(_context, source.Url, "document.cookie ='AzuraCookie=" + Element.AzuraCookie + "';");
+                    synCookies(_context, source.Url, "AzuraCookie=" + Element.AzuraCookie + "");
                 Control.LoadUrl(source.Url);
             }
         }
@@ -83,6 +83,18 @@ namespace WTONewProject.Droid.Renderer
             base.OnPageFinished(view, url);
             view.EvaluateJavascript(_javascript,null);
         }
+
+        public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, string url)
+        {
+            view.LoadUrl(url);
+            return base.ShouldOverrideUrlLoading(view, url);
+        }
+
+        //public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, IWebResourceRequest request)
+        //{
+        //    view.LoadUrl(request.Url.ToString());
+        //    return true;
+        //}
     }
 
 
