@@ -12,6 +12,7 @@ namespace WTONewProject.View
             InitializeComponent();
             var source = new UrlWebViewSource();
             source.Url = "http://192.168.2.111:8081";
+            //source.Url = "http://www.baidu.com";
             web.Source = source;
             web.AzuraCookie = cookie;
         }

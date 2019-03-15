@@ -63,6 +63,14 @@
     <Compile Include="Comment\BaseUrl.cs" />
     <Compile Include="Renderer\HybridWebViewRenderer.cs" />
     <Compile Include="Renderer\BorderlessEntryRenderer.cs" />
+    <Compile Include="Servers\JpushSetAlias.cs" />
+    <Compile Include="JPush\BaseHandler.cs" />
+    <Compile Include="JPush\MessageHandler.cs" />
+    <Compile Include="JPush\NotificationOpenHandler.cs" />
+    <Compile Include="JPush\NotificationReceivedHandler.cs" />
+    <Compile Include="JPush\Receiver.cs" />
+    <Compile Include="JPush\ReceiverHandler.cs" />
+    <Compile Include="JPush\RegisrationHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -90,6 +98,7 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\logo.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\nomal.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\select.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\userHeader.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
@@ -99,11 +108,16 @@
     <Folder Include="Resources\drawable-xxxhdpi\" />
     <Folder Include="Renderer\" />
     <Folder Include="Comment\" />
+    <Folder Include="Servers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WTONewProject\WTONewProject.csproj">
       <Project>{9E68BD33-A8D6-4C08-9087-A69911B079EB}</Project>
       <Name>WTONewProject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CloudWTO\CloudWTO1\JPush.Binding.Droid\JPush.Binding.Droid.csproj">
+      <Project>{6596816A-0D5B-4BA7-854B-FE09336D4735}</Project>
+      <Name>JPush.Binding.Droid</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

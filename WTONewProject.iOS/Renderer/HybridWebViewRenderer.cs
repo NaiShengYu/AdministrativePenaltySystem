@@ -20,7 +20,7 @@ namespace WTONewProject.iOS.Renderer
         protected override void OnElementChanged(ElementChangedEventArgs<HyBridWebView> e)
         {
             //给JS方法重命名(多参数需要放在一个字典里面)
-           const string rename1= "function ZTHTestParameteroneAndParametertwo(data,data1){window.webkit.messageHandlers.invokeAction.postMessage(data,data1);}";
+           const string rename1= "function ZTHTestParameteroneAndParametertwo(data){window.webkit.messageHandlers.invokeAction.postMessage(data);}";
             base.OnElementChanged(e);
             if (Control == null)
             {
@@ -40,6 +40,7 @@ namespace WTONewProject.iOS.Renderer
 
                 var config = new WKWebViewConfiguration { UserContentController = userController };
                 webView = new WKWebView(Frame, config);
+                webView.ScrollView.Bounces = false;//禁止超过边框滑动
                 webView.UIDelegate = this;
                 webView.NavigationDelegate = this;
                 SetNativeControl(webView);
@@ -51,10 +52,10 @@ namespace WTONewProject.iOS.Renderer
             if (e.NewElement != null)
             {
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
-                //Control.LoadRequest(new NSUrlRequest(new NSUrl(source.Url)));
+                Control.LoadRequest(new NSUrlRequest(new NSUrl(source.Url)));
                 //加载本地必须用下面的
-                NSUrl url = NSBundle.MainBundle.GetUrlForResource("index.html", "");
-                Control.LoadRequest(new NSUrlRequest(url));
+                //NSUrl url = NSBundle.MainBundle.GetUrlForResource("index.html", "");
+                //Control.LoadRequest(new NSUrlRequest(url));
             }
             Element.pushCode += Element_PushCode;
 
