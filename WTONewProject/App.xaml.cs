@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using WTONewProject.Services;
 using System.Net;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace WTONewProject
@@ -15,25 +16,30 @@ namespace WTONewProject
     public partial class App : Application
     {
         public FrameworkToken frameworkToken = null;
-        public static string FrameworkURL = "http://dev.azuratech.com:22000/token";
+        public static string FrameworkURL = "";
         public static string AppName = "CloudWTO";
+        public static string siteURL = "siteURL";
         public App()
         {
             InitializeComponent();
             var account = AccountStore.Create().FindAccountsForService(AppName).LastOrDefault();
+            var account1 = AccountStore.Create().FindAccountsForService(siteURL).LastOrDefault();
+
+            if (account1 != null)
+                FrameworkURL = account1.Username;
             if (account == null)
                 MainPage = new LoginWithNullPage();
-            else
-            MainPage = new LoginWithNamePage(account.Username,account.Properties["pwd"]);
+            else {
+                MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
+            }
 
-             //MainPage = new MainPage();
+            //MainPage = new MainPage();
 
 
         }
         protected override void OnStart()
         {
-            // Handle when your app starts
-            
+
 
 
         }
@@ -48,9 +54,35 @@ namespace WTONewProject
             // Handle when your app resumes
         }
 
-        public async Task<bool> LoginAsync(string username, string password) {
+        public async Task<bool> LoginAsync(string username, string password,string siteurl,bool issavePassword) {
 
-            frameworkToken = await GetFrameworkTokenAsync(username, password);
+            if (string.IsNullOrWhiteSpace(siteurl))
+            {
+                if (string.IsNullOrWhiteSpace(FrameworkURL))
+                {
+                    return false;
+                }else
+                    frameworkToken = await GetFrameworkTokenAsync(username, password, FrameworkURL, issavePassword);
+            }
+            else
+            {
+               var frameworkToken1 = await GetFrameworkTokenAsync(username, password, "http://"+siteurl+"/token", issavePassword);
+                if(frameworkToken1 != null)
+                {
+                    frameworkToken = frameworkToken1;
+                    FrameworkURL = "http://" + siteurl + "/token";
+                    saveSiteURL();
+                }
+                var frameworkToken2 = await GetFrameworkTokenAsync(username, password, "https://" + siteurl + "/token", issavePassword);
+                if (frameworkToken2 != null)
+                {
+                    frameworkToken = frameworkToken2;
+                    FrameworkURL = "https://" + siteurl + "/token";
+                    saveSiteURL();
+                }
+            }
+
+
             if (frameworkToken == null) return false;
             else
             {
@@ -58,33 +90,24 @@ namespace WTONewProject
                 return true;
             }
         }
-
-
         /// <summary>
         /// Get an access token from the framework server with the provided credential
         /// </summary>
         /// <param name="username">User Name</param>
         /// <param name="password">Password</param>
         /// <returns>A FrameworkToken structure that contains the access token for all subsequence requests</returns>
-        private async Task<FrameworkToken> GetFrameworkTokenAsync(string username, string password)
+        private async Task<FrameworkToken> GetFrameworkTokenAsync(string username, string password, string siteurl, bool issavePassword)
         {
             try
             {
-                string url = FrameworkURL;
+                string url = siteurl;
                 string param = "username=" + username + "&password=" + password + "&grant_type=password";
-
-                //string url = "http://dev2.azuratech.com:30000/token";
-                //Dictionary<string, object> map = new Dictionary<string, object>();
-                //map.Add("userid", username);
-                //map.Add("password", password);
-                //map.Add("grant_type", "password");
-                //string param = JsonConvert.SerializeObject(map);
-
                 HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(url, param, "POST", null);
                 FrameworkToken ft = null;
                 if (res.StatusCode == HttpStatusCode.OK)
                 {
                     ft = JsonConvert.DeserializeObject<FrameworkToken>(res.Results);
+                    deleteData(username, password, issavePassword);
                 }
                 return ft;
             }
@@ -94,7 +117,44 @@ namespace WTONewProject
             }
         }
 
+        private void deleteData(string username,string passWord,bool isSavePassword)
+        {
+            //#if !(DEBUG && __IOS__)
+            //循环删除所存的数据
+            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.AppName);
+            for (int i = 0; i < outs.Count(); i++)
+            {
+                AccountStore.Create().Delete(outs.ElementAt(i), App.AppName);
+            }
+            if (isSavePassword)
+            {
+                Account count = new Account
+                {
+                    Username = username
+                };
+                count.Properties.Add("pwd", passWord);
+                count.Properties.Add("sourceURL", App.FrameworkURL);
+                AccountStore.Create().Save(count, App.AppName);
+            }
+            //#endif
+        }
 
+        private void saveSiteURL()
+        {
+            //#if !(DEBUG && __IOS__)
+            //循环删除所存的数据
+            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.siteURL);
+            for (int i = 0; i < outs.Count(); i++)
+            {
+                AccountStore.Create().Delete(outs.ElementAt(i), App.siteURL);
+            }
+                Account count = new Account
+                {
+                    Username = FrameworkURL
+                };
+                AccountStore.Create().Save(count, App.siteURL);
+            //#endif
+        }
 
         public static int ScreenHeight { get; set; }
         public static int ScreenWidth { get; set; }

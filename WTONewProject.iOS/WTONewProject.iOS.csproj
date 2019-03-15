@@ -98,6 +98,9 @@
     <Compile Include="Comment\BaseUrl.cs" />
     <Compile Include="Renderer\HybridWebViewRenderer.cs" />
     <Compile Include="Renderer\BorderlessEntryRenderer.cs" />
+    <Compile Include="Notification\JPush\JPushInterface.cs" />
+    <Compile Include="Notification\JPush\JPushRegisterEntity.cs" />
+    <Compile Include="Servers\JpushSetAlias.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -173,7 +176,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Runtime.Numerics">
@@ -194,6 +196,11 @@
       <Project>{9E68BD33-A8D6-4C08-9087-A69911B079EB}</Project>
       <Name>WTONewProject</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JPush.Binding.iOS\JPush.Binding.iOS.csproj">
+      <Project>{DB94A3C5-03ED-42C3-BAC9-5598A20DB94A}</Project>
+      <Name>JPush.Binding.iOS</Name>
+      <IncludeInPackage>true</IncludeInPackage>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -205,5 +212,6 @@
     <BundleResource Include="Resources\nomal.png" />
     <BundleResource Include="Resources\select%402x.png" />
     <BundleResource Include="Resources\nomal%402x.png" />
+    <BundleResource Include="Resources\userHeader.png" />
   </ItemGroup>
 </Project>

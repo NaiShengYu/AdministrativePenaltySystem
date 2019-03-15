@@ -13,6 +13,9 @@ namespace WTONewProject.View
     {
 
         bool _isSavePassword = false;
+        string _userName = "";
+        string _passWord = "";
+        string _sourceURL = "";
         public LoginWithNullPage()
         {
             InitializeComponent();
@@ -26,6 +29,18 @@ namespace WTONewProject.View
             }          
         }
 
+
+        public LoginWithNullPage(string userName, string passWord) :this()
+        {
+            _isSavePassword = true;
+            _userName = userName;
+            _passWord = passWord;
+            password.Text = passWord;
+            account.Text = userName;
+            saveBut.Image = ImageSource.FromFile("select.png") as FileImageSource;
+        }
+
+
         void SavePassWord_Clicked(object sender, System.EventArgs e)
         {
             _isSavePassword = !_isSavePassword;
@@ -36,7 +51,7 @@ namespace WTONewProject.View
         {
 
         }
-       async void Login_Clicked(object sender, System.EventArgs e)
+        async void Login_Clicked(object sender, System.EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(account.Text))
             {
@@ -48,8 +63,18 @@ namespace WTONewProject.View
                 await DisplayAlert("提示", "密码不能为空", "确定");
                 return;
             }
-            deleteData();
-            bool autologin = await (App.Current as App).LoginAsync(account.Text, password.Text);
+            string[] xx = account.Text.Split(new string[] { "@" }, StringSplitOptions.None);
+            string username = "";
+            string siteURL = "";
+            username = xx[0];
+            if (xx.Count()==2)
+            {
+                siteURL = xx[1];
+            }
+            bool autologin = await (App.Current as App).LoginAsync(username, password.Text,siteURL,_isSavePassword);
+            if(!autologin)
+                await DisplayAlert("提示", "登录失败", "确定");
+
         }
         void ForgotPassWord_Clicked(object sender, System.EventArgs e)
         {
@@ -57,25 +82,6 @@ namespace WTONewProject.View
         }
 
 
-        private void deleteData()
-        {
-            //#if !(DEBUG && __IOS__)
-            //循环删除所存的数据
-            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.AppName);
-            for (int i = 0; i < outs.Count(); i++)
-            {
-                AccountStore.Create().Delete(outs.ElementAt(i), App.AppName);
-            }
-            if (_isSavePassword)
-            {
-                Account count = new Account
-                {
-                    Username = account.Text
-                };
-                count.Properties.Add("pwd", password.Text);
-                AccountStore.Create().Save(count, App.AppName);
-            }
-            //#endif
-        }
+       
     }
 }
