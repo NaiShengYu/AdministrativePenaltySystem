@@ -97,6 +97,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Comment\BaseUrl.cs" />
     <Compile Include="Renderer\HybridWebViewRenderer.cs" />
+    <Compile Include="Renderer\BorderlessEntryRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -175,6 +176,15 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Runtime.Numerics">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Serialization.Json">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.Serialization.Primitives">
+      <Version>4.3.0</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
     <PackageReference Include="Xamarin.TestCloud.Agent" Version="0.21.7" />
   </ItemGroup>
@@ -185,14 +195,15 @@
       <Name>WTONewProject</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Renderer\" />
-    <Folder Include="Comment\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BundleResource Include="Resources\index.html" />
     <BundleResource Include="Resources\index.js" />
     <BundleResource Include="Resources\Trapezoid.png" />
     <BundleResource Include="Resources\logo.png" />
+    <BundleResource Include="Resources\select.png" />
+    <BundleResource Include="Resources\nomal.png" />
+    <BundleResource Include="Resources\select%402x.png" />
+    <BundleResource Include="Resources\nomal%402x.png" />
   </ItemGroup>
 </Project>

@@ -19,14 +19,16 @@ function XHbuttonClick()
 function HbuttonClick()
 {
     // 调OC方法  顺便传递参数
-    window.webkit.messageHandlers.secondClick.postMessage({'goodsId': '1212','name':'你大爷'})
+    //window.webkit.messageHandlers.secondClick.postMessage({'goodsId': '1212','name':'你大爷'})
+    secondClick("你好啊","一点都不好");
 
 }
 
 function ZTHbuttonClick()
 {
+    
     // 调OC方法  顺便传递两个参数，比如，姓名，订单号
-    ZTHTestParameteroneAndParametertwo({'goodsId': '1212','name':'你大爷'});
+    ZTHTestParameteroneAndParametertwo("你好啊","一点都不好");
 }
 
 

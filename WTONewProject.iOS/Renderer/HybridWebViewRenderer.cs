@@ -16,14 +16,23 @@ namespace WTONewProject.iOS.Renderer
     {
         
         WKWebView webView;
+        WKUserContentController userController;
         protected override void OnElementChanged(ElementChangedEventArgs<HyBridWebView> e)
         {
             //给JS方法重命名(多参数需要放在一个字典里面)
-           const string rename1= "function ZTHTestParameteroneAndParametertwo(data){window.webkit.messageHandlers.invokeAction.postMessage(data);}";
+           const string rename1= "function ZTHTestParameteroneAndParametertwo(data,data1){window.webkit.messageHandlers.invokeAction.postMessage(data,data1);}";
             base.OnElementChanged(e);
             if (Control == null)
             {
-               var userController = new WKUserContentController();
+               userController = new WKUserContentController();
+                //给webView添加Cookie
+                if (!string.IsNullOrWhiteSpace(Element.AzuraCookie))
+                {
+                    NSString cookieSource = new NSString("document.cookie ='AzuraCookie=" + Element.AzuraCookie + "';");
+                    WKUserScript cookieScript = new WKUserScript(cookieSource, WKUserScriptInjectionTime.AtDocumentStart, false);
+                    userController.AddUserScript(cookieScript);
+                }
+
                 userController.AddUserScript(new WKUserScript(new NSString(rename1), WKUserScriptInjectionTime.AtDocumentEnd, false));
                  userController.AddScriptMessageHandler(this, "filstClick");
                 userController.AddScriptMessageHandler(this, "secondClick");
@@ -35,11 +44,17 @@ namespace WTONewProject.iOS.Renderer
                 webView.NavigationDelegate = this;
                 SetNativeControl(webView);
             }
-
+            if (e.OldElement != null)
+            {
+                userController.RemoveAllUserScripts();
+            }
             if (e.NewElement != null)
             {
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
-                Control.LoadRequest(new NSUrlRequest(new NSUrl(source.Url, false)));
+                //Control.LoadRequest(new NSUrlRequest(new NSUrl(source.Url)));
+                //加载本地必须用下面的
+                NSUrl url = NSBundle.MainBundle.GetUrlForResource("index.html", "");
+                Control.LoadRequest(new NSUrlRequest(url));
             }
             Element.pushCode += Element_PushCode;
 
@@ -57,7 +72,7 @@ namespace WTONewProject.iOS.Renderer
 
 
         }
-
+        
 
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
         {
@@ -79,6 +94,11 @@ namespace WTONewProject.iOS.Renderer
                 }
                 Element.clickOne(sender);
             }
+            if (message.Name.Equals("invokeAction"))
+            {
+
+            }
+
 
         }
 

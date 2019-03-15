@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="WTONewProject.View.LoginWithNullPage"
+             x:Class="WTONewProject.View.LoginWithNullPage" 
              xmlns:local="clr-namespace:WTONewProject.Renderer">
     <ContentPage.Content>
-        <Grid>
-            <local:HyBridWebView x:Name="web" HorizontalOptions="Fill" VerticalOptions="Fill" BackgroundColor="Olive" clickYi="Handle_clickYi"/>
-       <Button HorizontalOptions="End" VerticalOptions="End" BackgroundColor="Olive" Clicked="Handle_Clicked" HeightRequest="100" WidthRequest="100"/>
-       
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="6*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Image Source="logo" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,100,0,0" WidthRequest="150" HeightRequest="128" />
+            <Grid Grid.Row="1"  Margin="0,70,0,0">
+                <Image x:Name="TrapezoidImg" Source="Trapezoid" VerticalOptions="Start" HorizontalOptions="Center"  WidthRequest="250" HeightRequest="208" />
+                <Grid x:Name="centerGrid" Margin="0,-10,0,0" VerticalOptions="Start" HorizontalOptions="Center" WidthRequest="250" HeightRequest="248">
+                    <Frame x:Name="userFrame" Padding="0" HorizontalOptions="Center" VerticalOptions="Start" CornerRadius="30" WidthRequest="60" HeightRequest="60" Margin="5" IsClippedToBounds="true">
+                        <Image x:Name="userImg" Source="logo" WidthRequest="60" HeightRequest="60" Aspect="Fill" />
+                    </Frame>
+                    <Grid Margin="0,70,0,60">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,5,0,0">
+                            <local:BorderlessEntry x:Name="account" HasBorder="false" Placeholder="账户" HorizontalTextAlignment="Center" VerticalOptions="Center" Margin="30,0,30,2" HeightRequest="30" FontSize="Micro" />
+                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="30,20,30,0" HeightRequest="0.5" BackgroundColor="Silver" />
+                        </Grid> 
+                        <Grid Grid.Row="1" VerticalOptions="Fill" HorizontalOptions="Fill" Margin="0,5,0,0">
+                            <local:BorderlessEntry x:Name="password" IsPassword="true" HasBorder="false" Placeholder="请输入你的密码" HorizontalTextAlignment="Center" VerticalOptions="Center" Margin="30,0,30,2" HeightRequest="30" FontSize="Micro" />
+                            <BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="30,20,30,0" HeightRequest="0.5" BackgroundColor="Silver" />
+                        </Grid>
+                        <Grid Grid.Row="2">
+                            <Button WidthRequest="70" x:Name="saveBut" Clicked="SavePassWord_Clicked" Image="nomal" TextColor="#777777" HorizontalOptions="Start" VerticalOptions="Center" Margin="30,0,0,0" Padding="0" BackgroundColor="Transparent" Text="记住密码" Font="12" HeightRequest="40"/>
+                            <Button Clicked="ChangePassWord_Clicked" TextColor="#777777" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,30,0" Padding="0" BackgroundColor="Transparent" Text="重置密码" Font="12" HeightRequest="40"/>
+                        </Grid>
+                    </Grid>
+                    <Button Clicked="Login_Clicked" Padding="0" BackgroundColor="#4fa4df" Text="登录" TextColor="White" Font="16" HorizontalOptions="Center" VerticalOptions="End" WidthRequest="100" HeightRequest="35" CornerRadius="17"
+                        Margin="0,0,0,20" />
+                </Grid>
+                            <Button Clicked="ForgotPassWord_Clicked" BackgroundColor="Transparent" Text="忘记密码" TextColor="#777777" Font="14" HorizontalOptions="Center" VerticalOptions="End" />
+
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

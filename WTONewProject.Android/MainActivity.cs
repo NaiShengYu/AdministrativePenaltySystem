@@ -2,6 +2,7 @@
 
 using Android.App;
 using Android.Content.PM;
+using Plugin.CurrentActivity;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -14,9 +15,11 @@ namespace WTONewProject.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
-
+            App.ScreenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
+            App.ScreenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
             base.OnCreate(savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
