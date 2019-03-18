@@ -25,15 +25,15 @@ namespace WTONewProject
             var account = AccountStore.Create().FindAccountsForService(AppName).LastOrDefault();
             var account1 = AccountStore.Create().FindAccountsForService(siteURL).LastOrDefault();
 
-            if (account1 != null)
-                FrameworkURL = account1.Username;
-            if (account == null)
-                MainPage = new LoginWithNullPage();
-            else {
-                MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
-            }
+            //if (account1 != null)
+            //    FrameworkURL = account1.Username;
+            //if (account == null)
+            //    MainPage = new LoginWithNullPage();
+            //else {
+            //    MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
+            //}
 
-            //MainPage = new MainPage();
+            MainPage = new MainPage();
 
 
         }

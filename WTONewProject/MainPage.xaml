@@ -5,6 +5,6 @@
              x:Class="WTONewProject.MainPage"
              >
     <Grid>
-            <local:HyBridWebView x:Name="web" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+            <WebView x:Name="web" HorizontalOptions="Fill" VerticalOptions="Fill"/>
         </Grid>
 </ContentPage>

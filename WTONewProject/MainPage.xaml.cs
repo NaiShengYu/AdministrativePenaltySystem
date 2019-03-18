@@ -14,9 +14,10 @@ namespace WTONewProject
         public MainPage()
         {
             InitializeComponent();
-            var source = new UrlWebViewSource();
+            var source = new UrlWebViewSource(); 
+            source.Url = "http://www.baidu.com";
             var rootPath = DependencyService.Get<IBaseUrl>().Get();
-            source.Url = System.IO.Path.Combine(rootPath, "index.html");
+            //source.Url = System.IO.Path.Combine(rootPath, "index.html");
             web.Source = source;
 
         }

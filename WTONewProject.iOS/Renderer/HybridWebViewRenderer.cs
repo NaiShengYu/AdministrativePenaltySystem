@@ -52,7 +52,7 @@ namespace WTONewProject.iOS.Renderer
             if (e.NewElement != null)
             {
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
-                Control.LoadRequest(new NSUrlRequest(new NSUrl(source.Url)));
+                Control.LoadRequest(new NSUrlRequest(new NSUrl("http://www.baidu.com")));
                 //加载本地必须用下面的
                 //NSUrl url = NSBundle.MainBundle.GetUrlForResource("index.html", "");
                 //Control.LoadRequest(new NSUrlRequest(url));
