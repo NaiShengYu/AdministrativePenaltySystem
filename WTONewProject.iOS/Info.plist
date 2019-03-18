@@ -30,11 +30,6 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>XSLaunchImageAssets</key>
 	<string>Assets.xcassets/LaunchImage.launchimage</string>
-	<key>App Transport Security Settings</key>
-	<dict>
-		<key>Allow Arbitrary Loads</key>
-		<true/>
-	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>为了更好的导航到正确的任务位置，请允许获取您的当前位置信息</string>
 	<key>NSCameraUsageDescription</key>
@@ -53,5 +48,10 @@
 	<string>为了快速的联系您的好友，请允许使用联系人</string>
 	<key>CFBundleName</key>
 	<string>EHSOON</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:WTONewProject.Renderer">
     <ContentPage.Content>
           <Grid>
-            <WebView x:Name="web" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+            <local:HyBridWebView x:Name="web" HorizontalOptions="Fill" VerticalOptions="Fill"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

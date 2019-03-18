@@ -15,7 +15,7 @@ namespace WTONewProject
         {
             InitializeComponent();
             var source = new UrlWebViewSource(); 
-            source.Url = "http://www.baidu.com";
+            source.Url = "http://sx.azuratech.com:20001/Mobile/index";
             var rootPath = DependencyService.Get<IBaseUrl>().Get();
             //source.Url = System.IO.Path.Combine(rootPath, "index.html");
             web.Source = source;

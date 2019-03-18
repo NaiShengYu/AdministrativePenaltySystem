@@ -11,10 +11,10 @@ namespace WTONewProject.View
         {
             InitializeComponent();
             var source = new UrlWebViewSource();
-            //source.Url = "http://sx.azuratech.com:20001/Mobile/index";
-            source.Url = "http://www.baidu.com";
+            source.Url = "http://sx.azuratech.com:20001/Mobile/index";
+            //source.Url = "http://www.baidu.com";
             web.Source = source;
-            //web.AzuraCookie = cookie;
+            web.AzuraCookie = cookie;
         }
     }
 }
