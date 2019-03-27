@@ -127,6 +127,7 @@ Global
 		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.Release|iPhone.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{DB94A3C5-03ED-42C3-BAC9-5598A20DB94A}.Ad-Hoc|Any CPU.ActiveCfg = Release|Any CPU
@@ -141,6 +142,12 @@ Global
 		{DB94A3C5-03ED-42C3-BAC9-5598A20DB94A}.AppStore|iPhone.Build.0 = Release|Any CPU
 		{DB94A3C5-03ED-42C3-BAC9-5598A20DB94A}.AppStore|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{DB94A3C5-03ED-42C3-BAC9-5598A20DB94A}.AppStore|iPhoneSimulator.Build.0 = Release|Any CPU
+=======
+		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
+		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
+		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
+		{9E68BD33-A8D6-4C08-9087-A69911B079EB}.AppStore|iPhone.Build.0 = Debug|Any CPU
+>>>>>>> 2a4b97aaa4afc5bf907937127b5a0e6abba522cb
 		{DB94A3C5-03ED-42C3-BAC9-5598A20DB94A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB94A3C5-03ED-42C3-BAC9-5598A20DB94A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB94A3C5-03ED-42C3-BAC9-5598A20DB94A}.Debug|iPhone.ActiveCfg = Debug|Any CPU
@@ -175,6 +182,7 @@ Global
 		{6596816A-0D5B-4BA7-854B-FE09336D4735}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6596816A-0D5B-4BA7-854B-FE09336D4735}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{6596816A-0D5B-4BA7-854B-FE09336D4735}.Release|iPhone.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{6596816A-0D5B-4BA7-854B-FE09336D4735}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{6596816A-0D5B-4BA7-854B-FE09336D4735}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
@@ -183,5 +191,11 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2DFF7502-B11C-4C88-B5C7-E5E2C2A4BB60}
+=======
+		{6596816A-0D5B-4BA7-854B-FE09336D4735}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{6596816A-0D5B-4BA7-854B-FE09336D4735}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{6596816A-0D5B-4BA7-854B-FE09336D4735}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{6596816A-0D5B-4BA7-854B-FE09336D4735}.AppStore|iPhone.Build.0 = Release|Any CPU
+>>>>>>> 2a4b97aaa4afc5bf907937127b5a0e6abba522cb
 	EndGlobalSection
 EndGlobal

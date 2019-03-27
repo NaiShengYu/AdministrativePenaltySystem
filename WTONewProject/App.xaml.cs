@@ -29,7 +29,8 @@ namespace WTONewProject
                 FrameworkURL = account1.Username;
             if (account == null)
                 MainPage = new LoginWithNullPage();
-            else {
+            else
+            {
                 MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
             }
 
@@ -87,6 +88,7 @@ namespace WTONewProject
             else
             {
                 MainPage = new WebPage(frameworkToken.access_token);
+                //MainPage = new TestWebPage();
                 return true;
             }
         }

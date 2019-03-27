@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using Xamarin.Forms;
 
 namespace WTONewProject.Renderer
 {
-    public class HyBridWebView:WebView
+    public class HyBridWebView : WebView
     {
 
         public string AzuraCookie { get; set; }
         public event EventHandler<EventArgs> pushCode;
-
         public event EventHandler<EventArgs> clickYi;
         public void clickOne(object sss)
         {
@@ -25,6 +22,10 @@ namespace WTONewProject.Renderer
 
         }
 
+        public void ReturnValue(string param1, string param2)
+        {
+            //return "param1=" + param1 + " param2=" + param2;
+        }
 
     }
 }
