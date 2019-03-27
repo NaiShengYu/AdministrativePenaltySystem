@@ -32,7 +32,7 @@ namespace WTONewProject.View
 
         public LoginWithNullPage(string userName, string passWord) :this()
         {
-            _isSavePassword = true;
+            _isSavePassword = true; 
             _userName = userName;
             _passWord = passWord;
             password.Text = passWord;

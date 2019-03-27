@@ -19,6 +19,8 @@ namespace WTONewProject
         public static string FrameworkURL = "";
         public static string AppName = "CloudWTO";
         public static string siteURL = "siteURL";
+        public static string userName = "";
+        public static string pwd = "";
         public App()
         {
             InitializeComponent();
@@ -31,6 +33,8 @@ namespace WTONewProject
                 MainPage = new LoginWithNullPage();
             else {
                 MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
+                userName = account.Username;
+                pwd = account.Properties["pwd"];
             }
 
             //MainPage = new MainPage();

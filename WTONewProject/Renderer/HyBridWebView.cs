@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace WTONewProject.Renderer
@@ -25,6 +26,27 @@ namespace WTONewProject.Renderer
 
         }
 
+
+        public event EventHandler<EventArgs> getLocation;
+        public async void getLngLat(object sss)
+        {
+            Location currentLocation;
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                currentLocation = await Geolocation.GetLastKnownLocationAsync();
+            }
+            else
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
+                currentLocation = await Geolocation.GetLocationAsync(request);
+            }
+            if (currentLocation ==null)
+            {
+                currentLocation = new Location(34.754626, 113.735763);
+            }
+            getLocation.Invoke(currentLocation.Latitude + "," + currentLocation.Longitude, new EventArgs());
+        }
+        
 
     }
 }

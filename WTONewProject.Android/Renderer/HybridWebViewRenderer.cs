@@ -13,6 +13,7 @@ using Android.Widget;
 using Java.Interop;
 using WTONewProject.Droid.Renderer;
 using WTONewProject.Renderer;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
@@ -21,10 +22,10 @@ namespace WTONewProject.Droid.Renderer
 {
     public class HybridWebViewRenderer : ViewRenderer<HyBridWebView, Android.Webkit.WebView>
     {
-        const string JavaScriptFunction = "function ZTHTestParameteroneAndParametertwo(data,data2){jsBridge.invokeAction(data,data2);}";
+        const string JavaScriptFunction = "function getLngLat(){jsBridge.getLngLat();}";
         const string JavaScriptFunction1 = "function secondClick(data,data2){jsBridge.secondClick(data,data2);}";
         Context _context;
-
+        Android.Webkit.WebView webView;
         public HybridWebViewRenderer(Context context) : base(context)
         {
             _context = context;
@@ -36,7 +37,7 @@ namespace WTONewProject.Droid.Renderer
 
             if (Control == null)
             {
-                var webView = new Android.Webkit.WebView(_context);
+                webView = new Android.Webkit.WebView(_context);
                 webView.Settings.JavaScriptEnabled = true;
                 //多个脚本在后面{name}{name}
                 webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptFunction}{JavaScriptFunction1}"));
@@ -108,14 +109,19 @@ namespace WTONewProject.Droid.Renderer
         }
 
         [JavascriptInterface]
-        [Export("invokeAction")]
-        public void InvokeAction(string data ,string data2)
+        [Export("getLngLat")]
+        public async void getLngLat(string data ,string data2)
         {
             HybridWebViewRenderer hybridRenderer;
 
             if (hybridWebViewRenderer != null && hybridWebViewRenderer.TryGetTarget(out hybridRenderer))
             {
-                hybridRenderer.Element.CCallJs(data);
+                var currentLocation = await Geolocation.GetLastKnownLocationAsync();
+                if (currentLocation == null)
+                {
+                    currentLocation = new Location(34.754626, 113.735763);
+                }
+
             }
         }
 
