@@ -18,7 +18,7 @@ namespace WTONewProject.iOS.Renderer
 {
     public class HybridWebViewRenderer : ViewRenderer<HyBridWebView, WKWebView>, IWKScriptMessageHandler,IWKNavigationDelegate,IWKUIDelegate
     {
-        
+        HyBridWebView hyBridWebView;
         WKWebView webView;
         WKUserContentController userController;
         protected override void OnElementChanged(ElementChangedEventArgs<HyBridWebView> e)
@@ -61,6 +61,7 @@ namespace WTONewProject.iOS.Renderer
             }
             if (e.NewElement != null)
             {
+                hyBridWebView = e.NewElement as HyBridWebView;
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
                 NSMutableUrlRequest request = new NSMutableUrlRequest(new NSUrl(source.Url));
 
@@ -80,31 +81,20 @@ namespace WTONewProject.iOS.Renderer
             if (message.Name.Equals("getLocation"))
             {
                 Console.WriteLine(message.Body);
-               var currentLocation = await Geolocation.GetLastKnownLocationAsync();
+                var currentLocation = await Geolocation.GetLastKnownLocationAsync();
                 if (currentLocation == null)
                 {
                     currentLocation = new Location(34.754626, 113.735763);
                 }
                 string js = "setLocation('" + currentLocation.Latitude + "','" + currentLocation.Longitude + "')";
-                webView.EvaluateJavaScript(js,(NSObject result, NSError error) => { 
-                
+                webView.EvaluateJavaScript(js, (NSObject result, NSError error) =>
+                {
+
                 });
             }
             if (message.Name.Equals("logOut"))
             {
-                var account = AccountStore.Create().FindAccountsForService(App.AppName).LastOrDefault();
-                var account1 = AccountStore.Create().FindAccountsForService(App.siteURL).LastOrDefault();
-
-                if (account1 != null)
-                    App.FrameworkURL = account1.Username;
-                if (account == null)
-                    App.Current.MainPage = new LoginWithNullPage();
-                else
-                {
-                    App.Current.MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
-                    App.userName = account.Username;
-                    App.pwd = account.Properties["pwd"];
-                }
+                hyBridWebView.logOut();
             }
             if (message.Name.Equals("invokeAction"))
             {

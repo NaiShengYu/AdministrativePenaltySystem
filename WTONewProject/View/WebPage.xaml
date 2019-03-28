@@ -4,8 +4,8 @@
              x:Class="WTONewProject.View.WebPage"
              xmlns:local="clr-namespace:WTONewProject.Renderer">
     <ContentPage.Content>
-          <Grid>
-            <local:HyBridWebView x:Name="web" HorizontalOptions="Fill" VerticalOptions="Fill"/>
+          <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <local:HyBridWebView x:Name="web" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
