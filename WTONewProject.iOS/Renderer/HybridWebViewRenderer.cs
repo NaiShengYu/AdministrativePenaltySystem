@@ -62,6 +62,8 @@ namespace WTONewProject.iOS.Renderer
             if (e.NewElement != null)
             {
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
+                NSMutableUrlRequest request = new NSMutableUrlRequest(new NSUrl(source.Url));
+
                 Control.LoadRequest(new NSUrlRequest(new NSUrl(source.Url)));
                 //加载本地必须用下面的
                 //NSUrl url = NSBundle.MainBundle.GetUrlForResource("index.html", "");
