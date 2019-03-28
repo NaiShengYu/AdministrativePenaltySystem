@@ -13,15 +13,14 @@ namespace WTONewProject.View
             InitializeComponent();
             _cookie = cookie;
             var source = new UrlWebViewSource();
+            //source.Url = "http://192.168.2.111:8081";
             source.Url = "http://sx.azuratech.com:20001/Mobile/index";
-            //source.Url = "https://www.baidu.com";
             if (Device.RuntimePlatform == Device.Android)
             {
                 web.On<Xamarin.Forms.PlatformConfiguration.Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
             }
-            web.AzuraCookie = cookie;
             web.Source = source;
-            web.EvaluateJavaScriptAsync("");
+            web.AzuraCookie = cookie;
         }
 
         protected override bool OnBackButtonPressed()
@@ -31,7 +30,10 @@ namespace WTONewProject.View
                 web.GoBack();
                 return true;
             }
-            return base.OnBackButtonPressed();
+            else
+            {
+                return base.OnBackButtonPressed();
+            }
         }
     }
 }

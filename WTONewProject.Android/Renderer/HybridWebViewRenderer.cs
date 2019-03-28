@@ -1,5 +1,4 @@
 ﻿using Android.Content;
-using Android.Graphics;
 using Android.Net.Http;
 using Android.Webkit;
 using Java.Interop;
@@ -7,6 +6,7 @@ using System;
 using WTONewProject.Droid.Renderer;
 using WTONewProject.Renderer;
 using WTONewProject.View;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static Android.Webkit.WebSettings;
@@ -16,9 +16,10 @@ namespace WTONewProject.Droid.Renderer
 {
     public class HybridWebViewRenderer : WebViewRenderer
     {
-        const string JavaScriptFunction = "function ZTHTestParameteroneAndParametertwo(data,data2){jsBridge.invokeAction(data,data2);}";
-        const string JavaScriptFunction1 = "function secondClick(data,data2){jsBridge.secondClick(data,data2);}";
+        const string JavaScriptGetLocation = "function getLocation(data){jsBridge.getLocation(data);}";
+        const string JavaScriptLogOut = "function logOut(data){jsBridge.logOut(data);}";
         Context _context;
+        Android.Webkit.WebView androidWebView;
 
         public HyBridWebView BridWebView
         {
@@ -34,45 +35,24 @@ namespace WTONewProject.Droid.Renderer
         {
             base.OnElementChanged(e);
 
-            //if (Control == null)
-            //{
-            //    var webView = new Android.Webkit.WebView(_context);
-            //    WebSettings set = webView.Settings;
-            //    set.JavaScriptEnabled = true;
-            //    //多个脚本在后面{name}{name}
-            //    webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptFunction}{JavaScriptFunction1}"));
-            //    SetNativeControl(webView);
-            //}
-            //if (e.OldElement != null)
-            //{
-            //    //Control.RemoveJavascriptInterface("jsBridge");
-            //    //var hybridWebView = e.OldElement as HyBridWebView;
-            //}
-            //if (e.NewElement != null)
-            //{
-            //    //Control.AddJavascriptInterface(new JSBridge(this), "jsBridge");
-            //    UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
-            //    if (!string.IsNullOrWhiteSpace(Element.AzuraCookie))
-            //    {
-            //        //synCookies(_context, source.Url, "AzuraCookie=" + Element.AzuraCookie + "");
-            //    }
-            //    //Control.LoadUrl(source.Url);
-            //}
-
-
             if (e.OldElement == null)
             {
+                if (!string.IsNullOrWhiteSpace(WebPage._cookie))
+                {
+                    synCookies(_context, "http://sx.azuratech.com:20001", "AzuraCookie=" + WebPage._cookie + ";");
+                }
                 setSettings(Control);
-                Control.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptFunction}{JavaScriptFunction1}", BridWebView));
+                Control.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptGetLocation}{JavaScriptLogOut}", BridWebView));
+            }
+            if (e.OldElement != null)
+            {
+                Control.RemoveJavascriptInterface("jsBridge");
+                var hybridWebView = e.OldElement as HyBridWebView;
             }
             if (e.NewElement != null)
             {
-                Control.AddJavascriptInterface(new JSBridge(this, BridWebView), "jsBridge");
+                Control.AddJavascriptInterface(new JSBridge(this, BridWebView, androidWebView), "jsBridge");
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
-                if (!string.IsNullOrWhiteSpace(WebPage._cookie))
-                {
-                    synCookies(_context, source.Url, "AzuraCookie=" + WebPage._cookie + "");
-                }
                 Control.LoadUrl(source.Url);
             }
         }
@@ -80,6 +60,7 @@ namespace WTONewProject.Droid.Renderer
         //配置webview
         private void setSettings(Android.Webkit.WebView webView)
         {
+            androidWebView = webView;
             WebSettings set = webView.Settings;
             set.JavaScriptEnabled = true;
             set.JavaScriptCanOpenWindowsAutomatically = true;
@@ -100,9 +81,9 @@ namespace WTONewProject.Droid.Renderer
         {
             CookieSyncManager.CreateInstance(context);
             CookieManager cookieManager = CookieManager.Instance;
-            cookieManager.RemoveAllCookie();
+            //cookieManager.RemoveAllCookie();
             cookieManager.SetAcceptCookie(true);
-            cookieManager.SetCookie(url, cookie);//cookies是在HttpClient中获得的cookie
+            cookieManager.SetCookie(url, cookie);
             CookieSyncManager.Instance.Sync();
         }
 
@@ -120,27 +101,11 @@ namespace WTONewProject.Droid.Renderer
             _hyBridWebView = hyBridWebView;
         }
 
-        public override void OnPageStarted(Android.Webkit.WebView view, string url, Bitmap favicon)
-        {
-            base.OnPageStarted(view, url, favicon);
-        }
-
         public override void OnPageFinished(Android.Webkit.WebView view, string url)
         {
             base.OnPageFinished(view, url);
             view.EvaluateJavascript(_javascript, null);
         }
-
-        //public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, string url)
-        //{
-        //    view.LoadUrl(url);
-        //    return true;
-        //}
-
-        //public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, IWebResourceRequest request)
-        //{
-        //    return false;
-        //}
 
         public override void OnReceivedSslError(Android.Webkit.WebView view, SslErrorHandler handler, SslError error)
         {
@@ -151,40 +116,72 @@ namespace WTONewProject.Droid.Renderer
 
     public class JSBridge : Java.Lang.Object
     {
-        readonly WeakReference<HybridWebViewRenderer> hybridWebViewRenderer;
-        HyBridWebView _hyBridWeb;
+        readonly WeakReference<HybridWebViewRenderer> _hybridWebViewRenderer;
+        WeakReference _hyBridWeb;
+        WeakReference _androidWeb;
 
-        public JSBridge(HybridWebViewRenderer hybridRenderer, HyBridWebView hyBridWeb)
+        public JSBridge(HybridWebViewRenderer hybridRenderer, HyBridWebView hyBridWeb, Android.Webkit.WebView webView)
         {
-            hybridWebViewRenderer = new WeakReference<HybridWebViewRenderer>(hybridRenderer);
-            _hyBridWeb = hyBridWeb;
+            _hybridWebViewRenderer = new WeakReference<HybridWebViewRenderer>(hybridRenderer);
+            _hyBridWeb = new WeakReference(hyBridWeb);
+            _androidWeb = new WeakReference(webView);
         }
 
+        [Export("getLocation")]
         [JavascriptInterface]
-        [Export("invokeAction")]
-        public void InvokeAction(string data, string data2)
+        public async void getLocation(string data)
         {
-            HybridWebViewRenderer hybridRenderer;
-
-            if (hybridWebViewRenderer != null && hybridWebViewRenderer.TryGetTarget(out hybridRenderer))
+            Android.Webkit.WebView androidWeb;
+            if (_androidWeb != null && _androidWeb.IsAlive)
             {
-                _hyBridWeb.CCallJs(data);
+                androidWeb = _androidWeb.Target as Android.Webkit.WebView;
+                Location currentLocation;
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    currentLocation = await Geolocation.GetLastKnownLocationAsync();
+                }
+                else
+                {
+                    var request = new GeolocationRequest(GeolocationAccuracy.Medium);
+                    currentLocation = await Geolocation.GetLocationAsync(request);
+                }
+                if (currentLocation == null)
+                {
+                    currentLocation = new Location(34.754626, 113.735763);
+                }
+                Console.WriteLine("=== android location success: lat=" + currentLocation.Latitude + " lng=" + currentLocation.Longitude);
+                string js = "setLocation('" + currentLocation.Latitude + "','" + currentLocation.Longitude + "')";
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    try
+                    {
+                        if (androidWeb != null && androidWeb.IsAttachedToWindow)
+                        {
+                            androidWeb.EvaluateJavascript(js, null);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                });
             }
         }
 
+        [Export("logOut")]
         [JavascriptInterface]
-        [Export("secondClick")]
-        public void clickTow(string data, string data2)
+        public void logOut(string data)
         {
-            HybridWebViewRenderer hybridRenderer;
+            HyBridWebView hyBridWeb;
 
-            if (hybridWebViewRenderer != null && hybridWebViewRenderer.TryGetTarget(out hybridRenderer))
+            if (_hyBridWeb != null && _hyBridWeb.IsAlive)
             {
-                _hyBridWeb.ReturnValue(data, data2);
+                hyBridWeb = _hyBridWeb.Target as HyBridWebView;
+                if (hyBridWeb != null)
+                {
+                    hyBridWeb.logOut();
+                }
             }
         }
-
-
 
     }
 
