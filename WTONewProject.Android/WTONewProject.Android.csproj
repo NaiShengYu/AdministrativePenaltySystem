@@ -116,9 +116,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\userHeader.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\icon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\drawable\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\WTONewProject\WTONewProject.csproj">
       <Project>{9E68BD33-A8D6-4C08-9087-A69911B079EB}</Project>
@@ -143,6 +141,9 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\drawable-xxxhdpi\jpush_notification_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\drawable\jpush_notification_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

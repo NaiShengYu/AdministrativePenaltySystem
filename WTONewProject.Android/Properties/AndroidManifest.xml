@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.azura.amp.WTONewProject" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="15" />
+	<uses-sdk android:minSdkVersion="10" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
@@ -13,6 +13,7 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<permission android:name="com.azura.amp.WTONewProject.permission.JPUSH_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.azura.amp.WTONewProject.permission.JPUSH_MESSAGE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
@@ -28,6 +29,7 @@
 	<uses-permission android:name="android.permission.WRITE_SETTINGS" />
 	<uses-permission android:name="android.permission.WRITE_SMS" />
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+	<uses-permission android:name="android.permission.GET_TASKS" />
 	<application android:label="EHSOON">
 		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.azura.amp.WTONewProject.fileprovider" android:exported="false" android:grantUriPermissions="true">
 			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>

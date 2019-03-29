@@ -42,7 +42,7 @@ namespace WTONewProject.Droid.Renderer
                     synCookies(_context, "http://sx.azuratech.com:20001", "AzuraCookie=" + WebPage._cookie + ";");
                 }
                 setSettings(Control);
-                Control.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptGetLocation}{JavaScriptLogOut}", BridWebView));
+                Control.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptGetLocation}{JavaScriptLogOut}", BridWebView, this));
             }
             if (e.OldElement != null)
             {
@@ -87,22 +87,25 @@ namespace WTONewProject.Droid.Renderer
             CookieSyncManager.Instance.Sync();
         }
 
-
     }
 
     public class JavascriptWebViewClient : WebViewClient
     {
         string _javascript;
         HyBridWebView _hyBridWebView;
+        WebViewRenderer _viewRenderer;
 
-        public JavascriptWebViewClient(string javascript, HyBridWebView hyBridWebView)
+        public JavascriptWebViewClient(string javascript, HyBridWebView hyBridWebView, WebViewRenderer viewRenderer)
         {
             _javascript = javascript;
             _hyBridWebView = hyBridWebView;
+            _viewRenderer = viewRenderer;
         }
 
         public override void OnPageFinished(Android.Webkit.WebView view, string url)
         {
+            ((IWebViewController)_viewRenderer.Element).CanGoBack = view.CanGoBack();
+            ((IWebViewController)_viewRenderer.Element).CanGoForward = view.CanGoForward();
             base.OnPageFinished(view, url);
             view.EvaluateJavascript(_javascript, null);
         }

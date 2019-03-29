@@ -30,10 +30,7 @@ namespace WTONewProject.View
                 web.GoBack();
                 return true;
             }
-            else
-            {
-                return base.OnBackButtonPressed();
-            }
+            return base.OnBackButtonPressed();
         }
     }
 }
