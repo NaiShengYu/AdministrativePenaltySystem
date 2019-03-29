@@ -46,7 +46,7 @@ namespace WTONewProject.Droid.JPush
 
             //SDK 1.3.5 以上版本支持。
             //通知栏的Notification ID，可以用于清除Notification
-            var id = bundle.GetString(JPushInterface.ExtraNotificationId);
+            var id = bundle.GetInt(JPushInterface.ExtraNotificationId);
 
             //SDK 1.6.1 以上版本支持。
             //唯一标识通知消息的 ID, 可用于上报统计等。

@@ -11,7 +11,7 @@ using CN.Jpush.Android.Api;
 
 namespace WTONewProject.Droid
 {
-    [Activity(Label = "WTONewProject", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "EHSOON", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -35,8 +35,7 @@ namespace WTONewProject.Droid
         {
             JPushInterface.SetDebugMode(true);
             JPushInterface.Init(Application.Context);
-            JPushInterface.SetAlias(Application.Context, 0, "cloudwto_alias_test");
-
+            JPushInterface.SetAlias(Application.Context, 0, "ehsoon_alias_test");
             BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(this);
             //builder.StatusBarDrawable = Resource.Drawable.jpush_notification_icon;
             JPushInterface.SetPushNotificationBuilder(new Java.Lang.Integer(1), builder);

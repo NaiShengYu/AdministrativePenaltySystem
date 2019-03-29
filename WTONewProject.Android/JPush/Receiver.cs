@@ -22,7 +22,7 @@ namespace WTONewProject.Droid.JPush
         "cn.jpush.android.intent.NOTIFICATION_OPENED",
         "cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK",
         "cn.jpush.android.intent.CONNECTION"
-    }, Categories = new string[] { "com.companyname.CloudWTO" })]
+    }, Categories = new string[] { "com.azura.amp.WTONewProject" })]
     public class Receiver : PushReceiver
     {
 
