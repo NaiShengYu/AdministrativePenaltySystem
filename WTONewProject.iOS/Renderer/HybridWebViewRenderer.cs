@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using CoreGraphics;
 using Foundation;
 using WebKit;
@@ -12,14 +13,17 @@ using Xamarin.Auth;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
+using UIKit;
+using JavaScriptCore;
+using System.Threading.Tasks;
 
-[assembly: ExportRenderer (typeof(HyBridWebView), typeof(HybridWebViewRenderer))]
+[assembly: ExportRenderer(typeof(HyBridWebView), typeof(HybridWebViewRenderer))]
 namespace WTONewProject.iOS.Renderer
 {
-    public class HybridWebViewRenderer : ViewRenderer<HyBridWebView, WKWebView>, IWKScriptMessageHandler,IWKNavigationDelegate,IWKUIDelegate
+    public class HybridWebViewRenderer : ViewRenderer<HyBridWebView, UIWebView>, IUIWebViewDelegate
     {
         HyBridWebView hyBridWebView;
-        WKWebView webView;
+        UIWebView _webView;
         WKUserContentController userController;
         protected override void OnElementChanged(ElementChangedEventArgs<HyBridWebView> e)
         {
@@ -30,79 +34,87 @@ namespace WTONewProject.iOS.Renderer
             base.OnElementChanged(e);
             if (Control == null)
             {
-               userController = new WKUserContentController();
-                //给webView添加Cookie
-                if (!string.IsNullOrWhiteSpace(Element.AzuraCookie))
+                _webView = new UIWebView(Frame);
+                _webView.ShouldStartLoad += WebView_ShouldStartLoad;
+                _webView.SuppressesIncrementalRendering = true;
+                try
                 {
-                    NSString cookieSource = new NSString("document.cookie ='AzuraCookie=" + Element.AzuraCookie + "';");
-                    WKUserScript cookieScript = new WKUserScript(cookieSource, WKUserScriptInjectionTime.AtDocumentStart, false);
-                    userController.AddUserScript(cookieScript);
+                    _webView.ScrollView.ContentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentBehavior.Never;
                 }
+                catch (Exception ex)
+                {
 
-                userController.AddUserScript(new WKUserScript(new NSString(rename1), WKUserScriptInjectionTime.AtDocumentEnd, false));
-                userController.AddUserScript(new WKUserScript(new NSString(rename2), WKUserScriptInjectionTime.AtDocumentEnd, false));
-                //userController.AddUserScript(new WKUserScript(new NSString(rename3), WKUserScriptInjectionTime.AtDocumentEnd, false));
-                userController.AddScriptMessageHandler(this, "getLocation");
-                userController.AddScriptMessageHandler(this, "logOut");
-                userController.AddScriptMessageHandler(this, "secondClick");
-                //userController.AddScriptMessageHandler(this, "console");
-
-
-                var config = new WKWebViewConfiguration { UserContentController = userController };
-                webView = new WKWebView(Frame, config);
-                webView.ScrollView.Bounces = false;//禁止超过边框滑动
-                webView.UIDelegate = this;
-                webView.NavigationDelegate = this;
-                SetNativeControl(webView);
+                }
+                _webView.ScrollView.Bounces = false;
+                SetNativeControl(_webView);
             }
             if (e.OldElement != null)
             {
-                userController.RemoveAllUserScripts();
+                //userController.RemoveAllUserScripts();
             }
             if (e.NewElement != null)
             {
                 hyBridWebView = e.NewElement as HyBridWebView;
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource;
+                NSMutableUrlRequest request = new NSMutableUrlRequest(new NSUrl(source.Url));
                 Control.LoadRequest(new NSUrlRequest(new NSUrl(source.Url)));
                 //加载本地必须用下面的
                 //NSUrl url = NSBundle.MainBundle.GetUrlForResource("index.html", "");
                 //Control.LoadRequest(new NSUrlRequest(url));
             }
-
         }
 
-        public async void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
+        bool WebView_ShouldStartLoad(UIWebView webView, NSUrlRequest request, UIWebViewNavigationType navigationType)
         {
 
-            Console.WriteLine(message.Body);
-            //获取经纬度
-            if (message.Name.Equals("getLocation"))
+            string url = request.Url.AbsoluteString;
+            Console.WriteLine("url=" + url);
+
+            if (url.Contains("ios://") == true)
             {
-                Console.WriteLine(message.Body);
-                var currentLocation = await Geolocation.GetLastKnownLocationAsync();
-                if (currentLocation == null)
+                if (url.Contains("logOut") == true)
                 {
-                    currentLocation = new Location(34.754626, 113.735763);
+                    Console.WriteLine("退出登录");
+                    hyBridWebView.logOut();
                 }
-                string js = "setLocation('" + currentLocation.Latitude + "','" + currentLocation.Longitude + "')";
-                webView.EvaluateJavaScript(js, (NSObject result, NSError error) =>
+                if (url.Contains("getLocation") == true)
                 {
-
-                });
+                    setlocation();
+                }
+                return false;
             }
-            if (message.Name.Equals("logOut"))
+
+            NSHttpCookieStorage cookieStorage = NSHttpCookieStorage.SharedStorage;
+            cookieStorage.AcceptPolicy = NSHttpCookieAcceptPolicy.Always;
+            foreach (NSHttpCookie cookieItem in cookieStorage.Cookies)
             {
-                hyBridWebView.logOut();
+                cookieStorage.DeleteCookie(cookieItem);
             }
-            if (message.Name.Equals("invokeAction"))
-            {
-
-            }
-
-
+            NSMutableDictionary cookieProperties = new NSMutableDictionary();
+            cookieProperties.Add(NSHttpCookie.KeyName, (NSString)"AzuraCookie");
+            cookieProperties.Add(NSHttpCookie.KeyValue, (NSString)Element.AzuraCookie);
+            cookieProperties.Add(NSHttpCookie.KeyOriginUrl, (NSString)"http://sx.azuratech.com:20001");
+            cookieProperties.Add(NSHttpCookie.KeyPath, (NSString)"/");
+            cookieProperties.Add(NSHttpCookie.KeyExpires, new NSDate().AddSeconds(30 * 24 * 3600));
+            NSHttpCookie httpCookie = new NSHttpCookie(cookieProperties);
+            cookieStorage.SetCookie(httpCookie);
+            return true;
         }
 
 
 
+        async void setlocation()
+        {
+            var currentLocation = await Geolocation.GetLastKnownLocationAsync();
+            if (currentLocation == null)
+            {
+                currentLocation = new Location(34.754626, 113.735763);
+            }
+            string js = "setLocation('" + currentLocation.Latitude + "','" + currentLocation.Longitude + "')";
+            _webView.EvaluateJavascript(js);
+        }
     }
+
+
+
 }
