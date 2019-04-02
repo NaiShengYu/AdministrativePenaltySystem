@@ -27,7 +27,7 @@ namespace WTONewProject.Droid.JPush
                 .ToDictionary(t => t.Action, t => t);
         }
 
-        public static async Task Handle(string action, Bundle bundle)
+        public static async Task Handle(string action, Intent bundle)
         {
             if (string.IsNullOrWhiteSpace(action) || bundle == null)
                 return;

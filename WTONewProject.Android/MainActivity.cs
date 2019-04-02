@@ -22,11 +22,17 @@ namespace WTONewProject.Droid
             App.ScreenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
             App.ScreenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
             base.OnCreate(savedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             InitJPush();
             LoadApplication(new App());
         }
 
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
 
         /// <summary>
         /// init JPush
@@ -37,7 +43,7 @@ namespace WTONewProject.Droid
             JPushInterface.Init(Application.Context);
             JPushInterface.SetAlias(Application.Context, 0, "ehsoon_alias_test");
             BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(this);
-            //builder.StatusBarDrawable = Resource.Drawable.jpush_notification_icon;
+            builder.StatusBarDrawable = Resource.Drawable.jpush_notification_icon;
             JPushInterface.SetPushNotificationBuilder(new Java.Lang.Integer(1), builder);
         }
 
