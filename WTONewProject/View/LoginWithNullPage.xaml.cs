@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Newtonsoft.Json;
 using Xamarin.Auth;
 using System.Linq;
+using WTONewProject.Services;
 
 namespace WTONewProject.View
 {
@@ -19,6 +20,7 @@ namespace WTONewProject.View
         public LoginWithNullPage()
         {
             InitializeComponent();
+            DependencyService.Get<IJpushSetAlias>().setAliasWithName("");
             if (App.ScreenWidth >400)
             {
                 TrapezoidImg.WidthRequest = 300;
