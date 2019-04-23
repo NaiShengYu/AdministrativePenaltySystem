@@ -101,8 +101,6 @@ namespace WTONewProject.iOS.Renderer
             return true;
         }
 
-
-
         async void setlocation()
         {
             var currentLocation = await Geolocation.GetLastKnownLocationAsync();

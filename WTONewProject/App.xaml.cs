@@ -9,6 +9,8 @@ using WTONewProject.Services;
 using System.Net;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using WTONewProject.Model;
+using System.IO;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace WTONewProject
@@ -17,31 +19,55 @@ namespace WTONewProject
     {
         public FrameworkToken frameworkToken = null;
         public static string FrameworkURL = "";
-        public static string AppName = "CloudWTO";
-        public static string siteURL = "siteURL";
-        public static string userName = "";
-        public static string pwd = "";
+        static TodoItemDatabase database;
+
         public App()
         {
             InitializeComponent();
-            var account = AccountStore.Create().FindAccountsForService(AppName).LastOrDefault();
-            var account1 = AccountStore.Create().FindAccountsForService(siteURL).LastOrDefault();
+            MainPage = new MyPage();
 
-            if (account1 != null)
-                FrameworkURL = account1.Username;
-            if (account == null)
-                MainPage = new LoginWithNullPage();
+            GetUserNameAndPassword();
+        }
+
+        public async void GetUserNameAndPassword() {
+            //FrameWorkURL URLModel = null;
+            //List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
+            //if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
+            //if (URLModel !=null)
+            //{
+            //    App.FrameworkURL = URLModel.frameURL;
+            //}
+
+            //获取存储文件下的内容
+            LoginModel userModel = null;
+            List<LoginModel> userModels =await App.Database.GetUserModelAsync();
+            if (userModels != null && userModels.Count > 0) userModel = userModels[0];
+
+            if (userModel != null)
+            {
+                MainPage = new LoginWithNullPage(userModel.userName, userModel.password);
+            }
             else
             {
-                MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
-                userName = account.Username;
-                pwd = account.Properties["pwd"];
+                MainPage = new LoginWithNullPage();
             }
 
-            //MainPage = new MainPage();
-
-
         }
+
+           public static TodoItemDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    string path = DependencyService.Get<IFileHelper>().GetLocalFilePath("TodoSQLite.db3");
+                    database = new TodoItemDatabase(path);
+                }
+                return database;
+             }
+        }
+
+
         protected override void OnStart()
         {
 
@@ -123,43 +149,46 @@ namespace WTONewProject
             }
         }
 
-        private void deleteData(string username,string passWord,bool isSavePassword)
+        private async void deleteData(string username,string passWord,bool isSavePassword)
         {
-            //#if !(DEBUG && __IOS__)
-            //循环删除所存的数据
-            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.AppName);
-            for (int i = 0; i < outs.Count(); i++)
-            {
-                AccountStore.Create().Delete(outs.ElementAt(i), App.AppName);
-            }
-            if (isSavePassword)
-            {
-                Account count = new Account
+            ////循环删除所存的数据
+            List<LoginModel> userModels = await App.Database.GetUserModelAsync();
+            if (userModels != null && userModels.Count > 0)
+                foreach (var item in userModels)
                 {
-                    Username = username
+                    await App.Database.DeleteUserModelAsync(item);
+                }
+
+            if (isSavePassword == true)
+            {
+                LoginModel loginModel = new LoginModel
+                {
+                    ID = 0,
+                    userName = username,
+                    password = passWord
                 };
-                count.Properties.Add("pwd", passWord);
-                count.Properties.Add("sourceURL", App.FrameworkURL);
-                AccountStore.Create().Save(count, App.AppName);
+                await App.Database.SaveUserModelAsync(loginModel);
             }
-            //#endif
         }
 
-        private void saveSiteURL()
+        private async void saveSiteURL()
         {
-            //#if !(DEBUG && __IOS__)
-            //循环删除所存的数据
-            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.siteURL);
-            for (int i = 0; i < outs.Count(); i++)
-            {
-                AccountStore.Create().Delete(outs.ElementAt(i), App.siteURL);
-            }
-                Account count = new Account
+            ////循环删除所存的数据
+            List<FrameWorkURL> userModels = await App.Database.GetURLModelAsync();
+            if (userModels != null && userModels.Count > 0)
+                foreach (var item in userModels)
                 {
-                    Username = FrameworkURL
-                };
-                AccountStore.Create().Save(count, App.siteURL);
-            //#endif
+                    await App.Database.DeleteURLModelAsync(item);
+                }
+
+
+            FrameWorkURL URLModel = new FrameWorkURL
+            {
+                    ID = 0,
+                    frameURL = FrameworkURL,
+            };
+                await App.Database.SaveURLModelAsync(URLModel);
+
         }
 
         public static int ScreenHeight { get; set; }

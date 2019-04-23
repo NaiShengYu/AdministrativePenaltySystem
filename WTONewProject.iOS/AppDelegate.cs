@@ -58,9 +58,46 @@ namespace WTONewProject.iOS
             jPushRegister = new JPushInterface();
             jPushRegister.Register(this, options);
             this.RegistLogin(options);
-
             return base.FinishedLaunching(app, options);
         }
+
+
+        public override void OnResignActivation(UIApplication uiApplication)
+        {
+            base.OnResignActivation(uiApplication);
+            Console.WriteLine("OnResignActivation");
+        }
+        public override void WillEnterForeground(UIApplication uiApplication)
+        {
+            base.WillEnterForeground(uiApplication);
+            Console.WriteLine("WillEnterForeground");
+
+        }
+
+        public override void DidEnterBackground(UIApplication uiApplication)
+        {
+            base.DidEnterBackground(uiApplication);
+            Console.WriteLine("DidEnterBackground");
+            //JPUSHService.CleanTags((arg0, arg1, arg2) => { 
+            
+            //}, 1);
+
+            JPUSHService.GetAllTags((arg0, arg1, arg2) => {
+                Console.WriteLine(arg1);
+            }, 1);
+        }
+
+
+        public override void WillTerminate(UIApplication uiApplication)
+        {
+            base.WillTerminate(uiApplication);
+            Console.WriteLine("APP杀死");
+            //NSSet<NSString> nSSet = new NSSet<NSString>(new NSString[] { (NSString)"jjououwoeur" });
+            //JPUSHService.DeleteTags(nSSet, (arg0, arg1, arg2) => { }, 1);
+            JPUSHService.CleanTags((arg0, arg1, arg2) => { }, 1);
+
+        }
+
 
         /// <summary>
         /// 注册apns远程推送

@@ -93,6 +93,7 @@
     <Compile Include="JPush\Receiver.cs" />
     <Compile Include="JPush\ReceiverHandler.cs" />
     <Compile Include="JPush\RegisrationHandler.cs" />
+    <Compile Include="Servers\FileHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
