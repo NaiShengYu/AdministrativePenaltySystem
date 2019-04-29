@@ -39,8 +39,8 @@ namespace WTONewProject.Droid.Renderer
             {
                 if (!string.IsNullOrWhiteSpace(WebPage._cookie))
                 {
-
-                    synCookies(_context, "http://sx.azuratech.com:20001", "AzuraCookie=" + WebPage._cookie + ";");
+                    //synCookies(_context, "http://sx.azuratech.com:20001", "AzuraCookie=" + WebPage._cookie + ";");
+                    synCookies(_context, "http://39.97.104.173:801", "AzuraCookie=" + WebPage._cookie + ";");
                 }
                 setSettings(Control);
                 Control.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptGetLocation}{JavaScriptLogOut}", BridWebView, this));
@@ -105,6 +105,7 @@ namespace WTONewProject.Droid.Renderer
 
         public override void OnPageFinished(Android.Webkit.WebView view, string url)
         {
+            if (_viewRenderer == null || _viewRenderer.Element == null) return;
             ((IWebViewController)_viewRenderer.Element).CanGoBack = view.CanGoBack();
             ((IWebViewController)_viewRenderer.Element).CanGoForward = view.CanGoForward();
             base.OnPageFinished(view, url);
