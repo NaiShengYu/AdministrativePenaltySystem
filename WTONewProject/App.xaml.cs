@@ -85,9 +85,6 @@ namespace WTONewProject
                 return database;
              }
         }
-
-
-
         public async Task<bool> LoginAsync(string username, string password,string siteurl,bool issavePassword) {
 
             if (string.IsNullOrWhiteSpace(siteurl))

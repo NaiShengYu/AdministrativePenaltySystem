@@ -91,7 +91,6 @@
 		<!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
 		<meta-data android:name="JPUSH_CHANNEL" android:value="developer-default" />
 		<!-- Required. AppKey copied from Portal -->
-		<meta-data android:name="JPUSH_APPKEY" android:value="ee79675d3c6ccc2278b2726e" />
-		<!--   JPush End  -->
-	</application>
+		<meta-data android:name="JPUSH_APPKEY" android:value="ab4f6d9522395eb71a74c0cc" />//azuratech的账号
+    <!--<meta-data android:name="JPUSH_APPKEY" android:value="bdaf3d77e03a9811e5c091d2" />--><!--   JPush End  --></application>
 </manifest>

@@ -1,8 +1,7 @@
-﻿using System;
-namespace WTONewProject.Services
+﻿namespace WTONewProject.Services
 {
     public interface IJpushSetAlias
     {
-                void setAliasWithName(string name);
+        void setAliasWithName(string name);
     }
 }

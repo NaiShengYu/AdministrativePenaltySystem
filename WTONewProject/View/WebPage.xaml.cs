@@ -1,4 +1,8 @@
 ﻿
+using Newtonsoft.Json;
+using System.Net;
+using WTONewProject.Models;
+using WTONewProject.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
@@ -21,6 +25,7 @@ namespace WTONewProject.View
             }
             web.Source = source;
             web.AzuraCookie = cookie;
+            GetUserInfo();
         }
 
         protected override bool OnBackButtonPressed()
@@ -31,6 +36,24 @@ namespace WTONewProject.View
                 return true;
             }
             return base.OnBackButtonPressed();
+        }
+
+        private async void GetUserInfo()
+        {
+            if (string.IsNullOrWhiteSpace(_cookie))
+            {
+                return;
+            }
+            string url = "http://sx.azuratech.com:20001/api/Account/GetUserInfo";
+            HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(url, "", "POST", _cookie);
+            if (res.StatusCode == HttpStatusCode.OK)
+            {
+                UserInfo user = JsonConvert.DeserializeObject<UserInfo>(res.Results);
+                if (user != null)
+                {
+                    DependencyService.Get<IJpushSetAlias>().setAliasWithName(user.userInf_id);
+                }
+            }
         }
     }
 }
