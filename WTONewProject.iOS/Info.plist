@@ -5,7 +5,6 @@
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>
-		<integer>2</integer>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
@@ -53,12 +52,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>external-accessory</string>
-		<string>fetch</string>
-		<string>remote-notification</string>
-		<string>network-authentication</string>
-	</array>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
 </dict>
 </plist>

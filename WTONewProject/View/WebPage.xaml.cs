@@ -14,7 +14,7 @@ namespace WTONewProject.View
             _cookie = cookie;
             var source = new UrlWebViewSource();
             //source.Url = "http://192.168.2.111:8081";
-            source.Url = "http://sx.azuratech.com:20001/Mobile/index";
+            source.Url = "http://39.97.104.173:801/Mobile/index";
             if (Device.RuntimePlatform == Device.Android)
             {
                 web.On<Xamarin.Forms.PlatformConfiguration.Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);

@@ -16,26 +16,7 @@ namespace WTONewProject.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-
-
-        /// <summary>
-        /// 给极光deviceToken
-        /// </summary>
-        /// <param name="application">Application.</param>
-        /// <param name="deviceToken">Device token.</param>
-        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
-        {
-            Console.WriteLine("给极光token");
-            JPUSHService.RegisterDeviceToken(deviceToken);
-        }
-        public void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
-        {
-            //这个是在前台
-            if (application.ApplicationState == UIApplicationState.Active)
-            {
-            }
-            completionHandler(UIBackgroundFetchResult.NewData);
-        }
+          
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
         // method you should instantiate the window, load the UI into it and then make the window
@@ -53,7 +34,7 @@ namespace WTONewProject.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
-            //注册apns远程推送
+            ////注册apns远程推送
             if (options == null) options = new NSDictionary();
             jPushRegister = new JPushInterface();
             jPushRegister.Register(this, options);
@@ -61,42 +42,6 @@ namespace WTONewProject.iOS
             return base.FinishedLaunching(app, options);
         }
 
-
-        public override void OnResignActivation(UIApplication uiApplication)
-        {
-            base.OnResignActivation(uiApplication);
-            Console.WriteLine("OnResignActivation");
-        }
-        public override void WillEnterForeground(UIApplication uiApplication)
-        {
-            base.WillEnterForeground(uiApplication);
-            Console.WriteLine("WillEnterForeground");
-
-        }
-
-        public override void DidEnterBackground(UIApplication uiApplication)
-        {
-            base.DidEnterBackground(uiApplication);
-            Console.WriteLine("DidEnterBackground");
-            //JPUSHService.CleanTags((arg0, arg1, arg2) => { 
-            
-            //}, 1);
-
-            JPUSHService.GetAllTags((arg0, arg1, arg2) => {
-                Console.WriteLine(arg1);
-            }, 1);
-        }
-
-
-        public override void WillTerminate(UIApplication uiApplication)
-        {
-            base.WillTerminate(uiApplication);
-            Console.WriteLine("APP杀死");
-            //NSSet<NSString> nSSet = new NSSet<NSString>(new NSString[] { (NSString)"jjououwoeur" });
-            //JPUSHService.DeleteTags(nSSet, (arg0, arg1, arg2) => { }, 1);
-            JPUSHService.CleanTags((arg0, arg1, arg2) => { }, 1);
-
-        }
 
 
         /// <summary>
@@ -144,7 +89,25 @@ namespace WTONewProject.iOS
                 }
             }
         }
-               
+        /// <summary>
+        /// 给极光deviceToken
+        /// </summary>
+        /// <param name="application">Application.</param>
+        /// <param name="deviceToken">Device token.</param>
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            Console.WriteLine("给极光token");
+            JPUSHService.RegisterDeviceToken(deviceToken);
+        }
+        public void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            //这个是在前台
+            if (application.ApplicationState == UIApplicationState.Active)
+            {
+            }
+            completionHandler(UIBackgroundFetchResult.NewData);
+        }
+
         public override void DidRegisterUserNotificationSettings(UIApplication application, UIUserNotificationSettings notificationSettings)
         {
             application.RegisterForRemoteNotifications();

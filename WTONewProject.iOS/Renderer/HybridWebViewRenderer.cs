@@ -93,7 +93,7 @@ namespace WTONewProject.iOS.Renderer
             NSMutableDictionary cookieProperties = new NSMutableDictionary();
             cookieProperties.Add(NSHttpCookie.KeyName, (NSString)"AzuraCookie");
             cookieProperties.Add(NSHttpCookie.KeyValue, (NSString)Element.AzuraCookie);
-            cookieProperties.Add(NSHttpCookie.KeyOriginUrl, (NSString)"http://sx.azuratech.com:20001");
+            cookieProperties.Add(NSHttpCookie.KeyOriginUrl, (NSString)"http://39.97.104.173:801");
             cookieProperties.Add(NSHttpCookie.KeyPath, (NSString)"/");
             cookieProperties.Add(NSHttpCookie.KeyExpires, new NSDate().AddSeconds(30 * 24 * 3600));
             NSHttpCookie httpCookie = new NSHttpCookie(cookieProperties);

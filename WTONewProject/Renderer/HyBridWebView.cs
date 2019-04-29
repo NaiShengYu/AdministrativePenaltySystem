@@ -54,6 +54,18 @@ namespace WTONewProject.Renderer
 
         public async void logOut()
         {
+
+
+            ////循环删除所存的数据
+            List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
+            if (tokenModels != null && tokenModels.Count > 0)
+            {
+                foreach (var item in tokenModels)
+                {
+                    await App.Database.DeleteTokenModelAsync(item);
+                }
+            }
+
             FrameWorkURL URLModel = null;
             List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
             if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];

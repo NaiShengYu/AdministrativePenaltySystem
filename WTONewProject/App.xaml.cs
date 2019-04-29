@@ -19,24 +19,43 @@ namespace WTONewProject
     {
         public FrameworkToken frameworkToken = null;
         public static string FrameworkURL = "";
+        public static string token = "";
         static TodoItemDatabase database;
 
         public App()
         {
             InitializeComponent();
             MainPage = new MyPage();
+            GetLastToken();
+        }
 
-            GetUserNameAndPassword();
+        private async void GetLastToken() {
+            //获取存储文件下的内容
+            TokenModel tokenModel = null;
+            List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
+            if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
+
+            if (tokenModel != null)
+            {
+                MainPage = new WebPage(tokenModel.token);
+            }
+            else
+            {
+                GetUserNameAndPassword();
+            }
+
+
+
         }
 
         public async void GetUserNameAndPassword() {
-            //FrameWorkURL URLModel = null;
-            //List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
-            //if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
-            //if (URLModel !=null)
-            //{
-            //    App.FrameworkURL = URLModel.frameURL;
-            //}
+            FrameWorkURL URLModel = null;
+            List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
+            if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
+            if (URLModel !=null)
+            {
+                App.FrameworkURL = URLModel.frameURL;
+            }
 
             //获取存储文件下的内容
             LoginModel userModel = null;
@@ -68,22 +87,6 @@ namespace WTONewProject
         }
 
 
-        protected override void OnStart()
-        {
-
-
-
-        }
-
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
-        }
 
         public async Task<bool> LoginAsync(string username, string password,string siteurl,bool issavePassword) {
 
@@ -104,19 +107,23 @@ namespace WTONewProject
                     FrameworkURL = "http://" + siteurl + "/token";
                     saveSiteURL();
                 }
-                var frameworkToken2 = await GetFrameworkTokenAsync(username, password, "https://" + siteurl + "/token", issavePassword);
-                if (frameworkToken2 != null)
-                {
-                    frameworkToken = frameworkToken2;
-                    FrameworkURL = "https://" + siteurl + "/token";
-                    saveSiteURL();
+                else {
+                    var frameworkToken2 = await GetFrameworkTokenAsync(username, password, "https://" + siteurl + "/token", issavePassword);
+                    if (frameworkToken2 != null)
+                    {
+                        frameworkToken = frameworkToken2;
+                        FrameworkURL = "https://" + siteurl + "/token";
+                        saveSiteURL();
+                    }
                 }
-            }
 
+            }
 
             if (frameworkToken == null) return false;
             else
             {
+                token = frameworkToken.access_token;
+                saveToken();
                 MainPage = new WebPage(frameworkToken.access_token);
                 //MainPage = new TestWebPage();
                 return true;
@@ -134,6 +141,13 @@ namespace WTONewProject
             {
                 string url = siteurl;
                 string param = "username=" + username + "&password=" + password + "&grant_type=password";
+                //string url = "http://sx.azuratech.com:30000/Token";
+                //Dictionary<string, object> map = new Dictionary<string, object>();
+                //map.Add("userid", "admin");
+                //map.Add("password", "123456");
+                //map.Add("grant_type", "password");
+                //string param = JsonConvert.SerializeObject(map);
+
                 HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(url, param, "POST", null);
                 FrameworkToken ft = null;
                 if (res.StatusCode == HttpStatusCode.OK)
@@ -188,6 +202,26 @@ namespace WTONewProject
                     frameURL = FrameworkURL,
             };
                 await App.Database.SaveURLModelAsync(URLModel);
+
+        }
+
+
+        private async void saveToken()
+        {
+            ////循环删除所存的数据
+            List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
+            if (tokenModels != null && tokenModels.Count > 0)
+                foreach (var item in tokenModels)
+                {
+                    await App.Database.DeleteTokenModelAsync(item);
+                }
+            TokenModel tokenModel = new TokenModel
+            {
+                ID = 0,
+                token = token,
+                lastTime = DateTime.Now,
+            };
+            await App.Database.SaveTokenModelAsync(tokenModel);
 
         }
 
