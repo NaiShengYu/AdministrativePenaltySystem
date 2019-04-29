@@ -9,8 +9,8 @@ using JPush.Binding.iOS;
 namespace WTONewProject.iOS.Notification.JPush
 {
     public class JPushInterface : JPUSHRegisterDelegate
-    {
-        internal static string JPushAppKey = "d664f8123796067e14a33077";
+    {//ab4f6d9522395eb71a74c0cc
+        internal static string JPushAppKey = "ab4f6d9522395eb71a74c0cc";
         internal static string Channel = "";
         JPushRegisterEntity entity { get; set; }
         public void Register(AppDelegate app, NSDictionary options)
@@ -22,6 +22,8 @@ namespace WTONewProject.iOS.Notification.JPush
             JPUSHService.RegisterForRemoteNotificationConfig(entity, this);
             JPUSHService.SetupWithOption(options, JPushAppKey, Channel, true, advertisingId);
             JPUSHService.RegistrationIDCompletionHandler(app.GetRegistrationID);
+            NSSet<NSString> nSSet = new NSSet<NSString>(new NSString[] { (NSString)"jjououwoeur"});
+            JPUSHService.AddTags(nSSet, (arg0, arg1, arg2) => { }, 1);
         }
 
         /// <summary>
@@ -49,7 +51,7 @@ namespace WTONewProject.iOS.Notification.JPush
 
             if (completionHandler != null)
             {
-                completionHandler(2);//UNNotificationPresentationOptions： None = 0,Badge = 1,Sound = 2,Alert = 4,
+                completionHandler(4);//UNNotificationPresentationOptions： None = 0,Badge = 1,Sound = 2,Alert = 4,
             }
         }
 

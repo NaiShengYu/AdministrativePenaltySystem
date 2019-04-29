@@ -16,26 +16,7 @@ namespace WTONewProject.iOS
     [Register("AppDelegate")]
     public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
-
-
-        /// <summary>
-        /// 给极光deviceToken
-        /// </summary>
-        /// <param name="application">Application.</param>
-        /// <param name="deviceToken">Device token.</param>
-        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
-        {
-            Console.WriteLine("给极光token");
-            JPUSHService.RegisterDeviceToken(deviceToken);
-        }
-        public void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
-        {
-            //这个是在前台
-            if (application.ApplicationState == UIApplicationState.Active)
-            {
-            }
-            completionHandler(UIBackgroundFetchResult.NewData);
-        }
+          
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
         // method you should instantiate the window, load the UI into it and then make the window
@@ -53,14 +34,15 @@ namespace WTONewProject.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
-            //注册apns远程推送
+            ////注册apns远程推送
             if (options == null) options = new NSDictionary();
             jPushRegister = new JPushInterface();
             jPushRegister.Register(this, options);
             this.RegistLogin(options);
-
             return base.FinishedLaunching(app, options);
         }
+
+
 
         /// <summary>
         /// 注册apns远程推送
@@ -107,7 +89,25 @@ namespace WTONewProject.iOS
                 }
             }
         }
-               
+        /// <summary>
+        /// 给极光deviceToken
+        /// </summary>
+        /// <param name="application">Application.</param>
+        /// <param name="deviceToken">Device token.</param>
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            Console.WriteLine("给极光token");
+            JPUSHService.RegisterDeviceToken(deviceToken);
+        }
+        public void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
+        {
+            //这个是在前台
+            if (application.ApplicationState == UIApplicationState.Active)
+            {
+            }
+            completionHandler(UIBackgroundFetchResult.NewData);
+        }
+
         public override void DidRegisterUserNotificationSettings(UIApplication application, UIUserNotificationSettings notificationSettings)
         {
             application.RegisterForRemoteNotifications();

@@ -101,6 +101,7 @@
     <Compile Include="Notification\JPush\JPushInterface.cs" />
     <Compile Include="Notification\JPush\JPushRegisterEntity.cs" />
     <Compile Include="Servers\JpushSetAlias.cs" />
+    <Compile Include="Servers\FileService.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using WTONewProject.Model;
 using WTONewProject.View;
 using Xamarin.Auth;
 using Xamarin.Essentials;
@@ -51,20 +52,40 @@ namespace WTONewProject.Renderer
             //getLocation.Invoke(currentLocation.Latitude + "," + currentLocation.Longitude, new EventArgs());
         }
 
-        public void logOut()
+        public async void logOut()
         {
-            var account = AccountStore.Create().FindAccountsForService(App.AppName).LastOrDefault();
-            var account1 = AccountStore.Create().FindAccountsForService(App.siteURL).LastOrDefault();
 
-            if (account1 != null)
-                App.FrameworkURL = account1.Username;
-            if (account == null)
-                App.Current.MainPage = new LoginWithNullPage();
+
+            ////循环删除所存的数据
+            List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
+            if (tokenModels != null && tokenModels.Count > 0)
+            {
+                foreach (var item in tokenModels)
+                {
+                    await App.Database.DeleteTokenModelAsync(item);
+                }
+            }
+
+            FrameWorkURL URLModel = null;
+            List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
+            if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
+            if (URLModel != null)
+            {
+                App.FrameworkURL = URLModel.frameURL;
+            }
+
+            //获取存储文件下的内容
+            LoginModel userModel = null;
+            List<LoginModel> userModels = await App.Database.GetUserModelAsync();
+            if (userModels != null && userModels.Count > 0) userModel = userModels[0];
+
+            if (userModel != null)
+            {
+                App.Current.MainPage = new LoginWithNullPage(userModel.userName, userModel.password);
+            }
             else
             {
-                App.Current.MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
-                App.userName = account.Username;
-                App.pwd = account.Properties["pwd"];
+                App.Current.MainPage = new LoginWithNullPage();
             }
         }
     }

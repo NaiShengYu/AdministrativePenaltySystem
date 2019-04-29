@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Net;
 using WTONewProject.Models;
 using WTONewProject.Services;
+using WTONewProject.Tools;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
@@ -17,8 +18,7 @@ namespace WTONewProject.View
             InitializeComponent();
             _cookie = cookie;
             var source = new UrlWebViewSource();
-            //source.Url = "http://sx.azuratech.com:20001/Mobile/index";
-            source.Url = "http://39.97.104.173:801/Mobile/index";
+            source.Url = Constants.URL_WEB;
             if (Device.RuntimePlatform == Device.Android)
             {
                 web.On<Xamarin.Forms.PlatformConfiguration.Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
@@ -44,8 +44,7 @@ namespace WTONewProject.View
             {
                 return;
             }
-            string url = "http://sx.azuratech.com:20001/api/Account/GetUserInfo";
-            HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(url, "", "POST", _cookie);
+            HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(Constants.URL_GET_USER, "", "POST", _cookie);
             if (res.StatusCode == HttpStatusCode.OK)
             {
                 UserInfo user = JsonConvert.DeserializeObject<UserInfo>(res.Results);

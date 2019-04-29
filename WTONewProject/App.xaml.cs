@@ -9,6 +9,9 @@ using WTONewProject.Services;
 using System.Net;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using WTONewProject.Model;
+using System.IO;
+using WTONewProject.Tools;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace WTONewProject
@@ -17,49 +20,83 @@ namespace WTONewProject
     {
         public FrameworkToken frameworkToken = null;
         public static string FrameworkURL = "";
-        public static string AppName = "CloudWTO";
-        public static string siteURL = "siteURL";
-        public static string userName = "";
-        public static string pwd = "";
+        public static string token = "";
+        static TodoItemDatabase database;
+
         public App()
         {
             InitializeComponent();
-            var account = AccountStore.Create().FindAccountsForService(AppName).LastOrDefault();
-            var account1 = AccountStore.Create().FindAccountsForService(siteURL).LastOrDefault();
+            MainPage = new MyPage();
+            GetLastToken();
+            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
+        }
 
-            if (account1 != null)
-                FrameworkURL = account1.Username;
-            if (account == null)
-                MainPage = new LoginWithNullPage();
+        //crash收集
+        protected void HandleUnhandledException(object sender, UnhandledExceptionEventArgs args)
+        {
+            {
+                if (args == null || args.ExceptionObject == null)
+                    return;
+            }
+            Exception e = (Exception)args.ExceptionObject;
+            String content = args.ExceptionObject.ToString();
+            Console.WriteLine(content);
+            FileUtils.SaveLogFile(content);
+        }
+
+        private async void GetLastToken() {
+            //获取存储文件下的内容
+            TokenModel tokenModel = null;
+            List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
+            if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
+
+            if (tokenModel != null)
+            {
+                MainPage = new WebPage(tokenModel.token);
+            }
             else
             {
-                MainPage = new LoginWithNullPage(account.Username, account.Properties["pwd"]);
-                userName = account.Username;
-                pwd = account.Properties["pwd"];
+                GetUserNameAndPassword();
+            }
+        }
+
+        public async void GetUserNameAndPassword() {
+            FrameWorkURL URLModel = null;
+            List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
+            if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
+            if (URLModel !=null)
+            {
+                App.FrameworkURL = URLModel.frameURL;
             }
 
-            //MainPage = new MainPage();
+            //获取存储文件下的内容
+            LoginModel userModel = null;
+            List<LoginModel> userModels =await App.Database.GetUserModelAsync();
+            if (userModels != null && userModels.Count > 0) userModel = userModels[0];
 
+            if (userModel != null)
+            {
+                MainPage = new LoginWithNullPage(userModel.userName, userModel.password);
+            }
+            else
+            {
+                MainPage = new LoginWithNullPage();
+            }
 
         }
-        protected override void OnStart()
+
+           public static TodoItemDatabase Database
         {
-
-
-
+            get
+            {
+                if (database == null)
+                {
+                    string path = DependencyService.Get<IFileService>().GetDatabasePath("TodoSQLite.db3");
+                    database = new TodoItemDatabase(path);
+                }
+                return database;
+             }
         }
-
-        protected override void OnSleep()
-        {
-            // Handle when your app sleeps
-        }
-
-        protected override void OnResume()
-        {
-            // Handle when your app resumes
-        }
-
-
         public async Task<bool> LoginAsync(string username, string password,string siteurl,bool issavePassword) {
 
             if (string.IsNullOrWhiteSpace(siteurl))
@@ -79,19 +116,23 @@ namespace WTONewProject
                     FrameworkURL = "http://" + siteurl + "/token";
                     saveSiteURL();
                 }
-                var frameworkToken2 = await GetFrameworkTokenAsync(username, password, "https://" + siteurl + "/token", issavePassword);
-                if (frameworkToken2 != null)
-                {
-                    frameworkToken = frameworkToken2;
-                    FrameworkURL = "https://" + siteurl + "/token";
-                    saveSiteURL();
+                else {
+                    var frameworkToken2 = await GetFrameworkTokenAsync(username, password, "https://" + siteurl + "/token", issavePassword);
+                    if (frameworkToken2 != null)
+                    {
+                        frameworkToken = frameworkToken2;
+                        FrameworkURL = "https://" + siteurl + "/token";
+                        saveSiteURL();
+                    }
                 }
-            }
 
+            }
 
             if (frameworkToken == null) return false;
             else
             {
+                token = frameworkToken.access_token;
+                saveToken();
                 MainPage = new WebPage(frameworkToken.access_token);
                 //MainPage = new TestWebPage();
                 return true;
@@ -109,6 +150,13 @@ namespace WTONewProject
             {
                 string url = siteurl;
                 string param = "username=" + username + "&password=" + password + "&grant_type=password";
+                //string url = "http://sx.azuratech.com:30000/Token";
+                //Dictionary<string, object> map = new Dictionary<string, object>();
+                //map.Add("userid", "admin");
+                //map.Add("password", "123456");
+                //map.Add("grant_type", "password");
+                //string param = JsonConvert.SerializeObject(map);
+
                 HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(url, param, "POST", null);
                 FrameworkToken ft = null;
                 if (res.StatusCode == HttpStatusCode.OK)
@@ -124,43 +172,66 @@ namespace WTONewProject
             }
         }
 
-        private void deleteData(string username,string passWord,bool isSavePassword)
+        private async void deleteData(string username,string passWord,bool isSavePassword)
         {
-            //#if !(DEBUG && __IOS__)
-            //循环删除所存的数据
-            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.AppName);
-            for (int i = 0; i < outs.Count(); i++)
-            {
-                AccountStore.Create().Delete(outs.ElementAt(i), App.AppName);
-            }
-            if (isSavePassword)
-            {
-                Account count = new Account
+            ////循环删除所存的数据
+            List<LoginModel> userModels = await App.Database.GetUserModelAsync();
+            if (userModels != null && userModels.Count > 0)
+                foreach (var item in userModels)
                 {
-                    Username = username
+                    await App.Database.DeleteUserModelAsync(item);
+                }
+
+            if (isSavePassword == true)
+            {
+                LoginModel loginModel = new LoginModel
+                {
+                    ID = 0,
+                    userName = username,
+                    password = passWord
                 };
-                count.Properties.Add("pwd", passWord);
-                count.Properties.Add("sourceURL", App.FrameworkURL);
-                AccountStore.Create().Save(count, App.AppName);
+                await App.Database.SaveUserModelAsync(loginModel);
             }
-            //#endif
         }
 
-        private void saveSiteURL()
+        private async void saveSiteURL()
         {
-            //#if !(DEBUG && __IOS__)
-            //循环删除所存的数据
-            IEnumerable<Account> outs = AccountStore.Create().FindAccountsForService(App.siteURL);
-            for (int i = 0; i < outs.Count(); i++)
-            {
-                AccountStore.Create().Delete(outs.ElementAt(i), App.siteURL);
-            }
-                Account count = new Account
+            ////循环删除所存的数据
+            List<FrameWorkURL> userModels = await App.Database.GetURLModelAsync();
+            if (userModels != null && userModels.Count > 0)
+                foreach (var item in userModels)
                 {
-                    Username = FrameworkURL
-                };
-                AccountStore.Create().Save(count, App.siteURL);
-            //#endif
+                    await App.Database.DeleteURLModelAsync(item);
+                }
+
+
+            FrameWorkURL URLModel = new FrameWorkURL
+            {
+                    ID = 0,
+                    frameURL = FrameworkURL,
+            };
+                await App.Database.SaveURLModelAsync(URLModel);
+
+        }
+
+
+        private async void saveToken()
+        {
+            ////循环删除所存的数据
+            List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
+            if (tokenModels != null && tokenModels.Count > 0)
+                foreach (var item in tokenModels)
+                {
+                    await App.Database.DeleteTokenModelAsync(item);
+                }
+            TokenModel tokenModel = new TokenModel
+            {
+                ID = 0,
+                token = token,
+                lastTime = DateTime.Now,
+            };
+            await App.Database.SaveTokenModelAsync(tokenModel);
+
         }
 
         public static int ScreenHeight { get; set; }
