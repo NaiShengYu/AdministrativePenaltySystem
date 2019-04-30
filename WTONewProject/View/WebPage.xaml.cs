@@ -18,7 +18,7 @@ namespace WTONewProject.View
             _cookie = cookie;
             var source = new UrlWebViewSource();
             //source.Url = "http://192.168.2.111:8081";
-            source.Url = "http://39.97.104.173:801/Mobile/index";
+            source.Url = App.tokenModel.url+"/Mobile/index";
             if (Device.RuntimePlatform == Device.Android)
             {
                 web.On<Xamarin.Forms.PlatformConfiguration.Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
@@ -40,20 +40,13 @@ namespace WTONewProject.View
 
         private async void GetUserInfo()
         {
+
             if (string.IsNullOrWhiteSpace(_cookie))
             {
                 return;
             }
-            string url = "http://sx.azuratech.com:20001/api/Account/GetUserInfo";
-            HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(url, "", "POST", _cookie);
-            if (res.StatusCode == HttpStatusCode.OK)
-            {
-                UserInfo user = JsonConvert.DeserializeObject<UserInfo>(res.Results);
-                if (user != null)
-                {
-                    DependencyService.Get<IJpushSetAlias>().setAliasWithName(user.userInf_id);
-                }
-            }
+             DependencyService.Get<IJpushSetAlias>().setAliasWithName(App.tokenModel.sid);
         }
+
     }
 }
