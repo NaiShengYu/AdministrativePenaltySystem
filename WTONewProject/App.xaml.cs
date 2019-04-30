@@ -164,7 +164,14 @@ namespace WTONewProject
                 if (res.StatusCode == HttpStatusCode.OK)
                 {
                     loginResultModel = JsonConvert.DeserializeObject<LoginResultModel>(res.Results);
+                }
+                if (loginResultModel !=null && !string.IsNullOrWhiteSpace(loginResultModel.access_token))
+                {
                     deleteData(username, password, issavePassword);
+                }
+                else
+                {
+                    loginResultModel = null;
                 }
                 return loginResultModel;
             }

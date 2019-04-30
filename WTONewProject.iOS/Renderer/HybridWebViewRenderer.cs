@@ -92,6 +92,7 @@ namespace WTONewProject.iOS.Renderer
             }
             NSMutableDictionary cookieProperties = new NSMutableDictionary();
             cookieProperties.Add(NSHttpCookie.KeyName, (NSString)"AzuraCookie");
+            string cooki = "Bearer " + Element.AzuraCookie;
             cookieProperties.Add(NSHttpCookie.KeyValue, (NSString)Element.AzuraCookie);
             cookieProperties.Add(NSHttpCookie.KeyOriginUrl, (NSString)App.tokenModel.url);
             cookieProperties.Add(NSHttpCookie.KeyPath, (NSString)"/");
