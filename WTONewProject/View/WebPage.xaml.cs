@@ -18,7 +18,8 @@ namespace WTONewProject.View
             InitializeComponent();
             _cookie = cookie;
             var source = new UrlWebViewSource();
-            source.Url = Constants.URL_WEB;
+            source.Url = App.tokenModel.url+"/Mobile/index";
+            //source.Url = Constants.URL_WEB;
             if (Device.RuntimePlatform == Device.Android)
             {
                 web.On<Xamarin.Forms.PlatformConfiguration.Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);
@@ -40,19 +41,13 @@ namespace WTONewProject.View
 
         private async void GetUserInfo()
         {
+
             if (string.IsNullOrWhiteSpace(_cookie))
             {
                 return;
             }
-            HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(Constants.URL_GET_USER, "", "POST", _cookie);
-            if (res.StatusCode == HttpStatusCode.OK)
-            {
-                UserInfo user = JsonConvert.DeserializeObject<UserInfo>(res.Results);
-                if (user != null)
-                {
-                    DependencyService.Get<IJpushSetAlias>().setAliasWithName(user.userInf_id);
-                }
-            }
+             DependencyService.Get<IJpushSetAlias>().setAliasWithName(App.tokenModel.sid);
         }
+
     }
 }

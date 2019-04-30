@@ -18,11 +18,10 @@ namespace WTONewProject
 {
     public partial class App : Application
     {
-        public FrameworkToken frameworkToken = null;
+        public  LoginResultModel _loginResultModel = null;
         public static string FrameworkURL = "";
-        public static string token = "";
         static TodoItemDatabase database;
-
+        public static TokenModel tokenModel =null;
         public App()
         {
             InitializeComponent();
@@ -46,11 +45,10 @@ namespace WTONewProject
 
         private async void GetLastToken() {
             //获取存储文件下的内容
-            TokenModel tokenModel = null;
             List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
             if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
 
-            if (tokenModel != null)
+            if (tokenModel != null && !string.IsNullOrWhiteSpace(tokenModel.url) && !string.IsNullOrWhiteSpace(tokenModel.token))
             {
                 MainPage = new WebPage(tokenModel.token);
             }
@@ -73,7 +71,6 @@ namespace WTONewProject
             LoginModel userModel = null;
             List<LoginModel> userModels =await App.Database.GetUserModelAsync();
             if (userModels != null && userModels.Count > 0) userModel = userModels[0];
-
             if (userModel != null)
             {
                 MainPage = new LoginWithNullPage(userModel.userName, userModel.password);
@@ -105,14 +102,14 @@ namespace WTONewProject
                 {
                     return false;
                 }else
-                    frameworkToken = await GetFrameworkTokenAsync(username, password, FrameworkURL, issavePassword);
+                    _loginResultModel = await GetFrameworkTokenAsync(username, password, FrameworkURL, issavePassword);
             }
             else
             {
                var frameworkToken1 = await GetFrameworkTokenAsync(username, password, "http://"+siteurl+"/token", issavePassword);
                 if(frameworkToken1 != null)
                 {
-                    frameworkToken = frameworkToken1;
+                    _loginResultModel = frameworkToken1;
                     FrameworkURL = "http://" + siteurl + "/token";
                     saveSiteURL();
                 }
@@ -120,7 +117,7 @@ namespace WTONewProject
                     var frameworkToken2 = await GetFrameworkTokenAsync(username, password, "https://" + siteurl + "/token", issavePassword);
                     if (frameworkToken2 != null)
                     {
-                        frameworkToken = frameworkToken2;
+                        _loginResultModel = frameworkToken2;
                         FrameworkURL = "https://" + siteurl + "/token";
                         saveSiteURL();
                     }
@@ -128,13 +125,20 @@ namespace WTONewProject
 
             }
 
-            if (frameworkToken == null) return false;
+            if (_loginResultModel == null) return false;
             else
             {
-                token = frameworkToken.access_token;
+                tokenModel = new TokenModel() { ID = 0, lastTime = DateTime.Now };
+                tokenModel.token = _loginResultModel.access_token;
+                tokenModel.sid = _loginResultModel.profile.sid;
+                tokenModel.name = _loginResultModel.profile.name;
+                tokenModel.username = _loginResultModel.profile.username;
+                if (_loginResultModel.modList.Count >0)
+                {
+                    tokenModel.url  = _loginResultModel.modList[0].url;
+                }
                 saveToken();
-                MainPage = new WebPage(frameworkToken.access_token);
-                //MainPage = new TestWebPage();
+                MainPage = new WebPage(_loginResultModel.access_token);
                 return true;
             }
         }
@@ -144,29 +148,27 @@ namespace WTONewProject
         /// <param name="username">User Name</param>
         /// <param name="password">Password</param>
         /// <returns>A FrameworkToken structure that contains the access token for all subsequence requests</returns>
-        private async Task<FrameworkToken> GetFrameworkTokenAsync(string username, string password, string siteurl, bool issavePassword)
+        private async Task<LoginResultModel> GetFrameworkTokenAsync(string username, string password, string siteurl, bool issavePassword)
         {
             try
             {
                 string url = siteurl;
-                string param = "username=" + username + "&password=" + password + "&grant_type=password";
-                //string url = "http://sx.azuratech.com:30000/Token";
-                //Dictionary<string, object> map = new Dictionary<string, object>();
-                //map.Add("userid", "admin");
-                //map.Add("password", "123456");
-                //map.Add("grant_type", "password");
-                //string param = JsonConvert.SerializeObject(map);
+                Dictionary<string, object> map = new Dictionary<string, object>();
+                map.Add("userid", username);
+                map.Add("password", password);
+                map.Add("grant_type", "password");
+                string param = JsonConvert.SerializeObject(map);
 
                 HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(url, param, "POST", null);
-                FrameworkToken ft = null;
+                LoginResultModel loginResultModel = null;
                 if (res.StatusCode == HttpStatusCode.OK)
                 {
-                    ft = JsonConvert.DeserializeObject<FrameworkToken>(res.Results);
+                    loginResultModel = JsonConvert.DeserializeObject<LoginResultModel>(res.Results);
                     deleteData(username, password, issavePassword);
                 }
-                return ft;
+                return loginResultModel;
             }
-            catch
+            catch(Exception ex)
             {
                 return null;
             }
@@ -224,12 +226,7 @@ namespace WTONewProject
                 {
                     await App.Database.DeleteTokenModelAsync(item);
                 }
-            TokenModel tokenModel = new TokenModel
-            {
-                ID = 0,
-                token = token,
-                lastTime = DateTime.Now,
-            };
+          
             await App.Database.SaveTokenModelAsync(tokenModel);
 
         }
@@ -237,13 +234,5 @@ namespace WTONewProject
         public static int ScreenHeight { get; set; }
         public static int ScreenWidth { get; set; }
 
-        public class FrameworkToken
-        {
-            public string access_token { get; set; }
-            public string token_type { get; set; }
-            public string expires_in { get; set; }
-            public string refresh_token { get; set; }
-            public string userName { get; set; }
-        }
     }
 }
