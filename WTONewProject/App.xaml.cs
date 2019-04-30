@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using WTONewProject.Model;
 using System.IO;
+using WTONewProject.Tools;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace WTONewProject
@@ -26,6 +27,20 @@ namespace WTONewProject
             InitializeComponent();
             MainPage = new MyPage();
             GetLastToken();
+            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
+        }
+
+        //crash收集
+        protected void HandleUnhandledException(object sender, UnhandledExceptionEventArgs args)
+        {
+            {
+                if (args == null || args.ExceptionObject == null)
+                    return;
+            }
+            Exception e = (Exception)args.ExceptionObject;
+            String content = args.ExceptionObject.ToString();
+            Console.WriteLine(content);
+            FileUtils.SaveLogFile(content);
         }
 
         private async void GetLastToken() {
@@ -41,9 +56,6 @@ namespace WTONewProject
             {
                 GetUserNameAndPassword();
             }
-
-
-
         }
 
         public async void GetUserNameAndPassword() {
@@ -76,7 +88,7 @@ namespace WTONewProject
             {
                 if (database == null)
                 {
-                    string path = DependencyService.Get<IFileHelper>().GetLocalFilePath("TodoSQLite.db3");
+                    string path = DependencyService.Get<IFileService>().GetDatabasePath("TodoSQLite.db3");
                     database = new TodoItemDatabase(path);
                 }
                 return database;

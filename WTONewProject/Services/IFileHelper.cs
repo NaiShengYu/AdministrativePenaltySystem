@@ -1,8 +1,9 @@
 ﻿using System;
 namespace WTONewProject.Services
 {
-    public interface IFileHelper
+    public interface IFileService
     {
-        string GetLocalFilePath(string filename);
+        string GetDatabasePath(string filename);
+        string GetExtrnalStoragePath(string type);
     }
 }

@@ -10,8 +10,6 @@ namespace WTONewProject.View
         public MyPage()
         {
             InitializeComponent();
-
-
         }
     }
 }
