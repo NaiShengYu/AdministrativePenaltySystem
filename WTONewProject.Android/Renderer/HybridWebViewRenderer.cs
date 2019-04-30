@@ -40,12 +40,7 @@ namespace WTONewProject.Droid.Renderer
             {
                 if (!string.IsNullOrWhiteSpace(WebPage._cookie))
                 {
-<<<<<<< HEAD
-
                     synCookies(_context, App.tokenModel.url, "AzuraCookie=" + WebPage._cookie + ";");
-=======
-                    synCookies(_context, Constants.URL_ROOT, "AzuraCookie=" + WebPage._cookie + ";");
->>>>>>> 6fae9d48313bb501fabf49e6e5bb9e0007d4a7c1
                 }
                 setSettings(Control);
                 Control.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptGetLocation}{JavaScriptLogOut}", BridWebView, this));
