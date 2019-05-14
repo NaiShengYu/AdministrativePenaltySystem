@@ -44,11 +44,13 @@ namespace WTONewProject
         }
 
         private async void GetLastToken() {
+
+
             //获取存储文件下的内容
             List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
             if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
-
-            if (tokenModel != null && !string.IsNullOrWhiteSpace(tokenModel.url) && !string.IsNullOrWhiteSpace(tokenModel.token))
+           int time =  DateTime.Compare(DateTime.Now, tokenModel.lastTime);
+            if (tokenModel != null && !string.IsNullOrWhiteSpace(tokenModel.url) && !string.IsNullOrWhiteSpace(tokenModel.token) && time<0)
             {
                 MainPage = new WebPage(tokenModel.token);
             }
@@ -128,11 +130,12 @@ namespace WTONewProject
             if (_loginResultModel == null) return false;
             else
             {
-                tokenModel = new TokenModel() { ID = 0, lastTime = DateTime.Now };
+                tokenModel = new TokenModel() { ID = 0 };
                 tokenModel.token = _loginResultModel.access_token;
                 tokenModel.sid = _loginResultModel.profile.sid;
                 tokenModel.name = _loginResultModel.profile.name;
                 tokenModel.username = _loginResultModel.profile.username;
+                tokenModel.lastTime = _loginResultModel.profile.expires_at.AddHours(8);
                 if (_loginResultModel.modList.Count >0)
                 {
                     tokenModel.url  = _loginResultModel.modList[0].url;

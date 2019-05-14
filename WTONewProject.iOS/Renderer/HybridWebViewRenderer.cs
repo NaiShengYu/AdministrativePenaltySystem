@@ -36,6 +36,9 @@ namespace WTONewProject.iOS.Renderer
             {
                 _webView = new UIWebView(Frame);
                 _webView.ShouldStartLoad += WebView_ShouldStartLoad;
+                _webView.LoadError += (object sender, UIWebErrorArgs error) => {
+                    hyBridWebView.logOut();
+                };
                 _webView.SuppressesIncrementalRendering = true;
                 try
                 {

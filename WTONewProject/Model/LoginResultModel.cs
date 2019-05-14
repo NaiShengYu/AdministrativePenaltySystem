@@ -28,8 +28,8 @@ namespace WTONewProject.Model
         public string sid { get; set; }
         public string name { get; set; }
         public string username { get; set; }
-        public string auth_time { get; set; }
-        public string expires_time { get; set; }
+        public DateTime auth_time { get; set; }
+        public DateTime expires_at { get; set; }
 
     }
 
