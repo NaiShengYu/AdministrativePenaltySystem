@@ -52,7 +52,7 @@
     <CodesignKey>iPhone Developer: Peng Lin (SPJS63EGU6)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>EHSOONProvisioning</CodesignProvision>
+    <CodesignProvision>YunWeiXinPingTaiProfile</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -103,6 +103,7 @@
     <Compile Include="Notification\JPush\JPushRegisterEntity.cs" />
     <Compile Include="Servers\JpushSetAlias.cs" />
     <Compile Include="Servers\FileService.cs" />
+    <Compile Include="Renderer\GradientColorStackRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="Resources\LaunchScreen.storyboard" />
@@ -112,63 +113,27 @@
     <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\640x960.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\640x1136.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\750x1334.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\1242x2208.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\1242x2688.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\828x1792.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\1125x2436.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-iPadPro%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Spotlight-40.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Spotlight-40%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%402x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Spotlight-40%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%403x.png">
-      <Visible>false</Visible>
-    </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon2.png">
-      <Visible>false</Visible>
-    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-29%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-29%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-40%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-40%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-60%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-29.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-29%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-1024.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-83.5%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-76-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-40%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\icon-40.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\828x1792.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\1242x2208.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\750x1334.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\1125x2436.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\1242x2688.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\640x960.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\640x1136.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -209,11 +174,29 @@
     <BundleResource Include="Resources\index.html" />
     <BundleResource Include="Resources\index.js" />
     <BundleResource Include="Resources\Trapezoid.png" />
-    <BundleResource Include="Resources\logo.png" />
     <BundleResource Include="Resources\select.png" />
     <BundleResource Include="Resources\nomal.png" />
     <BundleResource Include="Resources\select%402x.png" />
     <BundleResource Include="Resources\nomal%402x.png" />
     <BundleResource Include="Resources\userHeader.png" />
+    <BundleResource Include="Resources\logo.png" />
+    <BundleResource Include="Resources\Group6.png" />
+    <BundleResource Include="Resources\Group6%402x.png" />
+    <BundleResource Include="Resources\Group6%403x.png" />
+    <BundleResource Include="Resources\icon-unselect%403x.png" />
+    <BundleResource Include="Resources\icon-select.png" />
+    <BundleResource Include="Resources\icon-unselect%402x.png" />
+    <BundleResource Include="Resources\icon-unselect.png" />
+    <BundleResource Include="Resources\icon-select%403x.png" />
+    <BundleResource Include="Resources\icon-select%402x.png" />
+    <BundleResource Include="Resources\show.png" />
+    <BundleResource Include="Resources\show%402x.png" />
+    <BundleResource Include="Resources\show%403x.png" />
+    <BundleResource Include="Resources\canEdit.png" />
+    <BundleResource Include="Resources\canEdit%402x.png" />
+    <BundleResource Include="Resources\canEdit%403x.png" />
+    <BundleResource Include="Resources\can%27tEdit.png" />
+    <BundleResource Include="Resources\can%27tEdit%402x.png" />
+    <BundleResource Include="Resources\can%27tEdit%403x.png" />
   </ItemGroup>
 </Project>

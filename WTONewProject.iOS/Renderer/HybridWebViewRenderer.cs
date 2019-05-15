@@ -16,6 +16,7 @@ using Xamarin.Forms.Platform.iOS;
 using UIKit;
 using JavaScriptCore;
 using System.Threading.Tasks;
+using WTONewProject.Tools;
 
 [assembly: ExportRenderer(typeof(HyBridWebView), typeof(HybridWebViewRenderer))]
 namespace WTONewProject.iOS.Renderer
@@ -94,10 +95,10 @@ namespace WTONewProject.iOS.Renderer
                 cookieStorage.DeleteCookie(cookieItem);
             }
             NSMutableDictionary cookieProperties = new NSMutableDictionary();
-            cookieProperties.Add(NSHttpCookie.KeyName, (NSString)"AzuraCookie");
+            cookieProperties.Add(NSHttpCookie.KeyName, (NSString)"accessToken");
             string cooki = "Bearer " + Element.AzuraCookie;
             cookieProperties.Add(NSHttpCookie.KeyValue, (NSString)Element.AzuraCookie);
-            cookieProperties.Add(NSHttpCookie.KeyOriginUrl, (NSString)App.tokenModel.url);
+            cookieProperties.Add(NSHttpCookie.KeyOriginUrl, (NSString)Constants.WEB_SOURCE);
             cookieProperties.Add(NSHttpCookie.KeyPath, (NSString)"/");
             cookieProperties.Add(NSHttpCookie.KeyExpires, new NSDate().AddSeconds(30 * 24 * 3600));
             NSHttpCookie httpCookie = new NSHttpCookie(cookieProperties);

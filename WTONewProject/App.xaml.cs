@@ -19,9 +19,8 @@ namespace WTONewProject
     public partial class App : Application
     {
         public  LoginResultModel _loginResultModel = null;
-        public static string FrameworkURL = "";
         static TodoItemDatabase database;
-        public static TokenModel tokenModel =null;
+        public static TokenModel tokenModel = null;
         public App()
         {
             InitializeComponent();
@@ -47,27 +46,26 @@ namespace WTONewProject
 
 
             //获取存储文件下的内容
-            List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
-            if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
-           int time =  DateTime.Compare(DateTime.Now, tokenModel.lastTime);
-            if (tokenModel != null && !string.IsNullOrWhiteSpace(tokenModel.url) && !string.IsNullOrWhiteSpace(tokenModel.token) && time<0)
-            {
-                MainPage = new WebPage(tokenModel.token);
-            }
-            else
-            {
+            //List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
+            //if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
+            //if (tokenModel != null && !string.IsNullOrWhiteSpace(tokenModel.url) && !string.IsNullOrWhiteSpace(tokenModel.token) && DateTime.Compare(DateTime.Now, tokenModel.lastTime )< 0)
+            //{
+            //    MainPage = new WebPage(tokenModel.token);
+            //}
+            //else
+            //{
                 GetUserNameAndPassword();
-            }
+            //}
         }
 
         public async void GetUserNameAndPassword() {
-            FrameWorkURL URLModel = null;
-            List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
-            if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
-            if (URLModel !=null)
-            {
-                App.FrameworkURL = URLModel.frameURL;
-            }
+            //FrameWorkURL URLModel = null;
+            //List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
+            //if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
+            //if (URLModel !=null)
+            //{
+            //    App.FrameworkURL = URLModel.frameURL;
+            //}
 
             //获取存储文件下的内容
             LoginModel userModel = null;
@@ -75,11 +73,13 @@ namespace WTONewProject
             if (userModels != null && userModels.Count > 0) userModel = userModels[0];
             if (userModel != null)
             {
-                MainPage = new LoginWithNullPage(userModel.userName, userModel.password);
+                NavigationPage navigationPage = new NavigationPage(new LoginWithNullPage(userModel.userNameOrEmailAddress, userModel.password, userModel.tenancyName));
+                NavigationPage.SetBackButtonTitle(this, "");
+                MainPage = navigationPage;
             }
             else
             {
-                MainPage = new LoginWithNullPage();
+                MainPage = new NavigationPage(new LoginWithNullPage());
             }
 
         }
@@ -96,52 +96,25 @@ namespace WTONewProject
                 return database;
              }
         }
-        public async Task<bool> LoginAsync(string username, string password,string siteurl,bool issavePassword) {
+        public async Task<bool> LoginAsync(string username, string password,string TenantName, bool issavePassword) {
 
-            if (string.IsNullOrWhiteSpace(siteurl))
-            {
-                if (string.IsNullOrWhiteSpace(FrameworkURL))
-                {
-                    return false;
-                }else
-                    _loginResultModel = await GetFrameworkTokenAsync(username, password, FrameworkURL, issavePassword);
-            }
-            else
-            {
-               var frameworkToken1 = await GetFrameworkTokenAsync(username, password, "http://"+siteurl+"/token", issavePassword);
-                if(frameworkToken1 != null)
-                {
-                    _loginResultModel = frameworkToken1;
-                    FrameworkURL = "http://" + siteurl + "/token";
-                    saveSiteURL();
-                }
-                else {
-                    var frameworkToken2 = await GetFrameworkTokenAsync(username, password, "https://" + siteurl + "/token", issavePassword);
-                    if (frameworkToken2 != null)
-                    {
-                        _loginResultModel = frameworkToken2;
-                        FrameworkURL = "https://" + siteurl + "/token";
-                        saveSiteURL();
-                    }
-                }
 
+            _loginResultModel = await GetFrameworkTokenAsync(username, password, TenantName,issavePassword);
+           
+            if (_loginResultModel == null || _loginResultModel.result ==null) 
+            {
+                return false;
             }
 
-            if (_loginResultModel == null) return false;
             else
             {
                 tokenModel = new TokenModel() { ID = 0 };
-                tokenModel.token = _loginResultModel.access_token;
-                tokenModel.sid = _loginResultModel.profile.sid;
-                tokenModel.name = _loginResultModel.profile.name;
-                tokenModel.username = _loginResultModel.profile.username;
-                tokenModel.lastTime = _loginResultModel.profile.expires_at.AddHours(8);
-                if (_loginResultModel.modList.Count >0)
-                {
-                    tokenModel.url  = _loginResultModel.modList[0].url;
-                }
+                tokenModel.accessToken = _loginResultModel.result.accessToken;
+                tokenModel.encryptedAccessToken = _loginResultModel.result.encryptedAccessToken;
+                tokenModel.expireInSeconds = _loginResultModel.result.expireInSeconds;
+                tokenModel.userId = _loginResultModel.result.userId;
                 saveToken();
-                MainPage = new WebPage(_loginResultModel.access_token);
+                MainPage = new WebPage(_loginResultModel.result.accessToken);
                 return true;
             }
         }
@@ -151,15 +124,16 @@ namespace WTONewProject
         /// <param name="username">User Name</param>
         /// <param name="password">Password</param>
         /// <returns>A FrameworkToken structure that contains the access token for all subsequence requests</returns>
-        private async Task<LoginResultModel> GetFrameworkTokenAsync(string username, string password, string siteurl, bool issavePassword)
+        private async Task<LoginResultModel> GetFrameworkTokenAsync(string username, string password, string TenantName, bool issavePassword)
         {
             try
             {
-                string url = siteurl;
+                string url = Constants.URL_GET_ACCESSTOKEN;
                 Dictionary<string, object> map = new Dictionary<string, object>();
-                map.Add("userid", username);
-                map.Add("password", password);
-                map.Add("grant_type", "password");
+                map.Add("UserNameOrEmailAddress", username);
+                map.Add("Password", password);
+                map.Add("TenancyName", TenantName);
+                map.Add("rememberClient", true);
                 string param = JsonConvert.SerializeObject(map);
 
                 HTTPResponse res = await EasyWebRequest.SendHTTPRequestAsync(url, param, "POST", null);
@@ -168,9 +142,9 @@ namespace WTONewProject
                 {
                     loginResultModel = JsonConvert.DeserializeObject<LoginResultModel>(res.Results);
                 }
-                if (loginResultModel !=null && !string.IsNullOrWhiteSpace(loginResultModel.access_token))
+                if (loginResultModel !=null && loginResultModel.result !=null)
                 {
-                    deleteData(username, password, issavePassword);
+                    deleteData(username, password, TenantName, issavePassword);
                 }
                 else
                 {
@@ -184,7 +158,7 @@ namespace WTONewProject
             }
         }
 
-        private async void deleteData(string username,string passWord,bool isSavePassword)
+        private async void deleteData(string username,string passWord,string tenancyName, bool isSavePassword)
         {
             ////循环删除所存的数据
             List<LoginModel> userModels = await App.Database.GetUserModelAsync();
@@ -199,33 +173,13 @@ namespace WTONewProject
                 LoginModel loginModel = new LoginModel
                 {
                     ID = 0,
-                    userName = username,
-                    password = passWord
+                    userNameOrEmailAddress = username,
+                    password = passWord,
+                    tenancyName = tenancyName
                 };
                 await App.Database.SaveUserModelAsync(loginModel);
             }
         }
-
-        private async void saveSiteURL()
-        {
-            ////循环删除所存的数据
-            List<FrameWorkURL> userModels = await App.Database.GetURLModelAsync();
-            if (userModels != null && userModels.Count > 0)
-                foreach (var item in userModels)
-                {
-                    await App.Database.DeleteURLModelAsync(item);
-                }
-
-
-            FrameWorkURL URLModel = new FrameWorkURL
-            {
-                    ID = 0,
-                    frameURL = FrameworkURL,
-            };
-                await App.Database.SaveURLModelAsync(URLModel);
-
-        }
-
 
         private async void saveToken()
         {

@@ -61,7 +61,6 @@ namespace WTONewProject.Services
                     }
                     catch (WebException ex)
                     {
-                        int a = 0;
                     }
                 }
                 WebResponse wr = await req.GetResponseAsync();

@@ -71,7 +71,7 @@ namespace WTONewProject.Renderer
             if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
             if (URLModel != null)
             {
-                App.FrameworkURL = URLModel.frameURL;
+                //App.FrameworkURL = URLModel.frameURL;
             }
 
             //获取存储文件下的内容
@@ -81,11 +81,11 @@ namespace WTONewProject.Renderer
 
             if (userModel != null)
             {
-                App.Current.MainPage = new LoginWithNullPage(userModel.userName, userModel.password);
+                App.Current.MainPage = new NavigationPage(new LoginWithNullPage(userModel.userNameOrEmailAddress, userModel.password, userModel.tenancyName));
             }
             else
             {
-                App.Current.MainPage = new LoginWithNullPage();
+                App.Current.MainPage = new NavigationPage(new LoginWithNullPage());
             }
         }
     }

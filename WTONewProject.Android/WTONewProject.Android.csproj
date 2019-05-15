@@ -96,6 +96,7 @@
     <Compile Include="JPush\RegisrationHandler.cs" />
     <Compile Include="Servers\FileService.cs" />
     <Compile Include="SplashActivity.cs" />
+    <Compile Include="Renderer\GradientColorStackRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

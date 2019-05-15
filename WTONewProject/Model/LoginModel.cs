@@ -15,7 +15,8 @@ namespace WTONewProject.Model
 
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
-        public string userName { get; set; }
+        public string userNameOrEmailAddress { get; set; }
         public string password { get; set; }
+        public string tenancyName { get; set; }
     }
 }

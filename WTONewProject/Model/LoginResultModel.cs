@@ -7,30 +7,26 @@ namespace WTONewProject.Model
 {
     public class LoginResultModel
     {
-        public string access_token { get; set; }
-        public string token_type { get; set; }
-        public List<LoginResultModel_ModList> modList { get; set; }
-        public LoginResultModel_Profil profile { get; set; }
+        public bool success { get; set; }
+        public LoginResultModel_Error error { get; set; }
+        public LoginResultModel_Result result { get; set; }
      
     }
-    public class LoginResultModel_ModList
+    public class LoginResultModel_Result
     {
-        public string id { get; set; }
-        public string index { get; set; }
-        public string url { get; set; }
-        public string status { get; set; }
-        public string name { get; set; }
-        public string type { get; set; }
+        public string accessToken { get; set; }
+        public string encryptedAccessToken { get; set; }
+        public string expireInSeconds { get; set; }
+        public string userId { get; set; }
     }
 
-    public class LoginResultModel_Profil
+    public class LoginResultModel_Error
     {
-        public string sid { get; set; }
-        public string name { get; set; }
-        public string username { get; set; }
-        public DateTime auth_time { get; set; }
-        public DateTime expires_at { get; set; }
-
+        public string code { get; set; }
+        public string message { get; set; }
+        public string details { get; set; }
+        public string validationErrors { get; set; }
+     
     }
 
 }

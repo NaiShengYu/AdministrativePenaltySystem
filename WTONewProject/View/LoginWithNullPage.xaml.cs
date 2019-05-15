@@ -13,40 +13,47 @@ namespace WTONewProject.View
     public partial class LoginWithNullPage : ContentPage
     {
 
-        bool _isSavePassword = false;
+        bool _isSavePassword = true;
         string _userName = "";
         string _passWord = "";
-        string _sourceURL = "";
+        string _tenancyName = "";
         public LoginWithNullPage()
         {
             InitializeComponent();
             DependencyService.Get<IJpushSetAlias>().setAliasWithName("");
-            if (App.ScreenWidth >400)
-            {
-                TrapezoidImg.WidthRequest = 300;
-                TrapezoidImg.HeightRequest = 256;
-                centerGrid.WidthRequest = 300;
-                centerGrid.HeightRequest = 298;
-                userFrame.Margin = new Thickness(0, 10, 0, 0);
-            }          
         }
 
 
-        public LoginWithNullPage(string userName, string passWord) :this()
+        public LoginWithNullPage(string userName, string passWord,string tenancyName) :this()
         {
             _isSavePassword = true; 
             _userName = userName;
             _passWord = passWord;
             password.Text = passWord;
             account.Text = userName;
-            saveBut.Image = ImageSource.FromFile("select.png") as FileImageSource;
+            _tenancyName = tenancyName;
+            saveBut.Image = ImageSource.FromFile("icon-select.png") as FileImageSource;
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            NavigationPage.SetBackButtonTitle(this, "");
+            NavigationPage.SetHasNavigationBar(this, false);
+            //or 
         }
 
+        void ShowPassWord_Clicke(object sender, System.EventArgs e)
+        {
+            password.IsPassword = !password.IsPassword;
+            Button button = sender as Button;
+            button.Image = password.IsPassword ? ImageSource.FromFile("Group6.png") as FileImageSource : ImageSource.FromFile("show.png") as FileImageSource;
+        }
 
         void SavePassWord_Clicked(object sender, System.EventArgs e)
         {
             _isSavePassword = !_isSavePassword;
-            saveBut.Image = _isSavePassword ? ImageSource.FromFile("select.png") as FileImageSource : ImageSource.FromFile("nomal.png") as FileImageSource;
+
+            saveBut.Image = _isSavePassword ? ImageSource.FromFile("icon-select.png") as FileImageSource : ImageSource.FromFile("icon-unselect.png") as FileImageSource;
         }
 
         void ChangePassWord_Clicked(object sender, System.EventArgs e)
@@ -67,19 +74,24 @@ namespace WTONewProject.View
             }
             string[] xx = account.Text.Split(new string[] { "@" }, StringSplitOptions.None);
             string username = "";
-            string siteURL = "";
+            string tenantName = "";
             username = xx[0];
-            if (xx.Count()==2)
+            if (xx.Count() == 2)
             {
-                siteURL = xx[1];
+                tenantName = xx[1];
             }
-            bool autologin = await (App.Current as App).LoginAsync(username, password.Text,siteURL,_isSavePassword);
+            if (!string.IsNullOrWhiteSpace(tenantName))
+            {
+                _tenancyName = tenantName;
+            }
+            bool autologin = await (App.Current as App).LoginAsync(username, password.Text, _tenancyName, _isSavePassword);
             if(!autologin)
-                await DisplayAlert("提示", "登录失败", "确定");
+                await DisplayAlert("提示", "登陆失败", "确定");
 
         }
         void ForgotPassWord_Clicked(object sender, System.EventArgs e)
         {
+            Navigation.PushAsync(new ForgotPasswordPage(_userName));
 
         }
 

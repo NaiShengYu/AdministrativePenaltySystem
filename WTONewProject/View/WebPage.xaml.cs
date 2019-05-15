@@ -18,7 +18,7 @@ namespace WTONewProject.View
             InitializeComponent();
             _cookie = cookie;
             var source = new UrlWebViewSource();
-            source.Url = App.tokenModel.url+"/Mobile/index";
+            source.Url = Constants.WEB_SOURCE;
             //source.Url = Constants.URL_WEB;
             if (Device.RuntimePlatform == Device.Android)
             {
@@ -46,7 +46,7 @@ namespace WTONewProject.View
             {
                 return;
             }
-             DependencyService.Get<IJpushSetAlias>().setAliasWithName(App.tokenModel.sid);
+             //DependencyService.Get<IJpushSetAlias>().setAliasWithName(App.tokenModel.sid);
         }
 
     }

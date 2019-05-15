@@ -15,11 +15,9 @@ namespace WTONewProject.Model
 
         [PrimaryKey, AutoIncrement]
         public int ID { get; set; }
-        public string token { get; set; }
-        public string url { get; set; }
-        public string sid { get; set; }
-        public string name { get; set; }
-        public string username { get; set; }
-        public DateTime lastTime { get; set; }
+        public string accessToken { get; set; }
+        public string encryptedAccessToken { get; set; }
+        public string expireInSeconds { get; set; }
+        public string userId { get; set; }
     }
 }
