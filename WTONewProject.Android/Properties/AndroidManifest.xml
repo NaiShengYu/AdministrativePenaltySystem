@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.azura.amp.WTONewProject" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.azura.amp.web" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="10" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
@@ -30,7 +30,7 @@
 	<uses-permission android:name="android.permission.WRITE_SMS" />
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 	<uses-permission android:name="android.permission.GET_TASKS" />
-	<application android:label="EHSOON">
+	<application android:label="运维平台">
 		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.azura.amp.WTONewProject.fileprovider" android:exported="false" android:grantUriPermissions="true">
 			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
 		</provider>
@@ -92,5 +92,5 @@
 		<meta-data android:name="JPUSH_CHANNEL" android:value="developer-default" />
 		<!-- Required. AppKey copied from Portal -->
 		<meta-data android:name="JPUSH_APPKEY" android:value="ab4f6d9522395eb71a74c0cc" />//azuratech的账号
-    <!--<meta-data android:name="JPUSH_APPKEY" android:value="bdaf3d77e03a9811e5c091d2" />--><!--   JPush End  --></application>
+    <!--   JPush End  --></application>
 </manifest>

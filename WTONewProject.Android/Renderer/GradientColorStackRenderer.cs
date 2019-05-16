@@ -12,6 +12,8 @@ namespace WTONewProject.Droid.Renderer
     {
         private Color StartColor { get; set; }
         private Color EndColor { get; set; }
+
+
         protected override void DispatchDraw(global::Android.Graphics.Canvas canvas)
         {
             #region for Horizontal Gradient
@@ -31,17 +33,16 @@ namespace WTONewProject.Droid.Renderer
             base.DispatchDraw(canvas);
         }
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Frame> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<StackLayout> e)
         {
             base.OnElementChanged(e);
-
             if (e.OldElement != null || Element == null)
             {
                 return;
             }
             try
             {
-                var stack = e.NewElement as GradientColorStack;
+                GradientColorStack stack = e.NewElement as GradientColorStack;
                 this.StartColor = stack.StartColor;
                 this.EndColor = stack.EndColor;
             }
@@ -50,5 +51,6 @@ namespace WTONewProject.Droid.Renderer
                 System.Diagnostics.Debug.WriteLine(@"ERROR:", ex.Message);
             }
         }
+
     }
 }

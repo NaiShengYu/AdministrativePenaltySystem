@@ -16,14 +16,14 @@ namespace WTONewProject.View
         void SendCord_Clicked(object sender, System.EventArgs e)
         {
             int i = 60;
-            sendCordImage.Source = ImageSource.FromFile("can'tEdit.png");
+            sendCordImage.Source = ImageSource.FromFile("cantEdit.png");
             sendCordButton.IsEnabled = false;
             sendCordButton.Text = i + "s后发送";
             Device.StartTimer(new TimeSpan(0, 0, 1), () => {
                 i -= 1;
                 if (i >0)
                 {
-                    sendCordImage.Source = ImageSource.FromFile("can'tEdit.png");
+                    sendCordImage.Source = ImageSource.FromFile("cantEdit.png");
                     sendCordButton.IsEnabled = false;
                     sendCordButton.Text =i + "s后发送";
                     return true;

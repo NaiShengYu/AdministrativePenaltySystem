@@ -22,7 +22,7 @@
                             <Button Image="Group6" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,10,0" WidthRequest="36" HeightRequest="24" Clicked="ShowPassWord_Clicke"/>
                         </Grid> 
                 
-                <Button WidthRequest="90" x:Name="saveBut" Clicked="SavePassWord_Clicked" Image="icon-unselect" TextColor="#777777" HorizontalOptions="Start" VerticalOptions="Center" Margin="30,0,0,0" Padding="0" BackgroundColor="Transparent" Text="记住密码" Font="12" HeightRequest="40"/>
+                <Button WidthRequest="90" x:Name="saveBut" Clicked="SavePassWord_Clicked" Image="icon_unselect" TextColor="#777777" HorizontalOptions="Start" VerticalOptions="Center" Margin="30,0,0,0" Padding="0" BackgroundColor="Transparent" Text="记住密码" Font="12" HeightRequest="40"/>
 
               <local:GradientColorStack StartColor="#41A0FF" EndColor="#3667FC" Margin="39,25,39,0" HeightRequest="45">
                 <Button Padding="0" HorizontalOptions="Fill" VerticalOptions="Center" Margin="0,0,0,0" HeightRequest="45" BorderRadius="0" Text="登 录" TextColor="White" Font="16" Clicked="Login_Clicked"/>
