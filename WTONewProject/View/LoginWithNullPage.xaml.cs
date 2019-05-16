@@ -32,7 +32,7 @@ namespace WTONewProject.View
             password.Text = passWord;
             account.Text = userName;
             _tenancyName = tenancyName;
-            saveBut.Image = ImageSource.FromFile("icon-select.png") as FileImageSource;
+            saveBut.Image = ImageSource.FromFile("icon_select.png") as FileImageSource;
         }
         protected override void OnAppearing()
         {
@@ -53,7 +53,7 @@ namespace WTONewProject.View
         {
             _isSavePassword = !_isSavePassword;
 
-            saveBut.Image = _isSavePassword ? ImageSource.FromFile("icon-select.png") as FileImageSource : ImageSource.FromFile("icon-unselect.png") as FileImageSource;
+            saveBut.Image = _isSavePassword ? ImageSource.FromFile("icon_select.png") as FileImageSource : ImageSource.FromFile("icon_unselect.png") as FileImageSource;
         }
 
         void ChangePassWord_Clicked(object sender, System.EventArgs e)

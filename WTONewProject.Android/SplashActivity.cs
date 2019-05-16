@@ -6,7 +6,7 @@ using Android.Support.V7.App;
 
 namespace WTONewProject.Droid
 {
-    [Activity(Label = "EHSOON", Icon = "@drawable/icon", Theme = "@style/splashscreen", MainLauncher = true,
+    [Activity(Label = "运维平台", Icon = "@drawable/logo", Theme = "@style/splashscreen", MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, NoHistory = true)]
     public class SplashActivity : AppCompatActivity
     {

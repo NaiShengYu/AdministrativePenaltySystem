@@ -11,7 +11,7 @@ using CN.Jpush.Android.Api;
 
 namespace WTONewProject.Droid
 {
-    [Activity(Label = "EHSOON", Icon = "@drawable/icon", Theme = "@style/MainTheme", MainLauncher = false, 
+    [Activity(Label = "运维平台", Icon = "@drawable/logo", Theme = "@style/MainTheme", MainLauncher = false, 
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
