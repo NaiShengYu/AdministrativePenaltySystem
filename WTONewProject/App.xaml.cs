@@ -114,7 +114,7 @@ namespace WTONewProject
                 tokenModel.expireInSeconds = _loginResultModel.result.expireInSeconds;
                 tokenModel.userId = _loginResultModel.result.userId;
                 saveToken();
-                MainPage = new WebPage(_loginResultModel.result.accessToken);
+                MainPage = new WebPage(_loginResultModel.result.accessToken,_loginResultModel.result.userId);
                 return true;
             }
         }

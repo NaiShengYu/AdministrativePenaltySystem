@@ -96,13 +96,25 @@ namespace WTONewProject.iOS.Renderer
             }
             NSMutableDictionary cookieProperties = new NSMutableDictionary();
             cookieProperties.Add(NSHttpCookie.KeyName, (NSString)"accessToken");
-            string cooki = "Bearer " + Element.AzuraCookie;
             cookieProperties.Add(NSHttpCookie.KeyValue, (NSString)Element.AzuraCookie);
+            //cookieProperties.Add((NSString)"userid", (NSString)Element.userid);
             cookieProperties.Add(NSHttpCookie.KeyOriginUrl, (NSString)Constants.WEB_SOURCE);
             cookieProperties.Add(NSHttpCookie.KeyPath, (NSString)"/");
             cookieProperties.Add(NSHttpCookie.KeyExpires, new NSDate().AddSeconds(30 * 24 * 3600));
             NSHttpCookie httpCookie = new NSHttpCookie(cookieProperties);
             cookieStorage.SetCookie(httpCookie);
+
+            NSMutableDictionary cookieProperties1 = new NSMutableDictionary();
+            cookieProperties1.Add(NSHttpCookie.KeyName, (NSString)"userId");
+            cookieProperties1.Add(NSHttpCookie.KeyValue, (NSString)Element.userid);
+            //cookieProperties.Add((NSString)"userid", (NSString)Element.userid);
+            cookieProperties1.Add(NSHttpCookie.KeyOriginUrl, (NSString)Constants.WEB_SOURCE);
+            cookieProperties1.Add(NSHttpCookie.KeyPath, (NSString)"/");
+            cookieProperties1.Add(NSHttpCookie.KeyExpires, new NSDate().AddSeconds(30 * 24 * 3600));
+            NSHttpCookie httpCookie1 = new NSHttpCookie(cookieProperties1);
+            //cookieStorage.SetCookie(httpCookie1);
+            cookieStorage.SetCookies(new NSHttpCookie[] { httpCookie, httpCookie1 }, new NSUrl((NSString)Constants.WEB_SOURCE), new NSUrl("http://amp.azuratech.com"));
+
             return true;
         }
 

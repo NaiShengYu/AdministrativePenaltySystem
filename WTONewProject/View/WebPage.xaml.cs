@@ -13,7 +13,7 @@ namespace WTONewProject.View
     {
         public static string _cookie;
 
-        public WebPage(string cookie)
+        public WebPage(string cookie,string userid)
         {
             InitializeComponent();
             _cookie = cookie;
@@ -26,6 +26,7 @@ namespace WTONewProject.View
             }
             web.Source = source;
             web.AzuraCookie = cookie;
+            web.userid = userid;
             GetUserInfo();
         }
 

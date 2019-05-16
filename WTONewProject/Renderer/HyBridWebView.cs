@@ -14,6 +14,7 @@ namespace WTONewProject.Renderer
     public class HyBridWebView : WebView
     {
         public string AzuraCookie { get; set; }
+        public string userid { get; set; }
         public event EventHandler<EventArgs> pushCode;
         public event EventHandler<EventArgs> clickYi;
 
