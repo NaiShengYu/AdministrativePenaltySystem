@@ -12,8 +12,8 @@
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<permission android:name="com.azura.amp.WTONewProject.permission.JPUSH_MESSAGE" android:protectionLevel="signature" />
-	<uses-permission android:name="com.azura.amp.WTONewProject.permission.JPUSH_MESSAGE" />
+	<permission android:name="com.azura.amp.web.permission.JPUSH_MESSAGE" android:protectionLevel="signature" />
+	<uses-permission android:name="com.azura.amp.web.permission.JPUSH_MESSAGE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.CAMERA" />
 	<uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
@@ -31,7 +31,7 @@
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 	<uses-permission android:name="android.permission.GET_TASKS" />
 	<application android:label="运维平台">
-		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.azura.amp.WTONewProject.fileprovider" android:exported="false" android:grantUriPermissions="true">
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.azura.amp.web.fileprovider" android:exported="false" android:grantUriPermissions="true">
 			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
 		</provider>
 		<!-- JPush Required SDK 核心功能-->
@@ -48,28 +48,28 @@
 			<intent-filter>
 				<action android:name="cn.jpush.android.ui.PushActivity" />
 				<category android:name="android.intent.category.DEFAULT" />
-				<category android:name="com.azura.amp.WTONewProject" />
+				<category android:name="com.azura.amp.web" />
 			</intent-filter>
 		</activity>
 		<!-- Rich push 核心功能 since 2.0.6-->
 		<activity android:name="cn.jpush.android.ui.PopWinActivity" android:exported="false"></activity>
 		<!-- since 3.0.9 JPush Required SDK 核心功能-->
-		<provider android:authorities="com.azura.amp.WTONewProject.DataProvider" android:name="cn.jpush.android.service.DataProvider" android:exported="true" />
+		<provider android:authorities="com.azura.amp.web.DataProvider" android:name="cn.jpush.android.service.DataProvider" android:exported="true" />
 		<!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
 		<!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
 		<service android:name="cn.jpush.android.service.DaemonService" android:enabled="true" android:exported="true">
 			<intent-filter>
 				<action android:name="cn.jpush.android.intent.DaemonService" />
-				<category android:name="com.azura.amp.WTONewProject" />
+				<category android:name="com.azura.amp.web" />
 			</intent-filter>
 		</service>
 		<!-- since 3.1.0 Required SDK 核心功能-->
-		<provider android:authorities="com.azura.amp.WTONewProject.DownloadProvider" android:name="cn.jpush.android.service.DownloadProvider" android:exported="true" />
+		<provider android:authorities="com.azura.amp.web.DownloadProvider" android:name="cn.jpush.android.service.DownloadProvider" android:exported="true" />
 		<!-- Required SDK核心功能-->
 		<receiver android:name="cn.jpush.android.service.PushReceiver" android:enabled="true">
 			<intent-filter android:priority="1000">
 				<action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
-				<category android:name="com.azura.amp.WTONewProject" />
+				<category android:name="com.azura.amp.web" />
 			</intent-filter>
 			<intent-filter>
 				<action android:name="android.intent.action.USER_PRESENT" />

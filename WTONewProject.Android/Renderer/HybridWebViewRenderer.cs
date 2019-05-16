@@ -44,7 +44,7 @@ namespace WTONewProject.Droid.Renderer
                 }
                 if (App.tokenModel != null && !string.IsNullOrWhiteSpace(App.tokenModel.userId))
                 {
-                    synCookies(_context, Constants.WEB_SOURCE, "userid=" + App.tokenModel.userId + ";");
+                    synCookies(_context, Constants.WEB_SOURCE, "userId=" + App.tokenModel.userId + ";");
                 }
                 setSettings(Control);
                 Control.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptGetLocation}{JavaScriptLogOut}", BridWebView, this));

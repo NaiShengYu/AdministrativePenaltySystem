@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Android.Content;
+using System;
 using WTONewProject.Droid.Renderer;
 using WTONewProject.Renderer;
 using Xamarin.Forms;
@@ -13,7 +14,10 @@ namespace WTONewProject.Droid.Renderer
         private Color StartColor { get; set; }
         private Color EndColor { get; set; }
 
+        public GradientColorStackRenderer(Context context) : base(context)
+        {
 
+        }
         protected override void DispatchDraw(global::Android.Graphics.Canvas canvas)
         {
             #region for Horizontal Gradient
