@@ -16,6 +16,8 @@ namespace WTONewProject.View
         public WebPage(string cookie,string userid)
         {
             InitializeComponent();
+
+ 
             _cookie = cookie;
             var source = new UrlWebViewSource();
             source.Url = Constants.WEB_SOURCE;
