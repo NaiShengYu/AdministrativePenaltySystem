@@ -211,7 +211,9 @@
       <IncludeInPackage>true</IncludeInPackage>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BundleResource Include="Resources\btn_bg.png" />
+  </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\index.html" />
     <BundleResource Include="Resources\index.js" />
@@ -240,5 +242,11 @@
     <BundleResource Include="Resources\cantEdit.png" />
     <BundleResource Include="Resources\cantEdit%402x.png" />
     <BundleResource Include="Resources\cantEdit%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\btn_bg%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\btn_bg%403x.png" />
   </ItemGroup>
 </Project>
