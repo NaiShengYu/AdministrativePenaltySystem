@@ -20,7 +20,7 @@
 	<key>MinimumOSVersion</key>
 	<string>9.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>EHSOON</string>
+	<string>运维云</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.azura.amp.YunWei</string>
 	<key>CFBundleVersion</key>
