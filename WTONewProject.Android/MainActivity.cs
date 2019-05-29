@@ -12,11 +12,14 @@ using CN.Jpush.Android.Api;
 namespace WTONewProject.Droid
 {
     [Activity(Label = "运维平台", Icon = "@drawable/logo", Theme = "@style/MainTheme", MainLauncher = false, 
-        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Window.AddFlags(WindowManagerFlags.TranslucentNavigation);
+            //Window.SetBackgroundDrawableResource(Resource.Drawable.MyBackgroundPNG);
+            SetStatusBarColor(Android.Graphics.Color.Transparent);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;

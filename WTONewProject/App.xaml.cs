@@ -73,13 +73,19 @@ namespace WTONewProject
             if (userModels != null && userModels.Count > 0) userModel = userModels[0];
             if (userModel != null)
             {
-                NavigationPage navigationPage = new NavigationPage(new LoginWithNullPage(userModel.userNameOrEmailAddress, userModel.password, userModel.tenancyName));
+                NavigationPage navigationPage = new NavigationPage(new LoginWithNullPage(userModel.userNameOrEmailAddress, userModel.password, userModel.tenancyName))
+                {
+                    BarTextColor = Color.Black,
+                };
                 NavigationPage.SetBackButtonTitle(this, "");
                 MainPage = navigationPage;
             }
             else
             {
-                MainPage = new NavigationPage(new LoginWithNullPage());
+                MainPage = new NavigationPage(new LoginWithNullPage())
+                {
+                    BarTextColor = Color.Black,
+                };
             }
 
         }
@@ -114,7 +120,10 @@ namespace WTONewProject
                 tokenModel.expireInSeconds = _loginResultModel.result.expireInSeconds;
                 tokenModel.userId = _loginResultModel.result.userId;
                 saveToken();
-                MainPage = new WebPage(_loginResultModel.result.accessToken);
+                MainPage = new WebPage(_loginResultModel.result.accessToken)
+                {
+                    BackgroundColor = Color.Transparent,
+                };
                 return true;
             }
         }
