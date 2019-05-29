@@ -5,6 +5,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Plugin.Hud;
 
 namespace WTONewProject.Services
 {
@@ -19,6 +20,7 @@ namespace WTONewProject.Services
 
         public static async Task<HTTPResponse> SendHTTPRequestAsync(string url, string param, string method = "GET", string token = null, string contenttype = "json")
         {
+            CrossHud.Current.Show("请求中...");
             HttpWebResponse res = null;
             string result = null;
             try
@@ -76,7 +78,7 @@ namespace WTONewProject.Services
                 return new HTTPResponse { Results = result, StatusCode = HttpStatusCode.ExpectationFailed };
             }
             Console.WriteLine(url + "===ex:" + result);
-
+            CrossHud.Current.Dismiss();
             return new HTTPResponse { Results = result, StatusCode = res.StatusCode };
         }
 

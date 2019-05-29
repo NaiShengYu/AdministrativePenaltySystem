@@ -46,26 +46,19 @@ namespace WTONewProject
 
 
             //获取存储文件下的内容
-            //List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
-            //if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
-            //if (tokenModel != null && !string.IsNullOrWhiteSpace(tokenModel.url) && !string.IsNullOrWhiteSpace(tokenModel.token) && DateTime.Compare(DateTime.Now, tokenModel.lastTime )< 0)
-            //{
-            //    MainPage = new WebPage(tokenModel.token);
-            //}
-            //else
-            //{
+            List<TokenModel> tokenModels = await App.Database.GetTokenModelAsync();
+            if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
+            if (tokenModel != null && !string.IsNullOrWhiteSpace(tokenModel.accessToken))
+            {
+                MainPage = new WebPage(tokenModel.accessToken, tokenModel.userId);
+            }
+            else
+            {
                 GetUserNameAndPassword();
-            //}
+            }
         }
 
         public async void GetUserNameAndPassword() {
-            //FrameWorkURL URLModel = null;
-            //List<FrameWorkURL> URLModels = await App.Database.GetURLModelAsync();
-            //if (URLModels != null && URLModels.Count > 0) URLModel = URLModels[0];
-            //if (URLModel !=null)
-            //{
-            //    App.FrameworkURL = URLModel.frameURL;
-            //}
 
             //获取存储文件下的内容
             LoginModel userModel = null;
@@ -120,10 +113,7 @@ namespace WTONewProject
                 tokenModel.expireInSeconds = _loginResultModel.result.expireInSeconds;
                 tokenModel.userId = _loginResultModel.result.userId;
                 saveToken();
-                MainPage = new WebPage(_loginResultModel.result.accessToken)
-                {
-                    BackgroundColor = Color.Transparent,
-                };
+                MainPage = new WebPage(_loginResultModel.result.accessToken,_loginResultModel.result.userId);
                 return true;
             }
         }

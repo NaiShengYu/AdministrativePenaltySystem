@@ -20,7 +20,7 @@
 	<key>MinimumOSVersion</key>
 	<string>9.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>EHSOON</string>
+	<string>运维云</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.azura.amp.YunWei</string>
 	<key>CFBundleVersion</key>
@@ -45,8 +45,6 @@
 	<string>为了可以上传播放您的工作录像，请允许使用媒体库</string>
 	<key>NSContactsUsageDescription</key>
 	<string>为了快速的联系您的好友，请允许使用联系人</string>
-	<key>CFBundleName</key>
-	<string>EHSOON</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -54,5 +52,7 @@
 	</dict>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+	<key>CFBundleName</key>
+	<string>运维云</string>
 </dict>
 </plist>

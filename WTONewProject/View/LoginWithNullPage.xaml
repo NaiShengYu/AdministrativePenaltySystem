@@ -4,7 +4,7 @@
              x:Class="WTONewProject.View.LoginWithNullPage" 
              xmlns:local="clr-namespace:WTONewProject.Renderer"
             >
- 
+
     <ContentPage.Content>
         <Grid RowSpacing="0" BackgroundColor="White">
             <Grid.RowDefinitions>
@@ -15,26 +15,23 @@
             <Image Source="logo" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,60,0,0" WidthRequest="180" HeightRequest="180" />
             <StackLayout Grid.Row="1" Spacing="0" Margin="0,30,0,0">
                 <Grid BackgroundColor="#F1F5FB" HorizontalOptions="Fill" VerticalOptions="Center" Margin="39,20,39,0" HeightRequest="45">
-                            <local:BorderlessEntry x:Name="account" HasBorder="false" Placeholder="账户" HorizontalTextAlignment="Start"  
+                    <local:BorderlessEntry x:Name="account" HasBorder="false" Placeholder="账户" HorizontalTextAlignment="Start"  
                                                    VerticalOptions="FillAndExpand" Margin="10,0,0,0" HeightRequest="45" FontSize="14" 
-                                                   BackgroundColor="Transparent"/>
-                        </Grid> 
+                                                   BackgroundColor="Transparent" XAlign="Start"/>
+                </Grid>
                 <Grid BackgroundColor="#F1F5FB" HorizontalOptions="Fill" VerticalOptions="Center" Margin="39,20,39,0" HeightRequest="45">
-                            <local:BorderlessEntry x:Name="password" IsPassword="true" HasBorder="false" Placeholder="密码" HorizontalTextAlignment="Start" 
+                    <local:BorderlessEntry x:Name="password" IsPassword="true" HasBorder="false" Placeholder="密码" HorizontalTextAlignment="Start" 
                                                    VerticalOptions="Center" Margin="10,0,0,0" HeightRequest="45" FontSize="14" 
-                                                   BackgroundColor="Transparent"/>
-                            <Button Image="Group6" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,10,0" WidthRequest="36" HeightRequest="24" 
+                                                   BackgroundColor="Transparent" XAlign="Start"/>
+                    <Button Image="Group6" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,10,0" WidthRequest="36" HeightRequest="24" 
                                     Clicked="ShowPassWord_Clicke" BackgroundColor="Transparent"/>
-                        </Grid> 
-                
-                <Button WidthRequest="90" x:Name="saveBut" Clicked="SavePassWord_Clicked" Image="icon_unselect" TextColor="#777777" HorizontalOptions="Start" VerticalOptions="Center" Margin="39,0,0,0" Padding="0" BackgroundColor="Transparent" Text="记住密码" Font="12" HeightRequest="40"/>
+                </Grid>
 
-                <!--<local:GradientColorStack StartColor="#41A0FF" EndColor="#3667FC" Margin="39,25,39,0" HeightRequest="45" WidthRequest="200">-->
+                <Button WidthRequest="90" x:Name="saveBut" Clicked="SavePassWord_Clicked" Image="icon_unselect" TextColor="#777777" HorizontalOptions="Start" VerticalOptions="Center" Margin="39,0,0,0" Padding="0" BackgroundColor="Transparent" Text="记住密码" Font="12" HeightRequest="40"/>
                 <Grid>
                     <Image Source="btn_bg" HorizontalOptions="Fill" Margin="39,25,39,0" HeightRequest="45"/>
                     <Button Padding="0" BackgroundColor="Transparent" HorizontalOptions="Fill" VerticalOptions="Center" Margin="39,25,39,0" HeightRequest="45"  BorderRadius="0" Text="登 录" TextColor="White" Font="16" Clicked="Login_Clicked"/>
                 </Grid>
-                <!--</local:GradientColorStack>-->
                 <Button Padding="0"  BackgroundColor="Transparent" HorizontalOptions="Fill" VerticalOptions="Start" Margin="39,20,39,0" HeightRequest="30"  BorderRadius="0" Text="忘记密码?" Font="12" TextColor="#3D8FFE" Clicked="ForgotPassWord_Clicked"/>
             </StackLayout>
         </Grid>
