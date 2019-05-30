@@ -73,6 +73,7 @@ namespace WTONewProject.Services
             }
             catch (Exception ex)
             {
+                CrossHud.Current.Dismiss();
                 result = ex == null ? "" : ex.Message;
                 Console.WriteLine("错误信息：====" + ex + "错误的URL" + url);
                 return new HTTPResponse { Results = result, StatusCode = HttpStatusCode.ExpectationFailed };
