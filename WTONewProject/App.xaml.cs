@@ -50,7 +50,9 @@ namespace WTONewProject
             if (tokenModels != null && tokenModels.Count > 0) tokenModel = tokenModels[0];
             if (tokenModel != null && !string.IsNullOrWhiteSpace(tokenModel.accessToken))
             {
-                MainPage = new WebPage(tokenModel.accessToken, tokenModel.userId);
+                var webpage = new NavigationPage(new WebPage(tokenModel.accessToken, tokenModel.userId));
+                //webpage.BarBackgroundColor = Color.Red;
+                MainPage = webpage;
             }
             else
             {
@@ -66,13 +68,19 @@ namespace WTONewProject
             if (userModels != null && userModels.Count > 0) userModel = userModels[0];
             if (userModel != null)
             {
-                NavigationPage navigationPage = new NavigationPage(new LoginWithNullPage(userModel.userNameOrEmailAddress, userModel.password, userModel.tenancyName));
+                NavigationPage navigationPage = new NavigationPage(new LoginWithNullPage(userModel.userNameOrEmailAddress, userModel.password, userModel.tenancyName))
+                {
+                    BarTextColor = Color.Black,
+                };
                 NavigationPage.SetBackButtonTitle(this, "");
                 MainPage = navigationPage;
             }
             else
             {
-                MainPage = new NavigationPage(new LoginWithNullPage());
+                MainPage = new NavigationPage(new LoginWithNullPage())
+                {
+                    BarTextColor = Color.Black,
+                };
             }
 
         }
@@ -107,7 +115,9 @@ namespace WTONewProject
                 tokenModel.expireInSeconds = _loginResultModel.result.expireInSeconds;
                 tokenModel.userId = _loginResultModel.result.userId;
                 saveToken();
-                MainPage = new WebPage(_loginResultModel.result.accessToken,_loginResultModel.result.userId);
+                var webpage = new NavigationPage(new WebPage(_loginResultModel.result.accessToken, _loginResultModel.result.userId));
+                //webpage.BarBackgroundColor = Color.Red;
+                MainPage = webpage;
                 return true;
             }
         }

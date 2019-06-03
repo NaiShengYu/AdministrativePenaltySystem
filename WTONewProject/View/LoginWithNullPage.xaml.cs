@@ -92,7 +92,6 @@ namespace WTONewProject.View
         void ForgotPassWord_Clicked(object sender, System.EventArgs e)
         {
             Navigation.PushAsync(new ForgotPasswordPage(_userName));
-
         }
 
 
