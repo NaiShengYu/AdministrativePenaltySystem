@@ -17,15 +17,30 @@ namespace WTONewProject.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            Window.AddFlags(WindowManagerFlags.TranslucentNavigation);
-            //Window.SetBackgroundDrawableResource(Resource.Drawable.MyBackgroundPNG);
-            SetStatusBarColor(Android.Graphics.Color.Transparent);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
             App.ScreenHeight = (int)(Resources.DisplayMetrics.HeightPixels / Resources.DisplayMetrics.Density);
             App.ScreenWidth = (int)(Resources.DisplayMetrics.WidthPixels / Resources.DisplayMetrics.Density);
             base.OnCreate(savedInstanceState);
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            {
+                //Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                //Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+
+                //Window.AddFlags(WindowManagerFlags.TranslucentStatus);
+                Window.SetStatusBarColor(Android.Graphics.Color.Transparent);
+                Window.AddFlags(WindowManagerFlags.TranslucentNavigation);
+                //Window.SetNavigationBarColor(Android.Graphics.Color.Blue);
+            }
+            else if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat && Build.VERSION.SdkInt < BuildVersionCodes.Lollipop)
+            {
+                Window.AddFlags(WindowManagerFlags.TranslucentStatus);
+                //Window.AddFlags(WindowManagerFlags.TranslucentNavigation);
+            }
+
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             InitJPush();

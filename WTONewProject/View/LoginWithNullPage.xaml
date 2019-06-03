@@ -12,16 +12,16 @@
                 <RowDefinition Height="6*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Image Source="logo" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,60,0,0" WidthRequest="180" HeightRequest="180" />
+            <Image Source="logo_white" VerticalOptions="Start" HorizontalOptions="Center" Margin="0,60,0,0" WidthRequest="180" HeightRequest="180" />
             <StackLayout Grid.Row="1" Spacing="0" Margin="0,30,0,0">
                 <Grid BackgroundColor="#F1F5FB" HorizontalOptions="Fill" VerticalOptions="Center" Margin="39,20,39,0" HeightRequest="45">
                     <local:BorderlessEntry x:Name="account" HasBorder="false" Placeholder="账户" HorizontalTextAlignment="Start"  
-                                                   VerticalOptions="FillAndExpand" Margin="10,0,0,0" HeightRequest="45" FontSize="14" 
-                                                   BackgroundColor="Transparent" XAlign="Start"/>
+                                                   VerticalOptions="CenterAndExpand" Margin="10,0,0,0" HeightRequest="45" FontSize="14" 
+                                                   BackgroundColor="Transparent" XAlign="Start" YAlign="Center"/>
                 </Grid>
                 <Grid BackgroundColor="#F1F5FB" HorizontalOptions="Fill" VerticalOptions="Center" Margin="39,20,39,0" HeightRequest="45">
                     <local:BorderlessEntry x:Name="password" IsPassword="true" HasBorder="false" Placeholder="密码" HorizontalTextAlignment="Start" 
-                                                   VerticalOptions="Center" Margin="10,0,0,0" HeightRequest="45" FontSize="14" 
+                                                   VerticalOptions="CenterAndExpand" Margin="10,0,0,0" HeightRequest="45" FontSize="14" 
                                                    BackgroundColor="Transparent" XAlign="Start"/>
                     <Button Image="Group6" HorizontalOptions="End" VerticalOptions="Center" Margin="0,0,10,0" WidthRequest="36" HeightRequest="24" 
                                     Clicked="ShowPassWord_Clicke" BackgroundColor="Transparent"/>

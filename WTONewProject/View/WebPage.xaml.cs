@@ -17,7 +17,9 @@ namespace WTONewProject.View
         {
             InitializeComponent();
 
- 
+            NavigationPage.SetBackButtonTitle(this, "");
+            NavigationPage.SetHasNavigationBar(this, false);
+
             _cookie = cookie;
             var source = new UrlWebViewSource();
             source.Url = Constants.WEB_SOURCE;

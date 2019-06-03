@@ -11,6 +11,10 @@ namespace WTONewProject.Renderer
            BindableProperty.Create("XAlign", typeof(TextAlignment), typeof(BorderlessEntry),
            TextAlignment.Start);
 
+        public static readonly BindableProperty YAlignProperty =
+           BindableProperty.Create("YAlign", typeof(TextAlignment), typeof(BorderlessEntry),
+           TextAlignment.Center);
+
 
         public bool HasBorder
         {
@@ -24,6 +28,12 @@ namespace WTONewProject.Renderer
         {
             get { return (TextAlignment)GetValue(XAlignProperty); }
             set { SetValue(XAlignProperty, value); }
+        }
+
+        public TextAlignment YAlign
+        {
+            get { return (TextAlignment)GetValue(YAlignProperty); }
+            set { SetValue(YAlignProperty, value); }
         }
 
     }
