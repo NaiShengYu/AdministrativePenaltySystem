@@ -3,12 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
 	android:gravity="center_horizontal"
+    android:background="@android:color/white"
     android:layout_height="match_parent">
-
-	<ImageView 
-		android:layout_width="wrap_content"
+	<ImageView
+		android:layout_marginTop="50dp"
+		android:layout_width="179.5dp"
 		android:src="@drawable/logo_white"
-        android:layout_marginTop="100dp"
-		android:layout_height="wrap_content"/>
+		android:scaleType="centerInside"
+		android:layout_height="121.0dp"/>
+
+	<TextView 
+		android:layout_width="wrap_content"	
+        android:textStyle="bold"
+		android:layout_height="wrap_content"
+		android:text="欢迎进入运维云"
+		android:textColor="#3D466D"
+		android:textSize="18sp"/>
 
 </LinearLayout>

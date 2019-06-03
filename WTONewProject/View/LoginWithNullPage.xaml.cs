@@ -32,7 +32,7 @@ namespace WTONewProject.View
             password.Text = passWord;
             account.Text = userName;
             _tenancyName = tenancyName;
-            saveBut.Image = ImageSource.FromFile("icon_select.png") as FileImageSource;
+            saveBut.Source = ImageSource.FromFile("icon_select.png");
         }
         protected override void OnAppearing()
         {
@@ -53,7 +53,7 @@ namespace WTONewProject.View
         {
             _isSavePassword = !_isSavePassword;
 
-            saveBut.Image = _isSavePassword ? ImageSource.FromFile("icon_select.png") as FileImageSource : ImageSource.FromFile("icon_unselect.png") as FileImageSource;
+            saveBut.Source = _isSavePassword ? ImageSource.FromFile("icon_select.png") : ImageSource.FromFile("icon_unselect.png");
         }
 
         void ChangePassWord_Clicked(object sender, System.EventArgs e)
@@ -86,13 +86,12 @@ namespace WTONewProject.View
             }
             bool autologin = await (App.Current as App).LoginAsync(username, password.Text, _tenancyName, _isSavePassword);
             if(!autologin)
-                await DisplayAlert("提示", "登陆失败", "确定");
+                await DisplayAlert("提示", "登录失败", "确定");
 
         }
         void ForgotPassWord_Clicked(object sender, System.EventArgs e)
         {
             Navigation.PushAsync(new ForgotPasswordPage(_userName));
-
         }
 
 
