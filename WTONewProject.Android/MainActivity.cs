@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using CN.Jpush.Android.Api;
+using Android.Content;
 
 namespace WTONewProject.Droid
 {
@@ -52,6 +53,7 @@ namespace WTONewProject.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
 
         /// <summary>
         /// init JPush

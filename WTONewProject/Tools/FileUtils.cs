@@ -44,5 +44,6 @@ namespace WTONewProject.Tools
             File.AppendAllText(fullName, content);
             File.AppendAllText(fullName, "\r\n");
         }
+
     }
 }

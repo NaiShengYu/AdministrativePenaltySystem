@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+	<VideoView 		
+		android:id="@+id/video"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+		</VideoView>
+
+		<LinearLayout
+			android:id="@+id/bottom"
+			android:layout_alignParentBottom="true"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:layout_marginBottom="30dp"
+			android:gravity="center"
+			android:layout_height="wrap_content">
+
+			<ImageView
+				android:id="@+id/Delete"
+				android:layout_width="50dp"		
+				android:scaleType="fitXY"
+				android:layout_marginRight="40dp"
+				android:src="@drawable/video_delete"
+				android:layout_height="50dp"/>			
+		
+			<ImageView
+				android:id="@+id/Start"
+				android:layout_width="80dp"
+				android:src="@drawable/nim_video_capture_start_btn"
+				android:layout_height="80dp"/>
+
+			<ImageView
+				android:id="@+id/Ok"
+				android:layout_width="50dp"
+				android:layout_marginLeft="40dp"		
+				android:scaleType="fitXY"
+				android:src="@drawable/video_finish"
+				android:layout_height="50dp"/>
+		</LinearLayout>
+
+	<Chronometer 
+		android:id="@+id/timer"
+		android:layout_centerHorizontal="true"
+		android:layout_above="@id/bottom"
+		android:layout_width="wrap_content"
+		android:layout_marginBottom="20dp"
+		android:layout_height="wrap_content"
+		android:textSize="12sp"
+		android:textColor="@android:color/white"/>
+</RelativeLayout>

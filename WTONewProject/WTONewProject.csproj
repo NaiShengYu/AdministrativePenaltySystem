@@ -13,6 +13,7 @@
     <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+    <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.220655" />
     <PackageReference Include="Xamarin.Auth" Version="1.6.0.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
@@ -23,7 +24,6 @@
   <ItemGroup>
     <Folder Include="Renderer\" />
     <Folder Include="Comment\" />
-    <Folder Include="Services\" />
     <Folder Include="Model\" />
   </ItemGroup>
   <ItemGroup>
