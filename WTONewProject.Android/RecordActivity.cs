@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using WTONewProject.Droid.Servers;
 using WTONewProject.Tools;
-using Xamarin.Forms;
 using static Android.Hardware.Camera;
 
 namespace WTONewProject.Droid
@@ -87,7 +86,7 @@ namespace WTONewProject.Droid
         {
             if (isRecording)//停止
             {
-                stop(true);
+                stop(false);
                 ivStart.SetImageResource(Resource.Drawable.nim_video_capture_start_btn);
                 ivBack.Visibility = ViewStates.Visible;
                 ivDelete.Visibility = ViewStates.Visible;
@@ -109,7 +108,8 @@ namespace WTONewProject.Droid
 
         Android.Hardware.Camera camera;
         int bestIndex;
-        
+        int supportFrameRate = 0;
+
 
         private void prepare()
         {
@@ -133,7 +133,10 @@ namespace WTONewProject.Droid
             recorder.SetMaxDuration(10 * 1000);
             recorder.SetMaxFileSize(5 * 1000 * 1000);
             recorder.SetVideoEncodingBitRate(2 * 1024 * 1024);
-            recorder.SetVideoFrameRate(15);
+            if (supportFrameRate > 0)
+            {
+                recorder.SetVideoFrameRate(supportFrameRate);
+            }
             //recorder.SetPreviewDisplay(vv.Holder.Surface);
             if (videoSizeList != null && videoSizeList.Count > 0)
             {
@@ -263,6 +266,7 @@ namespace WTONewProject.Droid
                     Parameters parameter = camera.GetParameters();
                     IList<Android.Hardware.Camera.Size> prviewList = parameter.SupportedPreviewSizes;
                     IList<Android.Hardware.Camera.Size> videoList = parameter.SupportedVideoSizes;
+                    IList<Java.Lang.Integer> rateList = parameter.SupportedPreviewFrameRates;
                     if (prviewList != null && prviewList.Count > 0)
                     {
                         prviewSizeList = new List<Android.Hardware.Camera.Size>();
@@ -283,6 +287,24 @@ namespace WTONewProject.Droid
                             {
                                 videoSizeList.Add(videoList[i]);
                             }
+                        }
+                    }
+                    if (rateList != null && rateList.Count > 0)
+                    {
+                        bool exist = false;
+                        foreach (var item in rateList)
+                        {
+                            int rate = item.IntValue();
+                            if (rate >= 15)
+                            {
+                                exist = true;
+                                supportFrameRate = rate;
+                                break;
+                            }
+                        }
+                        if (!exist)
+                        {
+                            supportFrameRate = rateList[0].IntValue();
                         }
                     }
                     if (prviewSizeList != null && prviewSizeList.Count > 0)

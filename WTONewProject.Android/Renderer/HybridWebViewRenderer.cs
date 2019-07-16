@@ -78,22 +78,24 @@ namespace WTONewProject.Droid.Renderer
         private void setSettings(Android.Webkit.WebView webView)
         {
             androidWebView = webView;
-            webView.SetLayerType(Android.Views.LayerType.Software, null);
+            webView.SetLayerType(Android.Views.LayerType.Hardware, new Android.Graphics.Paint());
             WebSettings set = webView.Settings;
             set.JavaScriptEnabled = true;
             set.JavaScriptCanOpenWindowsAutomatically = true;
             set.SetSupportZoom(true);
-            set.BuiltInZoomControls = true;
             set.UseWideViewPort = true;
+            set.SetPluginState(PluginState.On);
+            set.PluginsEnabled = true;
             set.AllowFileAccess = true;
             set.CacheMode = CacheModes.NoCache;
             set.SetLayoutAlgorithm(LayoutAlgorithm.SingleColumn);
             set.LoadWithOverviewMode = true;
+            set.BuiltInZoomControls = true;
             set.SetAppCacheEnabled(true);
             set.SetGeolocationEnabled(true);
             set.DomStorageEnabled = true;
             set.MixedContentMode = MixedContentHandling.AlwaysAllow;
-            set.SetPluginState(PluginState.On);
+            set.MediaPlaybackRequiresUserGesture = false;
         }
 
         //设置Cookie
