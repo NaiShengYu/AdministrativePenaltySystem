@@ -85,9 +85,9 @@ namespace WTONewProject.Droid
 
         private void TvStart_Click(object sender, EventArgs e)
         {
-            if (isRecording)//暂停
+            if (isRecording)//停止
             {
-                stop(false);
+                stop(true);
                 ivStart.SetImageResource(Resource.Drawable.nim_video_capture_start_btn);
                 ivBack.Visibility = ViewStates.Visible;
                 ivDelete.Visibility = ViewStates.Visible;
@@ -124,13 +124,13 @@ namespace WTONewProject.Droid
                 recorder.SetCamera(camera);
             }
             recorder.SetVideoSource(VideoSource.Camera);
-            recorder.SetAudioSource(AudioSource.Mic);
+            recorder.SetAudioSource(AudioSource.Camcorder);
             recorder.SetOutputFormat(OutputFormat.Mpeg4);
             recorder.SetVideoEncoder(VideoEncoder.H264);
             recorder.SetAudioEncoder(AudioEncoder.Aac);
             recorder.SetOrientationHint(90);
             recorder.SetOutputFile(savePath);
-            recorder.SetMaxDuration(15 * 1000);
+            recorder.SetMaxDuration(10 * 1000);
             recorder.SetMaxFileSize(5 * 1000 * 1000);
             recorder.SetVideoEncodingBitRate(2 * 1024 * 1024);
             recorder.SetVideoFrameRate(15);
@@ -193,6 +193,7 @@ namespace WTONewProject.Droid
 
         private void stop(bool release)
         {
+            isRecording = false;
             try
             {
                 if (vv != null)
@@ -234,7 +235,7 @@ namespace WTONewProject.Droid
         private void back()
         {
             stop(true);
-            Xamarin.Forms.MessagingCenter.Send<ContentPage, string>(new ContentPage(), "RecordVideo", videoName);
+            Xamarin.Forms.MessagingCenter.Send<Object, string>(new Object(), "RecordVideo", videoName);
             Finish();
         }
 
@@ -343,10 +344,13 @@ namespace WTONewProject.Droid
             return videoSizeList.Count / 2;
         }
 
-        //超过MAX_TIME录制暂停
+        //超过MAX_TIME录制停止
         public void onStop()
         {
-            stop(false);
+            stop(true);
+            ivStart.SetImageResource(Resource.Drawable.nim_video_capture_start_btn);
+            ivBack.Visibility = ViewStates.Visible;
+            ivDelete.Visibility = ViewStates.Visible;
         }
     }
 }

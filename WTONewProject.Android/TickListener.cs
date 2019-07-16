@@ -1,10 +1,12 @@
-﻿using Android.Widget;
+﻿using Android.OS;
+using Android.Widget;
+using System;
 
 namespace WTONewProject.Droid
 {
     public class TickListener : Java.Lang.Object, Chronometer.IOnChronometerTickListener
     {
-        static int MAX_TIME = 10;
+        static int MAX_TIME = 10 * 1000;//ms
 
         //public IntPtr Handle => throw new NotImplementedException();
         private ChronometerCallback _callback;
@@ -22,7 +24,9 @@ namespace WTONewProject.Droid
         public void OnChronometerTick(Chronometer chronometer)
         {
             long time = chronometer.DrawingTime;
-            if (time >= MAX_TIME)
+            long rangeTime = SystemClock.ElapsedRealtime() - chronometer.Base;
+            Console.WriteLine("=====video time=====" + rangeTime);
+            if (rangeTime >= MAX_TIME)
             {
                 if (_callback != null)
                 {

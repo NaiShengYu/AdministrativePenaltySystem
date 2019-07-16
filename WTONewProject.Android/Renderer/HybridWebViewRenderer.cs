@@ -78,12 +78,14 @@ namespace WTONewProject.Droid.Renderer
         private void setSettings(Android.Webkit.WebView webView)
         {
             androidWebView = webView;
+            webView.SetLayerType(Android.Views.LayerType.Software, null);
             WebSettings set = webView.Settings;
             set.JavaScriptEnabled = true;
             set.JavaScriptCanOpenWindowsAutomatically = true;
             set.SetSupportZoom(true);
             set.BuiltInZoomControls = true;
             set.UseWideViewPort = true;
+            set.AllowFileAccess = true;
             set.CacheMode = CacheModes.NoCache;
             set.SetLayoutAlgorithm(LayoutAlgorithm.SingleColumn);
             set.LoadWithOverviewMode = true;
@@ -91,6 +93,7 @@ namespace WTONewProject.Droid.Renderer
             set.SetGeolocationEnabled(true);
             set.DomStorageEnabled = true;
             set.MixedContentMode = MixedContentHandling.AlwaysAllow;
+            set.SetPluginState(PluginState.On);
         }
 
         //设置Cookie
@@ -134,11 +137,18 @@ namespace WTONewProject.Droid.Renderer
             handler.Proceed();
         }
 
+        public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, string url)
+        {
+            Console.WriteLine("===ShouldOverrideUrlLoading:" + url);
+            view.LoadUrl(url);
+            return true;
+        }
+
         public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, IWebResourceRequest request)
         {
             if (request.Url != null)
             {
-                Console.WriteLine("===ShouldOverrideUrlLoading:" + request.Url.Path);
+                Console.WriteLine("===ShouldOverrideUrlLoading2:" + request.Url.Path);
             }
             if (request.Url != null && !string.IsNullOrWhiteSpace(request.Url.Path) && request.Url.Path.Contains("video"))
             {
@@ -148,6 +158,7 @@ namespace WTONewProject.Droid.Renderer
             {
                 _hyBridWebView._videoFlag = false;
             }
+            //view.LoadUrl(request.Url.Path);
             return base.ShouldOverrideUrlLoading(view, request);
         }
     }
@@ -309,6 +320,7 @@ namespace WTONewProject.Droid.Renderer
             if (type == "0")
             {
                 file = await new MediaUtil().TakePhoto(false, 50);
+                sendMediaData(file, "img");
             }
             else if (type == "1")
             {
@@ -320,27 +332,24 @@ namespace WTONewProject.Droid.Renderer
                     Console.WriteLine("=====video result=====" + path);
                     if (string.IsNullOrWhiteSpace(path)) return;
                     file = new Java.IO.File(path);
+                    sendMediaData(file, "video");
                 };
             }
+
+        }
+
+        //发送媒体数据
+        private void sendMediaData(Java.IO.File file, string mediaType)
+        {
             if (file != null)
             {
                 byte[] imgBytes = new AndroidFileUtils().GetBytesFromFile(file);
                 string base64Data = Convert.ToBase64String(imgBytes);
 
-                string mediaType = "img";
-                if (type == "1")
-                {
-                    mediaType = "video";
-                }
                 string js = "setMedia('" + mediaType + "','" + base64Data + "')";
                 Console.WriteLine("=====base64=====" + base64Data);
                 callWebJs(js);
             }
-        }
-
-        private void U_SaveVideoPath(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         /// <summary>

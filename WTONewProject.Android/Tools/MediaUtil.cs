@@ -74,15 +74,17 @@ namespace WTONewProject.Tools
             //检查照相机和存储权限，没有的话进行一次请求
             var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
             var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+            var micrStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Microphone);
 
-            if (cameraStatus != PermissionStatus.Granted || storageStatus != PermissionStatus.Granted)
+            if (cameraStatus != PermissionStatus.Granted || storageStatus != PermissionStatus.Granted || micrStatus != PermissionStatus.Granted)
             {
-                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera, Permission.Storage });
+                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera, Permission.Storage, Permission.Microphone });
                 cameraStatus = results[Permission.Camera];
                 storageStatus = results[Permission.Storage];
+                micrStatus = results[Permission.Microphone];
             }
 
-            if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted)
+            if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted && micrStatus == PermissionStatus.Granted)
             {
                 DependencyService.Get<IAudio>().TakeVideo();
                 MessagingCenter.Unsubscribe<Object, string>(this, "RecordVideo");
