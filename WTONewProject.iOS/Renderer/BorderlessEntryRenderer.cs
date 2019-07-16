@@ -28,7 +28,7 @@ namespace WTONewProject.iOS.Renderer
 
             var view = (BorderlessEntry)Element;
 
-            if (e.PropertyName == BorderlessPicker.HasBorderProperty.PropertyName)
+            if (e.PropertyName == BorderlessEntry.HasBorderProperty.PropertyName)
                 SetBorder(view);
             if (e.PropertyName == BorderlessEntry.XAlignProperty.PropertyName)
                 SetTextAlignment(view);
