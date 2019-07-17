@@ -27,13 +27,12 @@ namespace WTONewProject.Droid
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
-                //Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
-                //Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-
+                //状态栏透明（白色title时状态栏也可见）
                 //Window.AddFlags(WindowManagerFlags.TranslucentStatus);
+                //状态栏透明（白色title时状态栏字体颜色也白色了
                 Window.SetStatusBarColor(Android.Graphics.Color.Transparent);
+                //底部导航栏透明
                 Window.AddFlags(WindowManagerFlags.TranslucentNavigation);
-                //Window.SetNavigationBarColor(Android.Graphics.Color.Blue);
             }
             else if (Build.VERSION.SdkInt >= BuildVersionCodes.Kitkat && Build.VERSION.SdkInt < BuildVersionCodes.Lollipop)
             {

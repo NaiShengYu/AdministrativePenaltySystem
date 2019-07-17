@@ -4,6 +4,6 @@
     <color android:color="@color/splash_background" />
   </item>
   <item >
-    <bitmap android:src="@drawable/splash" android:tileMode="disabled" android:gravity="center" android:layout_gravity="center" />
+    <bitmap android:src="@drawable/splash2" android:tileMode="disabled" android:gravity="center" android:layout_gravity="center" />
   </item>
 </layer-list>
