@@ -139,12 +139,6 @@ namespace WTONewProject.Droid.Renderer
             handler.Proceed();
         }
 
-        public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, string url)
-        {
-            Console.WriteLine("===ShouldOverrideUrlLoading:" + url);
-            view.LoadUrl(url);
-            return true;
-        }
 
         public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, IWebResourceRequest request)
         {
@@ -160,7 +154,6 @@ namespace WTONewProject.Droid.Renderer
             {
                 _hyBridWebView._videoFlag = false;
             }
-            //view.LoadUrl(request.Url.Path);
             return base.ShouldOverrideUrlLoading(view, request);
         }
     }
@@ -240,25 +233,24 @@ namespace WTONewProject.Droid.Renderer
 
         [Export("getLocation")]
         [JavascriptInterface]
-        public async void getLocation(string data)
+        public void getLocation(string data)
         {
-            Xamarin.Essentials.Location currentLocation;
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                currentLocation = await Geolocation.GetLastKnownLocationAsync();
-            }
-            else
+            Xamarin.Essentials.Location currentLocation = null;
+            Device.BeginInvokeOnMainThread(async () =>
             {
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium);
                 currentLocation = await Geolocation.GetLocationAsync(request);
-            }
-            if (currentLocation == null)
-            {
-                currentLocation = new Xamarin.Essentials.Location(34.754626, 113.735763);
-            }
-            Console.WriteLine("=== android location success: lat=" + currentLocation.Latitude + " lng=" + currentLocation.Longitude);
-            string js = "setLocation('" + currentLocation.Latitude + "','" + currentLocation.Longitude + "')";
-            callWebJs(js);
+                if (currentLocation == null)
+                {
+                    //currentLocation = new Xamarin.Essentials.Location(34.754626, 113.735763);
+                }
+                if(currentLocation != null)
+                {
+                    Console.WriteLine("=== android location success: lat=" + currentLocation.Latitude + " lng=" + currentLocation.Longitude);
+                    string js = "setLocation('" + currentLocation.Latitude + "','" + currentLocation.Longitude + "')";
+                    callWebJs(js);
+                }                
+            });            
         }
 
         [Export("logOut")]
