@@ -7,7 +7,8 @@ namespace WTONewProject.Tools
    public  class Constants
     {
 
-        public static string WEB_SOURCE = "http://amp.azuratech.com:8090";
+        public static string WEB_SOURCE = "http://amp.azuratech.com:8088/mobile.html";
+        //public static string WEB_SOURCE = "http://amp.azuratech.com:8090";
         public static string URL_ROOT = "http://amp.azuratech.com:5080/";
         public static string URL_WEB = URL_ROOT + "/Mobile/index";
         public static string URL_GET_USER = URL_ROOT + "/api/Account/GetUserInfo";
