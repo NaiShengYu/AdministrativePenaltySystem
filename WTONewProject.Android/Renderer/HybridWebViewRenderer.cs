@@ -2,7 +2,6 @@
 using Android.Net.Http;
 using Android.Webkit;
 using Java.Interop;
-using Plugin.Media.Abstractions;
 using System;
 using WTONewProject.Droid.Renderer;
 using WTONewProject.Droid.Tools;
@@ -27,7 +26,6 @@ namespace WTONewProject.Droid.Renderer
 
         Context _context;
         Android.Webkit.WebView androidWebView;
-        bool videoFlag = false;
 
 
         public HyBridWebView BridWebView
@@ -55,8 +53,7 @@ namespace WTONewProject.Droid.Renderer
                     synCookies(_context, Constants.WEB_SOURCE, "userId=" + App.tokenModel.userId + ";");
                 }
                 setSettings(Control);
-                Control.SetWebViewClient(new JavascriptWebViewClient(
-                    $"javascript: {JavaScriptGetLocation}{JavaScriptLogOut}{JavaScriptSms}{JavaScriptPhone}{JavaScriptTakeMedia}",
+                Control.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavaScriptGetLocation}{JavaScriptLogOut}{JavaScriptSms}{JavaScriptPhone}{JavaScriptTakeMedia}",
                     BridWebView,
                     this));
                 //Control.SetWebChromeClient(new HybridWebChromeClient(_context, BridWebView));
@@ -91,7 +88,7 @@ namespace WTONewProject.Droid.Renderer
             set.SetLayoutAlgorithm(LayoutAlgorithm.SingleColumn);
             set.LoadWithOverviewMode = true;
             set.BuiltInZoomControls = true;
-            set.SetAppCacheEnabled(true);
+            set.SetAppCacheEnabled(false);
             set.SetGeolocationEnabled(true);
             set.DomStorageEnabled = true;
             set.MixedContentMode = MixedContentHandling.AlwaysAllow;
@@ -138,82 +135,7 @@ namespace WTONewProject.Droid.Renderer
         {
             handler.Proceed();
         }
-
-
-        public override bool ShouldOverrideUrlLoading(Android.Webkit.WebView view, IWebResourceRequest request)
-        {
-            if (request.Url != null)
-            {
-                Console.WriteLine("===ShouldOverrideUrlLoading2:" + request.Url.Path);
-            }
-            if (request.Url != null && !string.IsNullOrWhiteSpace(request.Url.Path) && request.Url.Path.Contains("video"))
-            {
-                _hyBridWebView._videoFlag = true;
-            }
-            else
-            {
-                _hyBridWebView._videoFlag = false;
-            }
-            return base.ShouldOverrideUrlLoading(view, request);
-        }
-    }
-
-    public class HybridWebChromeClient : WebChromeClient
-    {
-        private IValueCallback fileCallback;
-        HyBridWebView _hyBridWebView;
-        Context _context;
-
-        public HybridWebChromeClient(Context context, HyBridWebView hyBridWebView)
-        {
-            _hyBridWebView = hyBridWebView;
-            _context = context;
-        }
-
-
-        [Android.Runtime.Register("onShowFileChooser", "(Landroid/webkit/WebView;Landroid/webkit/ValueCallback;Landroid/webkit/WebChromeClient$FileChooserParams;)Z", "GetOnShowFileChooser_Landroid_webkit_WebView_Landroid_webkit_ValueCallback_Landroid_webkit_WebChromeClient_FileChooserParams_Handler")]
-        public override bool OnShowFileChooser(Android.Webkit.WebView webView, IValueCallback filePathCallback, FileChooserParams fileChooserParams)
-        {
-            fileCallback = filePathCallback;
-
-            if (_hyBridWebView._videoFlag)
-            {
-                recordVideo();
-            }
-            else
-            {
-                takePhoto(_context);
-            }
-            //return base.OnShowFileChooser(webView, filePathCallback, fileChooserParams);
-            return true;
-        }
-
-        /// <summary>
-        /// 拍照
-        /// </summary>
-        private async void takePhoto(Context _context)
-        {
-            MediaFile file = null;
-            if (fileCallback != null && file != null)
-            {
-                Android.Net.Uri[] uris = new Android.Net.Uri[1];
-                Android.Net.Uri u = AndroidFileUtils.GetImageContentUri(_context, file.Path);
-                uris[0] = u;
-                fileCallback.OnReceiveValue(uris);
-                //fileCallback = null;
-                file.Dispose();
-            }
-
-
-        }
-
-        /// <summary>
-        /// 拍视频
-        /// </summary>
-        private void recordVideo()
-        {
-
-        }
+        
     }
 
     public class JSBridge : Java.Lang.Object
@@ -244,13 +166,13 @@ namespace WTONewProject.Droid.Renderer
                 {
                     //currentLocation = new Xamarin.Essentials.Location(34.754626, 113.735763);
                 }
-                if(currentLocation != null)
+                if (currentLocation != null)
                 {
                     Console.WriteLine("=== android location success: lat=" + currentLocation.Latitude + " lng=" + currentLocation.Longitude);
                     string js = "setLocation('" + currentLocation.Latitude + "','" + currentLocation.Longitude + "')";
                     callWebJs(js);
-                }                
-            });            
+                }
+            });
         }
 
         [Export("logOut")]

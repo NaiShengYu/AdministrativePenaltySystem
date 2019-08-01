@@ -13,7 +13,7 @@ namespace WTONewProject.View
     public partial class LoginWithNullPage : ContentPage
     {
 
-        bool _isSavePassword = true;
+        bool _isSavePassword = false;
         string _userName = "";
         string _passWord = "";
         string _tenancyName = "";

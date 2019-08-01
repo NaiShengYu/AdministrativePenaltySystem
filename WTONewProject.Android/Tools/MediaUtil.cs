@@ -32,31 +32,38 @@ namespace WTONewProject.Tools
                 DependencyService.Get<IToast>().LongAlert("无法访问摄像头");
                 return null;
             }
-            //检查照相机和存储权限，没有的话进行一次请求
-            var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
-            var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
-
-            if (cameraStatus != PermissionStatus.Granted || storageStatus != PermissionStatus.Granted)
+            try
             {
-                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera, Permission.Storage });
-                cameraStatus = results[Permission.Camera];
-                storageStatus = results[Permission.Storage];
-            }
+                //检查照相机和存储权限，没有的话进行一次请求
+                var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
+                var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
 
-            if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted)
-            {
-                MediaFile file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                if (cameraStatus != PermissionStatus.Granted || storageStatus != PermissionStatus.Granted)
                 {
-                    SaveToAlbum = saveToAlbum,
-                    CompressionQuality = compress < 0 ? 50 : compress,
-                });
-
-                if (file != null)
-                {
-                    Console.WriteLine("===" + file.AlbumPath); //相册路径
-                    Console.WriteLine("===" + file.Path); // 私有路径
-                    return new Java.IO.File(file.Path);
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera, Permission.Storage });
+                    cameraStatus = results[Permission.Camera];
+                    storageStatus = results[Permission.Storage];
                 }
+
+                if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted)
+                {
+                    MediaFile file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                    {
+                        SaveToAlbum = saveToAlbum,
+                        CompressionQuality = compress < 0 ? 50 : compress,
+                    });
+
+                    if (file != null)
+                    {
+                        Console.WriteLine("===" + file.AlbumPath); //相册路径
+                        Console.WriteLine("===" + file.Path); // 私有路径
+                        return new Java.IO.File(file.Path);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
             return null;
         }
@@ -71,32 +78,41 @@ namespace WTONewProject.Tools
                 DependencyService.Get<IToast>().LongAlert("无法访问摄像头");
                 return;
             }
-            //检查照相机和存储权限，没有的话进行一次请求
-            var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
-            var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
-            var micrStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Microphone);
 
-            if (cameraStatus != PermissionStatus.Granted || storageStatus != PermissionStatus.Granted || micrStatus != PermissionStatus.Granted)
+            try
             {
-                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera, Permission.Storage, Permission.Microphone });
-                cameraStatus = results[Permission.Camera];
-                storageStatus = results[Permission.Storage];
-                micrStatus = results[Permission.Microphone];
-            }
+                //检查照相机和存储权限，没有的话进行一次请求
+                var cameraStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Camera);
+                var storageStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+                var micrStatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Microphone);
 
-            if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted && micrStatus == PermissionStatus.Granted)
-            {
-                DependencyService.Get<IAudio>().TakeVideo();
-                MessagingCenter.Unsubscribe<Object, string>(this, "RecordVideo");
-                MessagingCenter.Subscribe<Object, string>(this, "RecordVideo", async (arg1, arg2) =>
+                if (cameraStatus != PermissionStatus.Granted || storageStatus != PermissionStatus.Granted || micrStatus != PermissionStatus.Granted)
                 {
-                    string _videoPartPath = arg2 as string;//相对路径
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Camera, Permission.Storage, Permission.Microphone });
+                    cameraStatus = results[Permission.Camera];
+                    storageStatus = results[Permission.Storage];
+                    micrStatus = results[Permission.Microphone];
+                }
+
+                if (cameraStatus == PermissionStatus.Granted && storageStatus == PermissionStatus.Granted && micrStatus == PermissionStatus.Granted)
+                {
+                    DependencyService.Get<IAudio>().TakeVideo();
+                    MessagingCenter.Unsubscribe<Object, string>(this, "RecordVideo");
+                    MessagingCenter.Subscribe<Object, string>(this, "RecordVideo", async (arg1, arg2) =>
+                    {
+                        string _videoPartPath = arg2 as string;//相对路径
                     if (string.IsNullOrWhiteSpace(_videoPartPath)) return;
-                    string dirPath = DependencyService.Get<IFileService>().GetExtrnalStoragePath(Constants.STORAGE_TYPE_MOVIES) + "/";
-                    MessagingCenter.Unsubscribe<ContentPage, string>(this, "RecordVideo");
-                    string path = dirPath + _videoPartPath;//视频完整路径
+                        string dirPath = DependencyService.Get<IFileService>().GetExtrnalStoragePath(Constants.STORAGE_TYPE_MOVIES) + "/";
+                        MessagingCenter.Unsubscribe<ContentPage, string>(this, "RecordVideo");
+                        string path = dirPath + _videoPartPath;//视频完整路径
                     SaveVideoPath.Invoke(path, new EventArgs());
-                });
+                    });
+                }
+
+            }
+            catch (Exception)
+            {
+
             }
         }
     }
