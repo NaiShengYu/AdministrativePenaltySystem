@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using WTONewProject.Model;
+using WTONewProject.Tools;
 using WTONewProject.View;
 using Xamarin.Auth;
 using Xamarin.Essentials;
@@ -13,6 +14,7 @@ namespace WTONewProject.Renderer
 {
     public class HyBridWebView : WebView
     {
+        public bool _videoFlag { get; set; }
         public string AzuraCookie { get; set; }
         public string userid { get; set; }
         public event EventHandler<EventArgs> pushCode;
@@ -88,6 +90,17 @@ namespace WTONewProject.Renderer
             {
                 App.Current.MainPage = new NavigationPage(new LoginWithNullPage());
             }
+        }
+
+
+        public void sendSms(string number)
+        {
+            DeviceUtils.sms(number);
+        }
+
+        public void phone(string number)
+        {
+            DeviceUtils.phone(number);
         }
     }
 }

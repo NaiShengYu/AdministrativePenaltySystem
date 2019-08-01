@@ -23,7 +23,6 @@ namespace WTONewProject.View
             _cookie = cookie;
             var source = new UrlWebViewSource();
             source.Url = Constants.WEB_SOURCE;
-            //source.Url = Constants.URL_WEB;
             if (Device.RuntimePlatform == Device.Android)
             {
                 web.On<Xamarin.Forms.PlatformConfiguration.Android>().SetMixedContentMode(MixedContentHandling.AlwaysAllow);

@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using CoreGraphics;
-using Foundation;
+﻿using Foundation;
+using System;
+using UIKit;
 using WebKit;
 using WTONewProject.iOS.Renderer;
 using WTONewProject.Renderer;
-using WTONewProject.View;
-using Xamarin.Auth;
+using WTONewProject.Tools;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using UIKit;
-using JavaScriptCore;
-using System.Threading.Tasks;
-using WTONewProject.Tools;
 
 [assembly: ExportRenderer(typeof(HyBridWebView), typeof(HybridWebViewRenderer))]
 namespace WTONewProject.iOS.Renderer
@@ -26,6 +17,11 @@ namespace WTONewProject.iOS.Renderer
         HyBridWebView hyBridWebView;
         UIWebView _webView;
         WKUserContentController userController;
+
+        /// <summary>
+        /// 目前不用此方法实现js被调用
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnElementChanged(ElementChangedEventArgs<HyBridWebView> e)
         {
             //给JS方法重命名(多参数需要放在一个字典里面)
@@ -37,7 +33,8 @@ namespace WTONewProject.iOS.Renderer
             {
                 _webView = new UIWebView(Frame);
                 _webView.ShouldStartLoad += WebView_ShouldStartLoad;
-                _webView.LoadError += (object sender, UIWebErrorArgs error) => {
+                _webView.LoadError += (object sender, UIWebErrorArgs error) =>
+                {
                     hyBridWebView.logOut();
                 };
                 _webView.SuppressesIncrementalRendering = true;
@@ -81,7 +78,7 @@ namespace WTONewProject.iOS.Renderer
                     Console.WriteLine("退出登录");
                     hyBridWebView.logOut();
                 }
-                if (url.Contains("getLocation") == true)
+                else if (url.Contains("getLocation") == true)
                 {
                     setlocation();
                 }
