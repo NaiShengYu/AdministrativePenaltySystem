@@ -3,7 +3,7 @@
     public class Constants
     {
         //公司内网
-        public static string WEB_SOURCE = "http://amp.azuratech.com:8088/mobile.html";
+        public static string WEB_SOURCE = "http://amp.azuratech.com:5080/mobile.html";
         public static string URL_ROOT = "http://amp.azuratech.com:5080/";
 
         //延庆外网
