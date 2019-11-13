@@ -49,7 +49,9 @@ namespace WTONewProject.iOS.Renderer
                     SetNativeControl(webView);
                 }
                 hyBridWebView = e.NewElement as HyBridWebView;
-                UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource; NSMutableUrlRequest request = new NSMutableUrlRequest(new NSUrl(source.Url)); NSMutableDictionary headers = new NSMutableDictionary();
+                UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource; 
+                NSMutableUrlRequest request = new NSMutableUrlRequest(new NSUrl(source.Url)); 
+                NSMutableDictionary headers = new NSMutableDictionary();
                 headers.Add(new NSString("AzuraCookie"), new NSString(Element.AzuraCookie));
                 headers.Add(new NSString("userId"), new NSString(Element.userid));
                 request.Headers = headers;
