@@ -39,6 +39,7 @@ namespace WTONewProject.iOS
             jPushRegister = new JPushInterface();
             jPushRegister.Register(this, options);
             this.RegistLogin(options);
+            app.ApplicationIconBadgeNumber = 0;
             return base.FinishedLaunching(app, options);
         }
 

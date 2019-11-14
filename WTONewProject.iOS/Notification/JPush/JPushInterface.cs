@@ -10,7 +10,7 @@ namespace WTONewProject.iOS.Notification.JPush
 {
     public class JPushInterface : JPUSHRegisterDelegate
     {//ab4f6d9522395eb71a74c0cc
-        internal static string JPushAppKey = "ab4f6d9522395eb71a74c0cc";
+        internal static string JPushAppKey = "e84fef2078ea6806b50239f6";
         internal static string Channel = "";
         JPushRegisterEntity entity { get; set; }
         public void Register(AppDelegate app, NSDictionary options)

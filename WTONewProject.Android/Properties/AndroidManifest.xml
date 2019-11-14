@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0.1" package="com.azura.amp.web" android:installLocation="auto" android:versionCode="1">
-	<uses-sdk android:minSdkVersion="10" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0" package="com.azura.amp.web" android:installLocation="auto" android:versionCode="1">
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
@@ -91,6 +91,6 @@
 		<!-- 发到其他市场的 APK 可以设置为 xxx-market。 -->
 		<meta-data android:name="JPUSH_CHANNEL" android:value="developer-default" />
 		<!-- Required. AppKey copied from Portal -->
-		<meta-data android:name="JPUSH_APPKEY" android:value="ab4f6d9522395eb71a74c0cc" />//azuratech的账号
+		<meta-data android:name="JPUSH_APPKEY" android:value="b12ace63c79918806537b142" />//azuratech的账号
     <!--   JPush End  --></application>
 </manifest>

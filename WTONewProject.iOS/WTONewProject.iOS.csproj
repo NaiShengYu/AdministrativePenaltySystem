@@ -52,7 +52,7 @@
     <CodesignKey>iPhone Developer: Peng Lin (SPJS63EGU6)</CodesignKey>
     <MtouchDebug>true</MtouchDebug>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
-    <CodesignProvision>YunWeiXinPingTaiProfile</CodesignProvision>
+    <CodesignProvision>AdministrativeSanctionProfile</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>

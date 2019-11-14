@@ -1,4 +1,5 @@
 ﻿using Foundation;
+using JPush.Binding.iOS;
 using System;
 using UIKit;
 using WebKit;
@@ -21,28 +22,18 @@ namespace WTONewProject.iOS.Renderer
         protected override void OnElementChanged(ElementChangedEventArgs<HyBridWebView> e)
         {
             //给JS⽅方法重命名(多参数需要放在⼀一个字典⾥里里⾯面)
-            const string rename1 = "function getLocation(data){window.webkit.messageHandlers.getLocation.postMessage(data);}";
-            const string rename2 = "function logOut(data){window.webkit.messageHandlers.logOut.postMessage(data);}";
-            //const string rename3 = "function console(data){window.webkit.messageHandlers.console.postMessage(data);}"; base.OnElementChanged(e);
+            const string rename1 = "function UserId(data){window.webkit.messageHandlers.UserId.postMessage(data);}";
             if (e.OldElement != null)
             {
                 userController.RemoveAllUserScripts();
-                userController.RemoveScriptMessageHandler("logOut");
+                userController.RemoveScriptMessageHandler("UserId");
             }
             if (e.NewElement != null)
             {
                 if (Control == null)
                 {
                     userController = new WKUserContentController();
-                    //var script = new WKUserScript(new NSString(rename2), WKUserScriptInjectionTime.AtDocumentEnd, false); 
-                    //userController.AddUserScript(script);
-                    userController.AddScriptMessageHandler(this, "logOut");
-                    //var script1 = new WKUserScript(new NSString(rename1), WKUserScriptInjectionTime.AtDocumentEnd, false); 
-                    //userController.AddUserScript(script1);
-                    userController.AddScriptMessageHandler(this, "getLocation");
-                    var cookiestring = new NSString("document.cookie = 'AzuraCookie=" + Element.AzuraCookie + ";userId="+Element.userid+ "'");
-                    Console.WriteLine("cookie===" + cookiestring);
-                    var cookieScript = new WKUserScript(cookiestring, WKUserScriptInjectionTime.AtDocumentStart, false); userController.AddUserScript(cookieScript);
+                    userController.AddScriptMessageHandler(this, "UserId");
                     var config = new WKWebViewConfiguration { UserContentController = userController };
                     var webView = new WKWebView(Frame, config);
                     _webView = webView;
@@ -51,35 +42,27 @@ namespace WTONewProject.iOS.Renderer
                 hyBridWebView = e.NewElement as HyBridWebView;
                 UrlWebViewSource source = e.NewElement.Source as UrlWebViewSource; 
                 NSMutableUrlRequest request = new NSMutableUrlRequest(new NSUrl(source.Url)); 
-                NSMutableDictionary headers = new NSMutableDictionary();
-                headers.Add(new NSString("AzuraCookie"), new NSString(Element.AzuraCookie));
-                headers.Add(new NSString("userId"), new NSString(Element.userid));
-                request.Headers = headers;
                 Control.LoadRequest(new NSUrlRequest(new NSUrl(source.Url)));
             }
         }
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
         {
-            if (message.Name == "logOut")
+            if (message.Name == "UserId")
             {
-                Console.WriteLine("退出登录");
-                hyBridWebView.logOut();
-            }
-            else if (message.Name == "getLocation")
-            {
-                Console.WriteLine("获取经纬度");
-                setlocation();
-            }
+                Console.WriteLine("用户id"+message.Body);
+                string alias = message.Body.ToString().Replace("-", "").ToLower();
+                if (string.IsNullOrWhiteSpace(alias))
+                {
+                    JPUSHService.DeleteAlias((arg0, arg1, arg2) => { },1);
+                }
+                else {
+                    JPUSHService.SetAlias(alias, (arg0, arg1, arg2) => {
+                    }, 1);
+                }
+               
 
-        }
-        async void setlocation()
-        {
-            var currentLocation = await Geolocation.GetLastKnownLocationAsync(); if (currentLocation == null)
-            {
-                currentLocation = new Location(34.754626, 113.735763);
             }
-            string js = "setLocation('" + currentLocation.Latitude + "','" + currentLocation.Longitude + "')";
-            _webView.EvaluateJavaScript(new NSString(js), (result, error) => { });
         }
+
     }
 }

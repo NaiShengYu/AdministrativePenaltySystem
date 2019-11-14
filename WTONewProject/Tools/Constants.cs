@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace WTONewProject.Tools
+﻿namespace WTONewProject.Tools
 {
-   public  class Constants
+    public class Constants
     {
-
-
-        //public static string WEB_SOURCE = "http://amp.azuratech.com:8090";
-        public static string WEB_SOURCE = "http://amp.azuratech.com:8088/mobile.html";
-        //public static string WEB_SOURCE = "http://192.168.2.98:8180";
-
+        //公司内网
+        public static string WEB_SOURCE = "http://221.10.250.57:5018";
         public static string URL_ROOT = "http://amp.azuratech.com:5080/";
+
+
+ 
+        //延庆外网
+        //public static string WEB_SOURCE = "http://demo.azuratech.com:51008/mobile.html";
+        //public static string URL_ROOT = "http://demo.azuratech.com:51007/";
+
+        //public static string WEB_SOURCE = "http://192.168.2.98:8180/";
         //public static string URL_ROOT = "http://192.168.2.98:8180/";
+
         public static string URL_GET_USER = URL_ROOT + "/api/Account/GetUserInfo";
         public static string URL_GET_ACCESSTOKEN = URL_ROOT + "api/TokenAuth/Authenticate";//登陆
         public static string URL_GET_IDENTIFYINGCODE = URL_ROOT + "api/services/app/User/SendIdentifyingCode";//获取验证码
